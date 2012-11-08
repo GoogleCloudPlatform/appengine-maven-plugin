@@ -1,0 +1,19 @@
+<!--
+
+    Copyright 2012 Google Inc. All Rights Reserved.
+
+-->
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+
+    <servlet>
+        <servlet-name>demoServlet</servlet-name>
+        <servlet-class>com.google.appengine.DemoServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>demoServlet</servlet-name>
+        <url-pattern>/demo</url-pattern>
+    </servlet-mapping>
+
+</web-app>
