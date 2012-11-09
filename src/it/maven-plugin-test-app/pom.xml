@@ -14,7 +14,7 @@
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>1.7.2.1</version>
+            <version>1.7.3</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -42,7 +42,7 @@
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.7.3-SNAPSHOT</version>
                 <configuration>
                     <version>${timestamp}</version>
                 </configuration>

@@ -29,7 +29,7 @@ public class SdkResolver {
   private static final String SDK_ARTIFACT_ID = "appengine-java-sdk";
   private static final String SDK_EXTENSION = "zip";
 
-  private static final String SDK_VERSION = "1.7.2.1";
+  private static final String SDK_VERSION = "1.7.3";
 
   static File getSdk(RepositorySystem repoSystem, RepositorySystemSession repoSession, List<RemoteRepository>... repos)
       throws MojoExecutionException {
