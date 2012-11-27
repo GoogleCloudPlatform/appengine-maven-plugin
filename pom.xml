@@ -21,11 +21,6 @@
             <name>Sonatype Nexus Snapshots</name>
             <url>${sonatypeOssDistMgmtSnapshotsUrl}</url>
         </snapshotRepository>
-        <repository>
-            <id>sonatype-nexus-staging</id>
-            <name>Nexus Release Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
     </distributionManagement>
 
     <dependencies>
@@ -67,11 +62,10 @@
     <build>
 
         <plugins>
-            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-invoker-plugin</artifactId>
-                <version>1.4</version>
+                <version>1.7</version>
                 <configuration>
                     <projectsDirectory>src/it</projectsDirectory>
                     <pomIncludes>
@@ -80,23 +74,22 @@
                     <postBuildHookScript>verify</postBuildHookScript>
                     <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
                     <goals>
-                        <goal>clean</goal>
-                        <goal>package</goal>
+                        <goal>appengine:update</goal>
+                        <goal>appengine:rollback</goal>
                     </goals>
                     <settingsFile>src/it/settings.xml</settingsFile>
                     <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+                    <cloneClean>true</cloneClean>
                 </configuration>
                 <executions>
                     <execution>
                         <id>integration-test</id>
                         <goals>
                             <goal>install</goal>
-                            <goal>run</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
-            -->
             <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
@@ -132,35 +125,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-invoker-plugin</artifactId>
-                <version>1.4</version>
-                <configuration>
-                    <projectsDirectory>src/it</projectsDirectory>
-                    <pomIncludes>
-                        <pomInclude>*/pom.xml</pomInclude>
-                    </pomIncludes>
-                    <postBuildHookScript>verify</postBuildHookScript>
-                    <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-                    <goals>
-                        <goal>clean</goal>
-                        <goal>package</goal>
-                    </goals>
-                    <settingsFile>src/it/settings.xml</settingsFile>
-                    <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>integration-test</id>
-                        <goals>
-                            <goal>install</goal>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
 

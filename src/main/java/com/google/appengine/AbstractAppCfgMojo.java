@@ -25,6 +25,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * @component
    */
   protected RepositorySystem repoSystem;
+
   /**
    * The current repository/network configuration of Maven.
    *
@@ -32,6 +33,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * @readonly
    */
   protected RepositorySystemSession repoSession;
+
   /**
    * The project's remote repositories to use for the resolution of project dependencies.
    *
@@ -39,6 +41,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * @readonly
    */
   protected List<RemoteRepository> projectRepos;
+
   /**
    * The project's remote repositories to use for the resolution of plugins and their dependencies.
    *
@@ -46,24 +49,28 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * @readonly
    */
   protected List<RemoteRepository> pluginRepos;
+
   /**
    * The server to connect to.
    *
    * @parameter
    */
   protected String server;
+
   /**
    * The username to use.
    *
    * @parameter
    */
   protected String email;
+
   /**
    * Override for the Host header setn with all RPCs.
    *
    * @parameter
    */
   protected String host;
+
   /**
    * Proxies requests through the given proxy server. If --proxy_https is also set, only HTTP will
    * be proxied here, otherwise both HTTP and HTTPS will.
@@ -71,60 +78,70 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * @parameter
    */
   protected String proxyHost;
+
   /**
    * Proxies HTTPS requests through the given proxy server.
    *
    * @parameter
    */
   protected String proxyHttps;
+
   /**
    * Do not save/load access credentials to/from disk.
    *
    * @parameter
    */
   protected boolean noCookies;
+
   /**
    * Always read the login password from stdin.
    *
    * @parameter
    */
   protected boolean passin;
+
   /**
    * Do not use HTTPS to communicate with the Admin Console.
    *
    * @parameter
    */
   protected boolean insecure;
+
   /**
    * Override application id from appengine-web.xml or app.yaml.
    *
    * @parameter
    */
   protected String appId;
+
   /**
    * Override version from appengine-web.xml or app.yaml.
    *
    * @parameter
    */
   protected String version;
+
   /**
    * Use OAuth2 instead of password auth.  Defaults to true.
    *
    * @parameter default-value=true
    */
   protected boolean oauth2;
+
   /**
    * Use the App Engine Java 7 runtime for this app.
    *
    * @parameter
    */
   protected boolean useJava7;
+
   /**
    * Split large jar files (> 10M) into smaller fragments.
    *
    * @parameter
    */
   protected boolean enableJarSplitting;
+
   /**
    * When --enable-jar-splitting is set, files that match the list of comma separated SUFFIXES will
    * be excluded from all jars.
@@ -132,18 +149,21 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * @parameter
    */
   protected String jarSplittingExcludes;
+
   /**
    * Do not delete temporary (staging) directory used in uploading.
    *
    * @parameter
    */
   protected boolean retainUploadDir;
+
   /**
    * The character encoding to use when compiling JSPs.
    *
    * @parameter
    */
   protected boolean compileEncoding;
+
   /**
    * Number of days worth of log data to get. The cut-off point is midnight UTC. Use 0 to get all
    * available logs. Default is 1.
@@ -151,6 +171,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * @parameter
    */
   protected Integer numDays;
+
   /**
    * Severity of app-level log messages to get. The range is 0 (DEBUG) through 4 (CRITICAL). If
    * omitted, only request logs are returned.
@@ -158,33 +179,34 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * @parameter
    */
   protected String severity;
+
   /**
    * Append to existing file.
    *
    * @parameter
    */
   protected boolean append;
+
   /**
    * Number of scheduled execution times to compute.
    *
    * @parameter
    */
   protected Integer numRuns;
+
   /**
    * Force deletion of indexes without being prompted.
    *
    * @parameter
    */
   protected boolean force;
+
   /**
    * @parameter expression="${project}"
    * @required
    * @readonly
    */
   protected MavenProject project;
-
-  public AbstractAppCfgMojo() {
-  }
 
   protected void executeAppCfg(String action, String appDir) {
     ArrayList<String> arguments = new ArrayList<String>();
