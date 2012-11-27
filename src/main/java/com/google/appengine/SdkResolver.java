@@ -29,14 +29,12 @@ public class SdkResolver {
   private static final String SDK_ARTIFACT_ID = "appengine-java-sdk";
   private static final String SDK_EXTENSION = "zip";
 
-  private static final String SDK_VERSION = "1.7.3";
-
-  static File getSdk(RepositorySystem repoSystem, RepositorySystemSession repoSession, List<RemoteRepository>... repos)
+  static File getSdk(String version, RepositorySystem repoSystem, RepositorySystemSession repoSession, List<RemoteRepository>... repos)
       throws MojoExecutionException {
 
     List<RemoteRepository> allRepos = ImmutableList.copyOf(Iterables.concat(repos));
 
-    ArtifactRequest request = new ArtifactRequest(new DefaultArtifact(SDK_GROUP_ID, SDK_ARTIFACT_ID, SDK_EXTENSION, SDK_VERSION), allRepos, null);
+    ArtifactRequest request = new ArtifactRequest(new DefaultArtifact(SDK_GROUP_ID, SDK_ARTIFACT_ID, SDK_EXTENSION, version), allRepos, null);
 
     ArtifactResult result;
     try {

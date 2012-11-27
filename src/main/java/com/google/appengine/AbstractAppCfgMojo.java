@@ -3,8 +3,12 @@
  */
 package com.google.appengine;
 
-import com.google.appengine.tools.admin.AppCfg;
+import static com.google.common.collect.Iterables.find;
 
+import com.google.appengine.tools.admin.AppCfg;
+import com.google.common.base.Predicate;
+
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -308,11 +312,22 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
 
     arguments.add(action);
     arguments.add(appDir);
+
     AppCfg.main(arguments.toArray(new String[arguments.size()]));
   }
 
   protected void resolveAndSetSdkRoot() throws MojoExecutionException {
-    File sdkBaseDir = SdkResolver.getSdk(repoSystem, repoSession, pluginRepos, projectRepos);
+
+    Artifact artifact = (Artifact) find(project.getPluginArtifacts(), new Predicate<Artifact>() {
+      @Override
+      public boolean apply(Artifact artifact1) {
+        return artifact1.getArtifactId().equals("appengine-maven-plugin");
+      }
+    });
+
+    String version = artifact.getVersion().replace("-SNAPSHOT", "");
+
+    File sdkBaseDir = SdkResolver.getSdk(version, repoSystem, repoSession, pluginRepos, projectRepos);
 
     try {
       System.setProperty("appengine.sdk.root", sdkBaseDir.getCanonicalPath());
