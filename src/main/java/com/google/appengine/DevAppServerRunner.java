@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * @goal dev-server-start
+ * @goal devserver
  * @execute phase="package"
  */
 public class DevAppServerRunner extends AbstractMojo {

@@ -206,13 +206,40 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected boolean force;
 
   /**
+   * The name of the backend to perform actions on.
+   *
+   * @parameter
+   */
+  protected String backendName;
+
+  /**
    * @parameter expression="${project}"
    * @required
    * @readonly
    */
   protected MavenProject project;
 
-  protected void executeAppCfg(String action, String appDir) {
+  protected void executeAppCfgCommand(String action, String appDir) {
+    ArrayList<String> arguments = collectParameters();
+
+    arguments.add(action);
+    arguments.add(appDir);
+
+    AppCfg.main(arguments.toArray(new String[arguments.size()]));
+  }
+
+  protected void executeAppCfgBackendsCommand(String action, String appDir) {
+    ArrayList<String> arguments = collectParameters();
+
+    arguments.add("backends");
+    arguments.add(action);
+    arguments.add(appDir);
+    arguments.add(backendName);
+
+    AppCfg.main(arguments.toArray(new String[arguments.size()]));
+  }
+
+  private ArrayList<String> collectParameters() {
     ArrayList<String> arguments = new ArrayList<String>();
 
     if (server != null && !server.isEmpty()) {
@@ -309,11 +336,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     if (force) {
       arguments.add("-f");
     }
-
-    arguments.add(action);
-    arguments.add(appDir);
-
-    AppCfg.main(arguments.toArray(new String[arguments.size()]));
+    return arguments;
   }
 
   protected void resolveAndSetSdkRoot() throws MojoExecutionException {

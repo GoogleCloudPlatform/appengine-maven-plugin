@@ -32,6 +32,7 @@
                 <version>1.7.3-SNAPSHOT</version>
                 <configuration>
                     <version>1</version>
+                    <backendName>test</backendName>
                 </configuration>
             </plugin>
             <plugin>

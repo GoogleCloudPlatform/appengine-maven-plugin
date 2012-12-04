@@ -1,7 +1,9 @@
 /**
  * Copyright 2012 Google Inc. All Rights Reserved.
  */
-package com.google.appengine;
+package com.google.appengine.appcfg;
+
+import com.google.appengine.AbstractAppCfgMojo;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -10,7 +12,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * @goal update
  * @execute phase="package"
  */
-public class AppCfgUpdater extends AbstractAppCfgMojo {
+public class Update extends AbstractAppCfgMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
@@ -26,7 +28,7 @@ public class AppCfgUpdater extends AbstractAppCfgMojo {
 
     getLog().info("Updating Google App Engine Application");
 
-    executeAppCfg("update", appDir);
+    executeAppCfgCommand("update", appDir);
   }
 
 }
