@@ -15,6 +15,10 @@
         </sonatypeOssDistMgmtSnapshotsUrl>
     </properties>
 
+    <scm>
+        <connection>scm:git:https://code.google.com/p/appengine-maven-plugin/</connection>
+    </scm>
+
     <distributionManagement>
         <snapshotRepository>
             <id>sonatype-nexus-snapshots</id>
