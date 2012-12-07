@@ -215,7 +215,7 @@
                         <additionalparam>
                             -quiet
                             -federate JDK http://download.oracle.com/javase/6/docs/api/index.html?
-                            -federate Guice http://google-guice.googlecode.com/svn/trunk/javadoc/
+                            -federate AppEngine https://developers.google.com/appengine/docs/java/javadoc/
                             -federationxml JDK
                             http://doclava.googlecode.com/svn/static/api/openjdk-6.xml
                             -hdf project.name "${project.name}"
@@ -226,6 +226,7 @@
                           | Apple's JVM sometimes requires more memory
                         -->
                         <additionalJOption>-J-Xmx1024m</additionalJOption>
+                        <skip>true</skip>
                     </configuration>
                     <executions>
                         <execution>
