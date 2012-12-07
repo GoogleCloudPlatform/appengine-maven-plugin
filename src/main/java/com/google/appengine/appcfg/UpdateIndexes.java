@@ -9,6 +9,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
+ * Update application indexes.
  * @goal update_indexes
  * @execute phase="package"
  */

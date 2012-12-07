@@ -9,6 +9,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
+ * Update application task queue definitions.
  * @goal update_queues
  * @execute phase="package"
  */

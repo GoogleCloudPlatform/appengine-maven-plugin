@@ -9,6 +9,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
+ * Set the default serving version.
  * @goal set_default_version
  * @execute phase="package"
  */

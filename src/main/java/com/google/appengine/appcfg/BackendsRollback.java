@@ -9,6 +9,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
+ * Roll back a previously in-progress update.
  * @goal backends_rollback
  * @execute phase="package"
  */

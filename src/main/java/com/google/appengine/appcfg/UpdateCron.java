@@ -9,6 +9,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
+ * Update application cron jobs.
  * @goal update_cron
  * @execute phase="package"
  */

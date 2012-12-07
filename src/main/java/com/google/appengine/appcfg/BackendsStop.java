@@ -9,6 +9,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
+ * Stop the specified backend.
  * @goal backends_stop
  * @execute phase="package"
  */
