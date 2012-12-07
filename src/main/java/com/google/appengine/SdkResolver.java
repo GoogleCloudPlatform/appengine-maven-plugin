@@ -3,22 +3,36 @@
  */
 package com.google.appengine;
 
+import static com.google.common.collect.Iterables.find;
+
+import com.google.appengine.repackaged.com.google.common.base.Preconditions;
 import com.google.appengine.repackaged.com.google.common.io.ByteStreams;
+import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.io.Files;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.artifact.ProjectArtifactFactory;
 import org.sonatype.aether.RepositorySystem;
 import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.repository.RemoteRepository;
 import org.sonatype.aether.resolution.ArtifactRequest;
 import org.sonatype.aether.resolution.ArtifactResolutionException;
 import org.sonatype.aether.resolution.ArtifactResult;
+import org.sonatype.aether.resolution.VersionRangeRequest;
+import org.sonatype.aether.resolution.VersionRangeResolutionException;
+import org.sonatype.aether.resolution.VersionRangeResult;
 import org.sonatype.aether.util.artifact.DefaultArtifact;
+import org.sonatype.aether.version.Version;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -29,7 +43,52 @@ public class SdkResolver {
   private static final String SDK_ARTIFACT_ID = "appengine-java-sdk";
   private static final String SDK_EXTENSION = "zip";
 
-  static File getSdk(String version, RepositorySystem repoSystem, RepositorySystemSession repoSession, List<RemoteRepository>... repos)
+  public static File getSdk(MavenProject project, RepositorySystem repoSystem, RepositorySystemSession repoSession, List<RemoteRepository>... repos)
+      throws MojoExecutionException {
+    Artifact artifact = (Artifact) find(project.getPluginArtifacts(), new Predicate<Artifact>() {
+      @Override
+      public boolean apply(Artifact artifact1) {
+        return artifact1.getArtifactId().equals("appengine-maven-plugin");
+      }
+    });
+
+    String version = artifact.getVersion();
+
+    if(version.endsWith("-SNAPSHOT")) {
+      String newestVersion = determineNewestVersion(repoSystem, repoSession, repos);
+      return getSdk(newestVersion, repoSystem, repoSession, repos);
+    }
+
+    return getSdk(version, repoSystem, repoSession, repos);
+  }
+
+  private static String determineNewestVersion(RepositorySystem repoSystem, RepositorySystemSession repoSession, List<RemoteRepository>[] repos) throws MojoExecutionException {
+    String version;VersionRangeRequest rangeRequest = new VersionRangeRequest();
+    rangeRequest.setArtifact(new DefaultArtifact(SDK_GROUP_ID + ":" + SDK_ARTIFACT_ID + ":[0,)"));
+    for(List<RemoteRepository> repoList : repos) {
+      for(RemoteRepository repo : repoList) {
+        rangeRequest.addRepository(repo);
+      }
+    }
+
+    VersionRangeResult rangeResult = null;
+    try {
+      rangeResult = repoSystem.resolveVersionRange(repoSession, rangeRequest);
+    } catch (VersionRangeResolutionException e) {
+      throw new MojoExecutionException("Could not resolve latest version of the App Engine Java SDK", e);
+    }
+
+    List<Version> versions = rangeResult.getVersions();
+
+    Collections.sort(versions);
+
+    Version newest = Iterables.getLast(versions);
+
+    version = newest.toString();
+    return version;
+  }
+
+  public static File getSdk(String version, RepositorySystem repoSystem, RepositorySystemSession repoSession, List<RemoteRepository>... repos)
       throws MojoExecutionException {
 
     List<RemoteRepository> allRepos = ImmutableList.copyOf(Iterables.concat(repos));

@@ -78,15 +78,7 @@ public class DevAppServerRunner extends AbstractMojo {
 
     getLog().info("Retrieving Google App Engine Java SDK from Maven");
 
-    Artifact artifact = (Artifact) find(project.getPluginArtifacts(), new Predicate<Artifact>() {
-      @Override
-      public boolean apply(Artifact artifact1) {
-        return artifact1.getArtifactId().equals("appengine-maven-plugin");
-      }
-    });
-
-    String version = artifact.getVersion().replace("-SNAPSHOT", "");
-    File sdkBaseDir = SdkResolver.getSdk(version, repoSystem, repoSession, pluginRepos, projectRepos);
+    File sdkBaseDir = SdkResolver.getSdk(project, repoSystem, repoSession, pluginRepos, projectRepos);
 
     String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
 

@@ -29,7 +29,7 @@
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.7.3-SNAPSHOT</version>
+                <version>1.7.4-SNAPSHOT</version>
                 <configuration>
                     <version>1</version>
                     <backendName>test</backendName>
