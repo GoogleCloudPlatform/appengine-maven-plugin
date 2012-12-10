@@ -11,6 +11,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <prerequisites>
+        <maven>3.0</maven>
+    </prerequisites>
+
     <scm>
         <connection>scm:git:https://code.google.com/p/appengine-maven-plugin/</connection>
     </scm>
