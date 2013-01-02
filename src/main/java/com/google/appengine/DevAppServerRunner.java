@@ -94,6 +94,13 @@ public class DevAppServerRunner extends AbstractMojo {
   private String port;
 
   /**
+   * Disable the check for newer SDK version.
+   *
+   * @parameter
+   */
+  private boolean disableUpdateCheck;
+
+  /**
    * Additional flags to the JVM used to run the dev server.
    *
    * @parameter
@@ -156,6 +163,10 @@ public class DevAppServerRunner extends AbstractMojo {
     if(port != null) {
       devAppServerCommand.add("-p");
       devAppServerCommand.add(port);
+    }
+
+    if(disableUpdateCheck) {
+      devAppServerCommand.add("--disable_update_check");
     }
 
     // Point to our application
