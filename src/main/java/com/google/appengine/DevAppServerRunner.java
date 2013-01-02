@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
+ * Runs the App Engine development server.
+ *
  * @goal devserver
  * @execute phase="package"
  */
@@ -70,6 +72,34 @@ public class DevAppServerRunner extends AbstractMojo {
    */
   private MavenProject project;
 
+  /**
+   * The server to use to determine the latest SDK version.
+   *
+   * @parameter
+   */
+  private String server;
+
+  /**
+   * The address of the interface on the local machien to bind to (or 0.0.0.0 for all interfaces).
+   *
+   * @parameter
+   */
+  private String address;
+
+  /**
+   * The port number to bind to on the local machine.
+   *
+   * @parameter
+   */
+  private String port;
+
+  /**
+   * Additional flags to the JVM used to run the dev server.
+   *
+   * @parameter
+   */
+  private List<String> jvmFlags;
+
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
@@ -104,8 +134,31 @@ public class DevAppServerRunner extends AbstractMojo {
     devAppServerCommand.add("-classpath");
     devAppServerCommand.add(appengineToolsApiJar);
 
-    // Run the DevAppServerMain class with our app
+    // Add jvm flags
+    if(jvmFlags != null && !jvmFlags.isEmpty()) {
+      devAppServerCommand.addAll(jvmFlags);
+    }
+
+    // Point to the DevAppServerMain class
     devAppServerCommand.add(DevAppServerMain.class.getCanonicalName());
+
+    // Add in additional options for starting the DevAppServer
+    if(server != null) {
+      devAppServerCommand.add("-s");
+      devAppServerCommand.add(server);
+    }
+
+    if(address != null) {
+      devAppServerCommand.add("-a");
+      devAppServerCommand.add(address);
+    }
+
+    if(port != null) {
+      devAppServerCommand.add("-p");
+      devAppServerCommand.add(port);
+    }
+
+    // Point to our application
     devAppServerCommand.add(appDir);
 
     getLog().info("Running " + Joiner.on(" ").join(devAppServerCommand));
