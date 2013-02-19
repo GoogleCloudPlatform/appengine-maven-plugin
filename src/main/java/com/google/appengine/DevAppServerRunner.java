@@ -3,15 +3,12 @@
  */
 package com.google.appengine;
 
-import static com.google.common.collect.Iterables.find;
 import static java.io.File.separator;
 
-import com.google.appengine.repackaged.com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList;
 import com.google.appengine.tools.development.DevAppServerMain;
 import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;

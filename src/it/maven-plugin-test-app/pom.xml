@@ -38,13 +38,15 @@
                     </jvmFlags>
                     <port>8008</port>
                     <disableUpdateCheck>true</disableUpdateCheck>
+                    <deleteJsps>true</deleteJsps>
+                    <enableJarClasses>true</enableJarClasses> <!-- You don't need to do this along with archiveClasses below -->
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <archiveClasses>true</archiveClasses>
+                    <archiveClasses>true</archiveClasses> <!-- You don't need to do this along with enableJarClasses -->
                 </configuration>
             </plugin>
         </plugins>

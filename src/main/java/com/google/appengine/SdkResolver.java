@@ -5,11 +5,8 @@ package com.google.appengine;
 
 import static com.google.common.collect.Iterables.find;
 
-import com.google.appengine.repackaged.com.google.common.base.Preconditions;
-import com.google.appengine.repackaged.com.google.common.io.ByteStreams;
-import com.google.common.base.Joiner;
+import com.google.common.io.ByteStreams;
 import com.google.common.base.Predicate;
-import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.io.Files;
@@ -17,7 +14,6 @@ import com.google.common.io.Files;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.artifact.ProjectArtifactFactory;
 import org.sonatype.aether.RepositorySystem;
 import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.repository.RemoteRepository;
@@ -71,7 +67,7 @@ public class SdkResolver {
       }
     }
 
-    VersionRangeResult rangeResult = null;
+    VersionRangeResult rangeResult;
     try {
       rangeResult = repoSystem.resolveVersionRange(repoSession, rangeRequest);
     } catch (VersionRangeResolutionException e) {

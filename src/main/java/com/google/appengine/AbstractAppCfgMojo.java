@@ -213,6 +213,20 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected String backendName;
 
   /**
+   * Delete the JSP source files after compilation.
+   *
+   * @parameter
+   */
+  protected boolean deleteJsps;
+
+  /**
+   * Jar the WEB-INF/classes content.
+   *
+   * @parameter
+   */
+  protected boolean enableJarClasses;
+
+  /**
    * @parameter expression="${project}"
    * @required
    * @readonly
@@ -336,6 +350,15 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     if (force) {
       arguments.add("-f");
     }
+
+    if (deleteJsps) {
+      arguments.add("--delete_jsps");
+    }
+
+    if (enableJarClasses) {
+      arguments.add("--enable_jar_classes");
+    }
+
     return arguments;
   }
 
