@@ -53,20 +53,17 @@
             <artifactId>aether-util</artifactId>
             <version>1.13.1</version>
         </dependency>
-
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>13.0</version>
+            <version>13.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-tools-sdk</artifactId>
-            <version>1.7.4</version>
+            <version>1.7.5</version>
         </dependency>
-
     </dependencies>
-
 
     <build>
 
@@ -114,6 +111,7 @@
             <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
+                <version>1.9.0</version>
                 <configuration>
                     <header>header.txt</header>
                 </configuration>
