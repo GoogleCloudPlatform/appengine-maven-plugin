@@ -10,11 +10,19 @@
     <groupId>com.google.appengine</groupId>
     <artifactId>maven-plugin-test-app</artifactId>
 
+    <repositories>
+        <repository>
+            <id>sonatype-google-releases</id>
+            <name>Sonatype Google Releases</name>
+            <url>https://oss.sonatype.org/service/local/repositories/google-releases/content</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>1.7.4</version>
+            <version>1.7.6</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -29,7 +37,7 @@
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.7.5-SNAPSHOT</version>
+                <version>1.7.6-SNAPSHOT</version>
                 <configuration>
                     <version>1</version>
                     <backendName>test</backendName>

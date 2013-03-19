@@ -19,6 +19,14 @@
         <connection>scm:git:https://code.google.com/p/appengine-maven-plugin/</connection>
     </scm>
 
+    <repositories>
+        <repository>
+            <id>sonatype-google-releases</id>
+            <name>Sonatype Google Releases</name>
+            <url>https://oss.sonatype.org/service/local/repositories/google-releases/content</url>
+        </repository>
+    </repositories>
+
     <distributionManagement>
         <repository>
             <id>sonatype-nexus-staging</id>
@@ -56,12 +64,12 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>13.0.1</version>
+            <version>14.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-tools-sdk</artifactId>
-            <version>1.7.5</version>
+            <version>1.7.6</version>
         </dependency>
     </dependencies>
 
