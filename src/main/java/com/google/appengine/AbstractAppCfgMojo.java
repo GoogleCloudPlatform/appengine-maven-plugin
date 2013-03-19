@@ -3,12 +3,8 @@
  */
 package com.google.appengine;
 
-import static com.google.common.collect.Iterables.find;
-
 import com.google.appengine.tools.admin.AppCfg;
-import com.google.common.base.Predicate;
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -28,6 +24,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    *
    * @component
    */
+
   protected RepositorySystem repoSystem;
 
   /**
@@ -57,21 +54,21 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   /**
    * The server to connect to.
    *
-   * @parameter
+   * @parameter expression="${appengine.server}"
    */
   protected String server;
 
   /**
    * The username to use.
    *
-   * @parameter
+   * @parameter expression="${appengine.email}"
    */
   protected String email;
 
   /**
    * Override for the Host header setn with all RPCs.
    *
-   * @parameter
+   * @parameter expression="${appengine.host}"
    */
   protected String host;
 
@@ -79,70 +76,70 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * Proxies requests through the given proxy server. If --proxy_https is also set, only HTTP will
    * be proxied here, otherwise both HTTP and HTTPS will.
    *
-   * @parameter
+   * @parameter expression="${appengine.proxyHost}"
    */
   protected String proxyHost;
 
   /**
    * Proxies HTTPS requests through the given proxy server.
    *
-   * @parameter
+   * @parameter expression="${appengine.proxyHttps}"
    */
   protected String proxyHttps;
 
   /**
    * Do not save/load access credentials to/from disk.
    *
-   * @parameter
+   * @parameter expression="${appengine.noCookies}"
    */
   protected boolean noCookies;
 
   /**
    * Always read the login password from stdin.
    *
-   * @parameter
+   * @parameter expression="${appengine.passin}"
    */
   protected boolean passin;
 
   /**
    * Do not use HTTPS to communicate with the Admin Console.
    *
-   * @parameter
+   * @parameter expression="${appengine.insecure}"
    */
   protected boolean insecure;
 
   /**
    * Override application id from appengine-web.xml or app.yaml.
    *
-   * @parameter
+   * @parameter expression="${appengine.appId}"
    */
   protected String appId;
 
   /**
    * Override version from appengine-web.xml or app.yaml.
    *
-   * @parameter
+   * @parameter expression="${appengine.version}"
    */
   protected String version;
 
   /**
    * Use OAuth2 instead of password auth.  Defaults to true.
    *
-   * @parameter default-value=true
+   * @parameter default-value=true expression="${appengine.oauth2}"
    */
   protected boolean oauth2;
 
   /**
    * Use the App Engine Java 7 runtime for this app.
    *
-   * @parameter
+   * @parameter expression="${appengine.useJava7}"
    */
   protected boolean useJava7;
 
   /**
    * Split large jar files (> 10M) into smaller fragments.
    *
-   * @parameter
+   * @parameter expression="${appengine.enableJarSplitting}"
    */
   protected boolean enableJarSplitting;
 
@@ -150,21 +147,21 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * When --enable-jar-splitting is set, files that match the list of comma separated SUFFIXES will
    * be excluded from all jars.
    *
-   * @parameter
+   * @parameter expression="${appengine.jarSplittingExcludes}"
    */
   protected String jarSplittingExcludes;
 
   /**
    * Do not delete temporary (staging) directory used in uploading.
    *
-   * @parameter
+   * @parameter expression="${appengine.retainUploadDir}"
    */
   protected boolean retainUploadDir;
 
   /**
    * The character encoding to use when compiling JSPs.
    *
-   * @parameter
+   * @parameter expression="${appengine.compileEncoding}"
    */
   protected boolean compileEncoding;
 
@@ -172,7 +169,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * Number of days worth of log data to get. The cut-off point is midnight UTC. Use 0 to get all
    * available logs. Default is 1.
    *
-   * @parameter
+   * @parameter expression="${appengine.numDays}"
    */
   protected Integer numDays;
 
@@ -180,49 +177,49 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * Severity of app-level log messages to get. The range is 0 (DEBUG) through 4 (CRITICAL). If
    * omitted, only request logs are returned.
    *
-   * @parameter
+   * @parameter expression="${appengine.severity}"
    */
   protected String severity;
 
   /**
    * Append to existing file.
    *
-   * @parameter
+   * @parameter expression="${appengine.append}"
    */
   protected boolean append;
 
   /**
    * Number of scheduled execution times to compute.
    *
-   * @parameter
+   * @parameter expression="${appengine.numRuns}"
    */
   protected Integer numRuns;
 
   /**
    * Force deletion of indexes without being prompted.
    *
-   * @parameter
+   * @parameter expression="${appengine.force}"
    */
   protected boolean force;
 
   /**
    * The name of the backend to perform actions on.
    *
-   * @parameter
+   * @parameter expression="${appengine.backendName}"
    */
   protected String backendName;
 
   /**
    * Delete the JSP source files after compilation.
    *
-   * @parameter
+   * @parameter expression="${appengine.deleteJsps}"
    */
   protected boolean deleteJsps;
 
   /**
    * Jar the WEB-INF/classes content.
    *
-   * @parameter
+   * @parameter expression="${appengine.enableJarClasses}"
    */
   protected boolean enableJarClasses;
 

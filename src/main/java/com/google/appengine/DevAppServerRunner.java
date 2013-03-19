@@ -72,35 +72,35 @@ public class DevAppServerRunner extends AbstractMojo {
   /**
    * The server to use to determine the latest SDK version.
    *
-   * @parameter
+   * @parameter expression="${appengine.server}"
    */
   private String server;
 
   /**
    * The address of the interface on the local machien to bind to (or 0.0.0.0 for all interfaces).
    *
-   * @parameter
+   * @parameter expression="${appengine.address}"
    */
   private String address;
 
   /**
    * The port number to bind to on the local machine.
    *
-   * @parameter
+   * @parameter expression="${appengine.port}"
    */
   private String port;
 
   /**
    * Disable the check for newer SDK version.
    *
-   * @parameter
+   * @parameter expression="${appengine.disableUpdateCheck}"
    */
   private boolean disableUpdateCheck;
 
   /**
    * Additional flags to the JVM used to run the dev server.
    *
-   * @parameter
+   * @parameter expression="${appengine.jvmFlags}"
    */
   private List<String> jvmFlags;
 
