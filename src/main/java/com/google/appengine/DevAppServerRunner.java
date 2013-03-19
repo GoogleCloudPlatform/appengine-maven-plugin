@@ -116,6 +116,16 @@ public class DevAppServerRunner extends AbstractMojo {
 
     String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
 
+    File appDirFile = new File(appDir);
+
+    if(!appDirFile.exists()) {
+      throw new MojoExecutionException("The application directory does not exist : " + appDir);
+    }
+
+    if(!appDirFile.isDirectory()) {
+      throw new MojoExecutionException("The application directory is not a directory : " + appDir);
+    }
+
     String javaExecutable = joinOnFileSeparator(System.getProperty("java.home"), "bin", "java");
 
     ArrayList<String> devAppServerCommand = new ArrayList<String>();
@@ -176,6 +186,8 @@ public class DevAppServerRunner extends AbstractMojo {
     try {
 
       ProcessBuilder processBuilder = new ProcessBuilder(devAppServerCommand);
+
+      processBuilder.directory(appDirFile);
 
       processBuilder.redirectErrorStream(true);
       final Process devServerProcess = processBuilder.start();
