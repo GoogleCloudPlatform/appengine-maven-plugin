@@ -25,6 +25,11 @@
             <version>1.7.6</version>
         </dependency>
         <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-endpoints</artifactId>
+            <version>1.7.6</version>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
@@ -37,7 +42,7 @@
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.7.6-SNAPSHOT</version>
+                <version>1.7.7-SNAPSHOT</version>
                 <configuration>
                     <version>1</version>
                     <backendName>test</backendName>
@@ -48,11 +53,24 @@
                     <disableUpdateCheck>true</disableUpdateCheck>
                     <deleteJsps>true</deleteJsps>
                     <enableJarClasses>true</enableJarClasses> <!-- You don't need to do this along with archiveClasses below -->
+                    <serviceClassNames>
+                        com.google.appengine.endpoints.SimpleEndpoint
+                    </serviceClassNames>
+                    
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>endpoints_get_discovery_doc</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
                 <configuration>
                     <archiveClasses>true</archiveClasses> <!-- You don't need to do this along with enableJarClasses -->
                 </configuration>

@@ -1,0 +1,84 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://1.maven-plugin-test-app.appspot.com/_ah/api",
+  "name" : "mysimpleendpoint",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://1.maven-plugin-test-app.appspot.com/_ah/spi",
+    "deadline" : 10.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "methods" : {
+    "mysimpleendpoint.getMyBean" : {
+      "path" : "simplebean",
+      "httpMethod" : "GET",
+      "scopes" : [ ],
+      "audiences" : [ ],
+      "clientIds" : [ ],
+      "rosyMethod" : "com.google.appengine.endpoints.SimpleEndpoint.getMyBean",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "mysimpleendpoint.setMyBean" : {
+      "path" : "setMyBean/{mybean}",
+      "httpMethod" : "POST",
+      "scopes" : [ ],
+      "audiences" : [ ],
+      "clientIds" : [ ],
+      "rosyMethod" : "com.google.appengine.endpoints.SimpleEndpoint.setMyBean",
+      "request" : {
+        "parameters" : {
+          "mybean" : {
+            "type" : "string",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "empty"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "SimpleBean" : {
+        "id" : "SimpleBean",
+        "type" : "object",
+        "properties" : {
+          "s" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "methods" : {
+      "com.google.appengine.endpoints.SimpleEndpoint.getMyBean" : {
+        "response" : {
+          "$ref" : "SimpleBean"
+        }
+      },
+      "com.google.appengine.endpoints.SimpleEndpoint.setMyBean" : {
+      }
+    }
+  }
+}

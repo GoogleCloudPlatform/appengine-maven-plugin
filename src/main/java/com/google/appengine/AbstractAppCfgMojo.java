@@ -130,11 +130,11 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected boolean oauth2;
 
   /**
-   * Use the App Engine Java 7 runtime for this app.
+   * Use the App Engine Java 6 runtime for this app.
    *
-   * @parameter expression="${appengine.useJava7}"
+   * @parameter expression="${appengine.useJava6}"
    */
-  protected boolean useJava7;
+  protected boolean useJava6;
 
   /**
    * Split large jar files (> 10M) into smaller fragments.
@@ -230,24 +230,34 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    */
   protected MavenProject project;
 
-  protected void executeAppCfgCommand(String action, String appDir) {
+  protected void executeAppCfgCommand(String action, String appDir)
+          throws MojoExecutionException {
     ArrayList<String> arguments = collectParameters();
 
     arguments.add(action);
     arguments.add(appDir);
 
-    AppCfg.main(arguments.toArray(new String[arguments.size()]));
-  }
+    try{
+        AppCfg.main(arguments.toArray(new String[arguments.size()]));
+    } catch (Exception ex) {
+        throw new MojoExecutionException("Error executing appcfg command="
+                + arguments, ex);
+    }  }
 
-  protected void executeAppCfgBackendsCommand(String action, String appDir) {
+  protected void executeAppCfgBackendsCommand(String action, String appDir)
+          throws MojoExecutionException {
     ArrayList<String> arguments = collectParameters();
 
     arguments.add("backends");
     arguments.add(action);
     arguments.add(appDir);
     arguments.add(backendName);
-
-    AppCfg.main(arguments.toArray(new String[arguments.size()]));
+    try {
+        AppCfg.main(arguments.toArray(new String[arguments.size()]));
+    } catch (Exception ex) {
+        throw new MojoExecutionException("Error executing appcfg command="
+                + arguments, ex);
+    }
   }
 
   private ArrayList<String> collectParameters() {
@@ -304,8 +314,8 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
       arguments.add("--oauth2");
     }
 
-    if (useJava7) {
-      arguments.add("--use_java7");
+    if (useJava6) {
+      arguments.add("--use_java6");
     }
 
     if (enableJarSplitting) {
