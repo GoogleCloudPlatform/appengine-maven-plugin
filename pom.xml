@@ -12,6 +12,8 @@
     </description>
     <url>https://developers.google.com/appengine/docs/java/tools/maven</url>
 
+    <inceptionYear>2012</inceptionYear>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <appengine.target.version>1.7.6</appengine.target.version>
@@ -25,6 +27,29 @@
     <scm>
         <connection>scm:git:https://code.google.com/p/appengine-maven-plugin/</connection>
     </scm>
+
+    <developers>
+        <developer>
+            <id>mattstep</id>
+            <name>Matt Stephenson</name>
+            <organization>Google</organization>
+            <email>mattstep@google.com</email>
+        </developer>
+        <developer>
+            <id>ludo</id>
+            <name>Ludovic Champenois</name>
+            <organization>Google</organization>
+            <email>ludo at google dot com</email>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <repositories>
         <repository>
