@@ -10,6 +10,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Update application DoS protection configuration.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal update_dos
  * @execute phase="package"
  */

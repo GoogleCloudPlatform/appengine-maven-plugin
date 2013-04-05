@@ -10,6 +10,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Delete the specified backend.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal backends_delete
  * @execute phase="package"
  */

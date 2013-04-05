@@ -34,6 +34,12 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+/**
+ * Resolves the sdk in the .m2 repository, retrieving the appropriate version for this version of
+ * the plugin if necessary.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
+ */
 public class SdkResolver {
   private static final String SDK_GROUP_ID = "com.google.appengine";
   private static final String SDK_ARTIFACT_ID = "appengine-java-sdk";

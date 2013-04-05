@@ -10,6 +10,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Rollback an in-progress update.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal rollback
  * @execute phase="package"
  */

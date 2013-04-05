@@ -10,6 +10,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Update the specified backend or all backends.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal backends_update
  * @execute phase="package"
  */

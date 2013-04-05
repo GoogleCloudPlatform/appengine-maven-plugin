@@ -10,6 +10,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Delete unused indexes from application.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal vacuum_indexes
  * @execute phase="package"
  */

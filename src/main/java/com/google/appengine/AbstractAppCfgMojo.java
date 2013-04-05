@@ -17,6 +17,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstract class for supporting appcfg commands.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
+ */
 public abstract class AbstractAppCfgMojo extends AbstractMojo {
 
   /**

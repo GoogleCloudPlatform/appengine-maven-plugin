@@ -10,6 +10,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Create or update an app version.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal update
  * @execute phase="package"
  */

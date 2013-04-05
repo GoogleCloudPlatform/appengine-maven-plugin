@@ -10,6 +10,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Set the default serving version.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal set_default_version
  * @execute phase="package"
  */

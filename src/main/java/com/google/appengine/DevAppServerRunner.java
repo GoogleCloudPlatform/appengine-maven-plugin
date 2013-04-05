@@ -26,6 +26,7 @@ import java.util.Scanner;
 /**
  * Runs the App Engine development server.
  *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal devserver
  * @execute phase="package"
  */

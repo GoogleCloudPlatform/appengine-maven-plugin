@@ -10,6 +10,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Configure the specified backend.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal backends_configure
  * @execute phase="package"
  */

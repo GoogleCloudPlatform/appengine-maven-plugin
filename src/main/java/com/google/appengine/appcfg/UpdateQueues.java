@@ -10,6 +10,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Update application task queue definitions.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal update_queues
  * @execute phase="package"
  */

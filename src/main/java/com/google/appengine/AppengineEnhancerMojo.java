@@ -15,8 +15,9 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
 
 /**
- * Runs the App Engine development server.
+ * Runs the datanucleus enhancer.
  *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal enhance
  * @phase compile
  */

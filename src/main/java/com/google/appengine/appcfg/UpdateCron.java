@@ -10,6 +10,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Update application cron jobs.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal update_cron
  * @execute phase="package"
  */

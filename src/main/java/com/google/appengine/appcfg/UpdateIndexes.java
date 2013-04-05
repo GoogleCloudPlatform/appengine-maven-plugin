@@ -10,6 +10,8 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Update application indexes.
+ *
+ * @author Matt Stephenson <mattstep@google.com>
  * @goal update_indexes
  * @execute phase="package"
  */
