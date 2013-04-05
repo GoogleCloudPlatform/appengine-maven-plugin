@@ -231,21 +231,22 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected MavenProject project;
 
   protected void executeAppCfgCommand(String action, String appDir)
-          throws MojoExecutionException {
+      throws MojoExecutionException {
     ArrayList<String> arguments = collectParameters();
 
     arguments.add(action);
     arguments.add(appDir);
 
-    try{
-        AppCfg.main(arguments.toArray(new String[arguments.size()]));
+    try {
+      AppCfg.main(arguments.toArray(new String[arguments.size()]));
     } catch (Exception ex) {
-        throw new MojoExecutionException("Error executing appcfg command="
-                + arguments, ex);
-    }  }
+      throw new MojoExecutionException("Error executing appcfg command="
+          + arguments, ex);
+    }
+  }
 
   protected void executeAppCfgBackendsCommand(String action, String appDir)
-          throws MojoExecutionException {
+      throws MojoExecutionException {
     ArrayList<String> arguments = collectParameters();
 
     arguments.add("backends");
@@ -253,10 +254,10 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     arguments.add(appDir);
     arguments.add(backendName);
     try {
-        AppCfg.main(arguments.toArray(new String[arguments.size()]));
+      AppCfg.main(arguments.toArray(new String[arguments.size()]));
     } catch (Exception ex) {
-        throw new MojoExecutionException("Error executing appcfg command="
-                + arguments, ex);
+      throw new MojoExecutionException("Error executing appcfg command="
+          + arguments, ex);
     }
   }
 
