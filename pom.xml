@@ -6,10 +6,11 @@
     <packaging>maven-plugin</packaging>
     <version>1.7.7-SNAPSHOT</version>
     <name>A Maven Plugin for running and deploying appengine applications</name>
-    <description>App Engine maven plugin that has all the goals to interact with
-        developer server as well as the remote runtime. This include a local dev
-        server, all appcfg options, Datanucleus enhancer and endpoints tooling.
+    <description>
+        The App Engine maven plugin which can be used to interact with
+        both the development server and the remote runtime.
     </description>
+    <url>https://developers.google.com/appengine/docs/java/tools/maven</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

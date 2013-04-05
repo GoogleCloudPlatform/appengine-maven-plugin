@@ -56,7 +56,6 @@
                     <serviceClassNames>
                         com.google.appengine.endpoints.SimpleEndpoint
                     </serviceClassNames>
-                    
                 </configuration>
                 <executions>
                     <execution>
