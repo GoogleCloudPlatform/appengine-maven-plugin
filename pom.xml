@@ -154,6 +154,8 @@
                         <goal>appengine:backends_start</goal>
                         <goal>appengine:backends_rollback</goal>
                         <goal>appengine:backends_delete</goal>
+                        <goal>appengine:endpoints_get_client_lib</goal>
+                        <goal>appengine:endpoints_get_discovery_doc</goal>
                     </goals>
                     <settingsFile>src/it/settings.xml</settingsFile>
                     <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
