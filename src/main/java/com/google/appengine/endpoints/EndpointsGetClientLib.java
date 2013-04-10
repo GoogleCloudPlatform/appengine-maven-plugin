@@ -57,8 +57,9 @@ public class EndpointsGetClientLib extends EndpointsMojo {
             return name.endsWith("-java.zip");
           }
         });
-        for (File f : files) {
-          f.renameTo(new File(project.getBasedir(), f.getName()));
+        for (File source : files) {
+            getLog().info("You can move the new library in a user directory: "+
+                    source.getAbsolutePath());
         }
       }
     } catch (Exception e) {
