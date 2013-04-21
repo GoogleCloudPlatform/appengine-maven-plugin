@@ -54,7 +54,7 @@ public class AppengineEnhancerMojo extends AbstractMojo {
    */
   private String enhancerApi;
 
-  private static final String DATANUCLEUS_VERSION = "3.2.0-m1";
+  private static final String DATANUCLEUS_VERSION = "3.2.0-release";
 
   private static final Dependency JDO_DEPENDENCY = new Dependency() {
     {
@@ -81,10 +81,13 @@ public class AppengineEnhancerMojo extends AbstractMojo {
 
     Plugin plugin = new Plugin();
     plugin.setGroupId("org.datanucleus");
-    plugin.setArtifactId("maven-datanucleus-plugin");
+    plugin.setArtifactId("datanucleus-maven-plugin");
     plugin.setVersion(DATANUCLEUS_VERSION);
     plugin.addDependency(enhancerApi.equals("JDO") ? JDO_DEPENDENCY : JPA_DEPENDENCY);
-
+    for (Dependency transitiveDep: mavenProject.getDependencies()){
+      plugin.addDependency(transitiveDep);
+    }
+         
     PluginDescriptor pluginDescriptor = null;
 
     try {
