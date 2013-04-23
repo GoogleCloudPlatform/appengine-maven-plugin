@@ -3,6 +3,7 @@
  */
 package com.google.appengine.endpoints;
 
+import com.google.common.io.Files;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
@@ -58,8 +59,10 @@ public class EndpointsGetClientLib extends EndpointsMojo {
           }
         });
         for (File source : files) {
-            getLog().info("You can move the new library in a user directory: "+
-                    source.getAbsolutePath());
+          File target = new File(project.getBasedir(), source.getName());
+          target.delete();
+          Files.move(source, target);
+          getLog().info("Endpoint library available at:"+target.getAbsolutePath());
         }
       }
     } catch (Exception e) {

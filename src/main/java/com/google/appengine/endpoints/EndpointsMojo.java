@@ -67,7 +67,7 @@ public abstract class EndpointsMojo extends AbstractMojo {
   /**
    * The directory for the generated api-file.
    *
-   * @parameter expression="${outputDirectory}" default-value="${basedir}/src/main/webapp/WEB-INF"
+   * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/${project.build.finalName}/WEB-INF"
    */
   protected String outputDirectory;
   /**
