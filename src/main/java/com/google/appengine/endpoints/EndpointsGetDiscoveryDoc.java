@@ -11,7 +11,6 @@ import org.apache.maven.plugin.MojoFailureException;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,15 +26,14 @@ public class EndpointsGetDiscoveryDoc extends EndpointsMojo {
   protected ArrayList<String> collectParameters(String command) {
     ArrayList<String> arguments = new ArrayList<String>();
     arguments.add(command);
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
-    arguments.add("-w");
-    arguments.add(appDir);
-    handleClassPath(arguments, appDir);
+    handleClassPath(arguments);
     if (outputDirectory != null && !outputDirectory.isEmpty()) {
       arguments.add("-o");
-      arguments.add(outputDirectory);
+      arguments.add(outputDirectory + "/WEB-INF");
+      new File(outputDirectory).mkdirs();
     }
+    arguments.add("-w");
+    arguments.add(outputDirectory);
     return arguments;
   }
 
@@ -43,23 +41,14 @@ public class EndpointsGetDiscoveryDoc extends EndpointsMojo {
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
     getLog().info("Google App Engine Java SDK - Generate endpoints api config...");
-    if (serviceClassNames == null || serviceClassNames.isEmpty()) {
-      throw new MojoExecutionException(
-          "\n<serviceClassNames>Your Endpoints classes</serviceClassNames>"
-              + " needs to be defined in the <configuration> section"
-              + " of the app engine maven plugin.\n");
+    List<String> classNames = getAPIServicesClasses();
+    if (classNames.isEmpty()) {
+      getLog().info("No Endpoints classes detected.");
+      return;
     }
-    List<String> classNames = Arrays.asList(serviceClassNames.split(","));
-    try {
-      executeEndpointsCommand("gen-api-config",
-          classNames.toArray(new String[classNames.size()]));
-    } catch (Exception e) {
-      getLog().error(e);
-      throw new MojoExecutionException(
-          "Error while generating Google App Engine endpoints api config:", e);
-    }
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-    File webInf = new File(appDir + "/WEB-INF");
+    executeEndpointsCommand("gen-api-config",
+            classNames.toArray(new String[classNames.size()]));
+    File webInf = new File(outputDirectory + "/WEB-INF");
     if (webInf.exists() && webInf.isDirectory()) {
       File[] files = webInf.listFiles(new FilenameFilter() {
         @Override
@@ -76,9 +65,9 @@ public class EndpointsGetDiscoveryDoc extends EndpointsMojo {
   }
 
   private void genDiscoveryDoc(String format, String apiConfigFile)
-      throws MojoExecutionException, MojoFailureException {
+          throws MojoExecutionException, MojoFailureException {
     getLog().info("Google App Engine Java SDK - Generate endpoints " + format
-        + " discovery doc for apiConfigFile=");
+            + " discovery doc for apiConfigFile=");
     try {
 
       ArrayList<String> arguments = new ArrayList<String>();
@@ -88,14 +77,14 @@ public class EndpointsGetDiscoveryDoc extends EndpointsMojo {
 
       if (outputDirectory != null && !outputDirectory.isEmpty()) {
         arguments.add("-o");
-        arguments.add(outputDirectory);
+        arguments.add(outputDirectory + "/WEB-INF");
       }
       arguments.add(apiConfigFile);
       EndpointsTool.main(arguments.toArray(new String[arguments.size()]));
     } catch (Exception e) {
       getLog().error(e);
       throw new MojoExecutionException(
-          "Error while generating Google App Engine endpoint discovery doc", e);
+              "Error while generating Google App Engine endpoint discovery doc", e);
     }
     getLog().info("Endpoint discovery doc generation done.");
 

@@ -4,6 +4,9 @@
 package com.google.appengine.endpoints;
 
 import com.google.api.server.spi.tools.EndpointsTool;
+import com.google.common.base.Joiner;
+import com.jcabi.aether.Classpath;
+import java.io.File;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -11,10 +14,8 @@ import org.apache.maven.project.MavenProject;
 import org.sonatype.aether.RepositorySystem;
 import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.repository.RemoteRepository;
-
-import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -57,50 +58,37 @@ public abstract class EndpointsMojo extends AbstractMojo {
    * @required
    * @readonly
    */
-  protected MavenProject project;
-  /**
+  protected MavenProject project;    
+    /**
    * The classpath of the service-classes.
    *
-   * @parameter expression="${classPath}" default-value=""
+   * @parameter expression="${classPath}" default-value="${project.build.directory}/classes"
    */
   protected String classPath;
   /**
    * The directory for the generated api-file.
    *
-   * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/${project.build.finalName}/WEB-INF"
+   * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/generated-sources/appengine-endpoints"
    */
-  protected String outputDirectory;
-  /**
-   * The full qualified names of the service endpoints classes( comma separated).
+  protected String outputDirectory; 
+   /**
+   * The source directory containing the web.xml file.
    *
-   * @parameter
-   */
-  protected String serviceClassNames;
+   * @parameter expression="${warSourceDirectory}" default-value="${basedir}/src/main/webapp/WEB-INF/web.xml"
+   */ 
+  private String webXmlSourcePath;
 
-  protected void handleClassPath(ArrayList<String> arguments, String appDir) {
+  protected void handleClassPath(ArrayList<String> arguments) {
+    Collection<File> jars = new Classpath(project,
+            repoSession.getLocalRepository().getBasedir(),
+            "compile");
+    String cp = Joiner.on(System.getProperty("path.separator")).join(jars);
     arguments.add("-cp");
-    if (classPath != null && !classPath.isEmpty()) {
-      arguments.add(classPath);
-    } else {
-      File libArea = new File(appDir + "/WEB-INF/lib");
-      String entirePath = appDir + "/WEB-INF/classes:";
-      if (libArea.exists() && libArea.isDirectory()) {
-        File[] files = libArea.listFiles(new FilenameFilter() {
-          @Override
-          public boolean accept(File dir, String name) {
-            return name.endsWith("jar");
-          }
-        });
-        for (File f : files) {
-          entirePath = entirePath + File.pathSeparator + f.getAbsolutePath();
-        }
-      }
-      arguments.add(entirePath);
-    }
+    arguments.add(classPath + System.getProperty("path.separator") + cp);
   }
-
+  
   abstract protected ArrayList<String> collectParameters(String command);
-
+ 
   protected void executeEndpointsCommand(String action, String[] lastParam)
       throws MojoExecutionException {
     ArrayList<String> arguments = collectParameters(action);
@@ -117,5 +105,10 @@ public abstract class EndpointsMojo extends AbstractMojo {
       throw new MojoExecutionException("Error executing endpoints command="
           + arguments, ex);
     }
+  }
+  
+  protected List<String> getAPIServicesClasses() {
+    return new WebXmlProcessing(getLog(), webXmlSourcePath,
+            outputDirectory, project).getAPIServicesClasses();
   }
 }
