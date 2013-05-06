@@ -56,11 +56,11 @@ public class WebXmlProcessing {
 
   public List<String> getAPIServicesClasses() {
     ApiReporter reporter = new ApiReporter();
-    String targetDir = project.getBuild().getDirectory();
+    String targetDir = project.getBuild().getOutputDirectory();
 
     final AnnotationDetector cf = new AnnotationDetector(reporter);
     try {
-      cf.detect(new File(targetDir + "/classes"));
+      cf.detect(new File(targetDir));
     } catch (IOException ex) {
       getLog().info(ex);
     }
