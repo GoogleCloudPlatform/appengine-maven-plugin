@@ -67,7 +67,7 @@ public class EndpointsGetDiscoveryDoc extends EndpointsMojo {
   private void genDiscoveryDoc(String format, String apiConfigFile)
           throws MojoExecutionException, MojoFailureException {
     getLog().info("Google App Engine Java SDK - Generate endpoints " + format
-            + " discovery doc for apiConfigFile=");
+            + " discovery doc for apiConfigFile=" + apiConfigFile);
     try {
 
       ArrayList<String> arguments = new ArrayList<String>();
