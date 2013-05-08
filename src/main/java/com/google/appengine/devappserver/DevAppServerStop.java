@@ -7,7 +7,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
- * Starts the App Engine development server and does not wait.
+ * Stops the App Engine development server.
  *
  * @author Matt Stephenson <mattstep@google.com>
  * @goal devserver_stop
