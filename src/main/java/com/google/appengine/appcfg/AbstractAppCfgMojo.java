@@ -1,8 +1,9 @@
 /**
  * Copyright 2012 Google Inc. All Rights Reserved.
  */
-package com.google.appengine;
+package com.google.appengine.appcfg;
 
+import com.google.appengine.SdkResolver;
 import com.google.appengine.tools.admin.AppCfg;
 
 import org.apache.maven.plugin.AbstractMojo;

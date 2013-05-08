@@ -3,8 +3,6 @@
  */
 package com.google.appengine.appcfg;
 
-import com.google.appengine.AbstractAppCfgMojo;
-
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
