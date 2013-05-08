@@ -25,8 +25,6 @@ public class DevAppServerAsyncStart extends AbstractDevAppServerMojo {
     getLog().info("Google App Engine Java SDK - Starting the Development Server");
     getLog().info("");
 
-    getLog().info("Retrieving Google App Engine Java SDK from Maven");
-
     String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
 
     File appDirFile = new File(appDir);

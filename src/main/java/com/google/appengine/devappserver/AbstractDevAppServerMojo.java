@@ -110,6 +110,8 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
 
   protected ArrayList<String> getDevAppServerCommand(String appDir) throws MojoExecutionException {
 
+    getLog().info("Retrieving Google App Engine Java SDK from Maven");
+
     File sdkBaseDir = SdkResolver.getSdk(project, repoSystem, repoSession, pluginRepos, projectRepos);
 
     String javaExecutable = joinOnFileSeparator(System.getProperty("java.home"), "bin", "java");
