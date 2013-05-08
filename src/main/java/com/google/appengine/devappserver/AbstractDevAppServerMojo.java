@@ -108,6 +108,13 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
    */
   protected List<String> jvmFlags;
 
+  /**
+   * Whether the system is currently offline.
+   *
+   * @parameter expression="${settings.offline}"
+   */
+  private boolean offline;
+
   protected ArrayList<String> getDevAppServerCommand(String appDir) throws MojoExecutionException {
 
     getLog().info("Retrieving Google App Engine Java SDK from Maven");
@@ -163,7 +170,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
       devAppServerCommand.add(String.valueOf(port));
     }
 
-    if(disableUpdateCheck) {
+    if(disableUpdateCheck || offline) {
       devAppServerCommand.add("--disable_update_check");
     }
 
@@ -175,7 +182,8 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
   protected void stopDevAppServer() throws MojoExecutionException {
     HttpURLConnection connection = null;
     try {
-      URL url = new URL("http", firstNonNull(address, "localhost"), firstNonNull(port, 8080), "/_ah/admin/quit");
+      Integer port = firstNonNull(this.port, 8080);
+      URL url = new URL("http", firstNonNull(address, "localhost"), port, "/_ah/admin/quit");
       connection = (HttpURLConnection) url.openConnection();
       connection.setDoOutput(true);
       connection.setDoInput(true);
