@@ -286,7 +286,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     }
 
     if (proxyHost != null && !proxyHost.isEmpty()) {
-      arguments.add("--proxy_host");
+      arguments.add("--proxy");
       arguments.add(proxyHost);
     }
 
