@@ -37,7 +37,6 @@ import static java.io.File.separator;
 public abstract class AbstractDevAppServerMojo extends AbstractMojo {
 
   protected static enum WaitDirective {
-    DO_NOT_WAIT,
     WAIT_SERVER_STARTED,
     WAIT_SERVER_STOPPED
   }
