@@ -19,6 +19,13 @@ import java.util.ArrayList;
  */
 public class DevAppServerAsyncStart extends AbstractDevAppServerMojo {
 
+  /**
+   * Wait the server to be started before returning.
+   *
+   * @parameter expression="${appengine.waitServerStarted}"
+   */
+  protected boolean waitServerStarted;
+
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
@@ -39,7 +46,7 @@ public class DevAppServerAsyncStart extends AbstractDevAppServerMojo {
 
     ArrayList<String> devAppServerCommand = getDevAppServerCommand(appDir);
 
-    startDevAppServer(appDirFile, devAppServerCommand, false);
+    startDevAppServer(appDirFile, devAppServerCommand, waitServerStarted ? WaitDirective.WAIT_SERVER_STARTED : WaitDirective.DO_NOT_WAIT);
   }
 
 }

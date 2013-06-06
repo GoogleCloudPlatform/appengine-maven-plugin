@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.CountDownLatch;
 
 import static com.google.appengine.repackaged.com.google.common.base.Objects.firstNonNull;
 import static java.io.File.separator;
@@ -34,6 +35,12 @@ import static java.io.File.separator;
  * @author Matt Stephenson <mattstep@google.com>
  */
 public abstract class AbstractDevAppServerMojo extends AbstractMojo {
+
+  protected static enum WaitDirective {
+    DO_NOT_WAIT,
+    WAIT_SERVER_STARTED,
+    WAIT_SERVER_STOPPED
+  }
 
   /**
    * The entry point to Aether, i.e. the component doing all the work.
@@ -208,13 +215,13 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     } catch (MalformedURLException e) {
       throw new MojoExecutionException("URL malformed attempting to stop the devserver : " + e.getMessage());
     } catch (IOException e) {
-      getLog().debug("Was not able to contact the devappserver to shut it down.  Most likely this is due to it simply not running anymore. " + e.getMessage());
+      getLog().debug("Was not able to contact the devappserver to shut it down.  Most likely this is due to it simply not running anymore. ", e);
     } catch (InterruptedException e) {
       Throwables.propagate(e);
     }
   }
 
-  protected void startDevAppServer(File appDirFile, ArrayList<String> devAppServerCommand, boolean waitFor) throws MojoExecutionException {
+  protected void startDevAppServer(File appDirFile, ArrayList<String> devAppServerCommand, WaitDirective waitDirective) throws MojoExecutionException {
     getLog().info("Running " + Joiner.on(" ").join(devAppServerCommand));
 
     Thread stdOutThread = null;
@@ -232,14 +239,25 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
 
       final Process devServerProcess = processBuilder.start();
 
+      final CountDownLatch waitStartedLatch = new CountDownLatch(1);
+
       final Scanner stdOut = new Scanner(devServerProcess.getInputStream());
       stdOutThread = new Thread("standard-out-redirection-devappserver") {
         public void run() {
-          while (stdOut.hasNextLine() && !Thread.interrupted()) {
-            getLog().info(stdOut.nextLine());
+          try {
+            while(stdOut.hasNextLine() && !Thread.interrupted()) {
+              String line = stdOut.nextLine();
+              getLog().info(line);
+              if(line.contains("Dev App Server is now running")) {
+                waitStartedLatch.countDown();
+              }
+            }
+          } finally {
+            waitStartedLatch.countDown();
           }
         }
       };
+      stdOutThread.setDaemon(true);
       stdOutThread.start();
 
       final Scanner stdErr = new Scanner(devServerProcess.getErrorStream());
@@ -250,9 +268,10 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
           }
         }
       };
+      stdErrThread.setDaemon(true);
       stdErrThread.start();
 
-      if(waitFor) {
+      if(waitDirective == WaitDirective.WAIT_SERVER_STOPPED) {
         Runtime.getRuntime().addShutdownHook(new Thread("destroy-devappserver") {
           @Override
           public void run() {
@@ -263,15 +282,13 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
         });
 
         devServerProcess.waitFor();
+      } else if(waitDirective == WaitDirective.WAIT_SERVER_STARTED) {
+        waitStartedLatch.await();
       }
 
     } catch (IOException e) {
       throw new MojoExecutionException("Could not start the dev app server", e);
     } catch (InterruptedException e) {
-
-    } finally {
-      stdOutThread.interrupt();
-      stdErrThread.interrupt();
     }
   }
 

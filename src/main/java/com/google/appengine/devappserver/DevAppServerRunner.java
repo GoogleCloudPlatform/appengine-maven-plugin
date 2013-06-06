@@ -39,7 +39,7 @@ public class DevAppServerRunner extends AbstractDevAppServerMojo {
 
     ArrayList<String> devAppServerCommand = getDevAppServerCommand(appDir);
 
-    startDevAppServer(appDirFile, devAppServerCommand, true);
+    startDevAppServer(appDirFile, devAppServerCommand, WaitDirective.WAIT_SERVER_STOPPED);
   }
 
 }
