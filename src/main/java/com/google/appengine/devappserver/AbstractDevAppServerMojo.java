@@ -114,6 +114,14 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
    * @parameter expression="${settings.offline}"
    */
   private boolean offline;
+  
+    /**
+   * The web app scan delay in seconds to check for app changes for app reload.
+   * A negative value will cancel the scan thread.
+   *
+   * @parameter expression="${appengine.fullScanSeconds}" default-value="5"
+   */
+  protected Integer fullScanSeconds;
 
   protected ArrayList<String> getDevAppServerCommand(String appDir) throws MojoExecutionException {
 
@@ -138,6 +146,10 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     String appengineDevJdkOverridesJar = new File(sdkBaseDir, joinOnFileSeparator("lib", "override", "appengine-dev-jdk-overrides.jar")).getAbsolutePath();
     devAppServerCommand.add("-Xbootclasspath/p:" + appengineDevJdkOverridesJar);
 
+    if(fullScanSeconds != null) {
+      devAppServerCommand.add("-Dappengine.fullscan.seconds="+fullScanSeconds);
+    }
+        
     // Setup the classpath to point to the tools jar
     String appengineToolsApiJar = new File(sdkBaseDir, joinOnFileSeparator("lib", "appengine-tools-api.jar")).getAbsolutePath();
     devAppServerCommand.add("-classpath");
