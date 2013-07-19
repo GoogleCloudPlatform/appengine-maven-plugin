@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <appengine.target.version>1.8.1</appengine.target.version>
+        <appengine.target.version>1.8.2</appengine.target.version>
         <datanucleus.version>3.2.0-m1</datanucleus.version>
     </properties>
 
@@ -129,15 +129,9 @@
             <version>3.0.1</version>
         </dependency>
         <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-aether</artifactId>
-            <version>0.7.17</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-	    <groupId>org.slf4j</groupId>
-	    <artifactId>slf4j-nop</artifactId>
-	    <version>1.7.5</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.5</version>
         </dependency>       
     </dependencies>
 

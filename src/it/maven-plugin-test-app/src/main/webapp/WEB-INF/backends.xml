@@ -1,4 +1,4 @@
 <backends>
-    <backend name="test">
+    <backend name="test-back">
     </backend>
 </backends>

@@ -4,87 +4,74 @@
 package com.google.appengine.endpoints;
 
 import com.google.api.server.spi.tools.EndpointsTool;
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.jcabi.aether.Classpath;
-import java.io.File;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.sonatype.aether.RepositorySystem;
-import org.sonatype.aether.RepositorySystemSession;
-import org.sonatype.aether.repository.RemoteRepository;
+
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
  * Runs the various endpoints tools commands.
  *
  * @author Ludovic Champenois ludo at google dot com
+ *
+ * @requiresDependencyResolution compile
  */
 public abstract class EndpointsMojo extends AbstractMojo {
 
-  /**
-   * The entry point to Aether, i.e. the component doing all the work.
-   *
-   * @component
-   */
-  protected RepositorySystem repoSystem;
-  /**
-   * The current repository/network configuration of Maven.
-   *
-   * @parameter default-value="${repositorySystemSession}"
-   * @readonly
-   */
-  protected RepositorySystemSession repoSession;
-  /**
-   * The project's remote repositories to use for the resolution of project dependencies.
-   *
-   * @parameter default-value="${project.remoteProjectRepositories}"
-   * @readonly
-   */
-  protected List<RemoteRepository> projectRepos;
-  /**
-   * The project's remote repositories to use for the resolution of plugins and their
-   * dependencies.
-   *
-   * @parameter default-value="${project.remotePluginRepositories}"
-   * @readonly
-   */
-  protected List<RemoteRepository> pluginRepos;
   /**
    * @parameter expression="${project}"
    * @required
    * @readonly
    */
-  protected MavenProject project;    
-    /**
+  protected MavenProject project;
+
+  /**
    * The classpath of the service-classes.
    *
-   * @parameter expression="${classPath}" default-value="${project.build.directory}/classes"
+   * @parameter expression="${classes}" default-value="${project.build.directory}/classes"
    */
-  protected String classPath;
+  protected String classes;
+
   /**
    * The directory for the generated api-file.
    *
    * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/generated-sources/appengine-endpoints"
    */
-  protected String outputDirectory; 
-   /**
+  protected String outputDirectory;
+
+  /**
    * The source directory containing the web.xml file.
    *
    * @parameter expression="${warSourceDirectory}" default-value="${basedir}/src/main/webapp/WEB-INF/web.xml"
-   */ 
+   */
   private String webXmlSourcePath;
 
   protected void handleClassPath(ArrayList<String> arguments) {
-    Collection<File> jars = new Classpath(project,
-            repoSession.getLocalRepository().getBasedir(),
-            "compile");
+    Iterable<File> jars = Iterables.transform(
+            Iterables.filter(project.getArtifacts(), new Predicate<Artifact>() {
+              @Override
+              public boolean apply(Artifact artifact) {
+                return artifact.getScope().equals("compile");
+              }
+            }), new Function<Artifact, File>() {
+      @Override
+      public File apply(Artifact artifact) {
+        return artifact.getFile();
+      }
+    });
+
     String cp = Joiner.on(System.getProperty("path.separator")).join(jars);
     arguments.add("-cp");
-    arguments.add(classPath + System.getProperty("path.separator") + cp);
+    arguments.add(classes + System.getProperty("path.separator") + cp);
   }
   
   abstract protected ArrayList<String> collectParameters(String command);
