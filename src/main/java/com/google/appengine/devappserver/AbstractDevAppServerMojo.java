@@ -27,6 +27,8 @@ import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
 
 import static com.google.appengine.repackaged.com.google.common.base.Objects.firstNonNull;
+import com.google.apphosting.utils.config.AppEngineWebXml;
+import com.google.apphosting.utils.config.AppEngineWebXmlReader;
 import static java.io.File.separator;
 
 /**
@@ -144,15 +146,19 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
       devAppServerCommand.add("-XstartOnFirstThread");
     }
 
-    // Add in the appengine agent
-    String appengineAgentJar = new File(sdkBaseDir, joinOnFileSeparator("lib", "agent", "appengine-agent.jar")).getAbsolutePath();
-    devAppServerCommand.add("-javaagent:" + appengineAgentJar);
-
+    boolean isVM = isVMRuntime();
+    if (!isVM) {
+      // Add in the appengine agent
+      String appengineAgentJar = new File(sdkBaseDir, joinOnFileSeparator("lib", "agent", "appengine-agent.jar")).getAbsolutePath();
+      devAppServerCommand.add("-javaagent:" + appengineAgentJar);
+    } else {
+       devAppServerCommand.add("-D--enable_all_permissions=true");
+    }
     // Setup the overrides jar for jdk classes
     String appengineDevJdkOverridesJar = new File(sdkBaseDir, joinOnFileSeparator("lib", "override", "appengine-dev-jdk-overrides.jar")).getAbsolutePath();
     devAppServerCommand.add("-Xbootclasspath/p:" + appengineDevJdkOverridesJar);
 
-    if(fullScanSeconds != null) {
+    if (fullScanSeconds != null) {
       devAppServerCommand.add("-Dappengine.fullscan.seconds="+fullScanSeconds);
     }
         
@@ -171,6 +177,10 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
 
     // Enable the shutdown hook
     devAppServerCommand.add("--allow_remote_shutdown");
+    
+    if (isVM) {
+       devAppServerCommand.add("--no_java_agent");
+    }
 
     // Add in additional options for starting the DevAppServer
     if(server != null) {
@@ -293,5 +303,17 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
 
   private String joinOnFileSeparator(String... pathComponents) {
     return Joiner.on(separator).join(ImmutableList.copyOf(pathComponents));
+  }
+  
+  private boolean isVMRuntime() {
+    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
+    File f = new File(appDir, "WEB-INF/appengine-web.xml");
+    if (!f.exists()) { // EAR project possibly.
+      return false;
+    }
+
+    AppEngineWebXmlReader aewebReader = new AppEngineWebXmlReader(appDir);
+    AppEngineWebXml appEngineWebXml = aewebReader.readAppEngineWebXml();
+    return appEngineWebXml.getUseVm();
   }
 }
