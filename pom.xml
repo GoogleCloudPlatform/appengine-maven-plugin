@@ -21,7 +21,7 @@
     </properties>
 
     <prerequisites>
-        <maven>3.0</maven>
+        <maven>3.1.0</maven>
     </prerequisites>
 
     <scm>
@@ -76,27 +76,27 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>3.0.3</version>
+            <version>3.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
-            <version>3.0.3</version>
+            <version>3.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-model</artifactId>
-            <version>3.0.3</version>
+            <version>3.1.0</version>
         </dependency>
         <dependency>
-            <groupId>org.sonatype.aether</groupId>
+            <groupId>org.eclipse.aether</groupId>
             <artifactId>aether-api</artifactId>
-            <version>1.8</version>
+            <version>0.9.0.M2</version>
         </dependency>
         <dependency>
-            <groupId>org.sonatype.aether</groupId>
+            <groupId>org.eclipse.aether</groupId>
             <artifactId>aether-util</artifactId>
-            <version>1.13.1</version>
+            <version>0.9.0.M2</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -158,12 +158,6 @@
                         <goal>appengine:vacuum_indexes</goal>
                         <goal>appengine:set_default_version</goal>
                         <goal>appengine:rollback</goal>
-                        <goal>appengine:backends_update</goal>
-                        <goal>appengine:backends_configure</goal>
-                        <goal>appengine:backends_stop</goal>
-                        <goal>appengine:backends_start</goal>
-                        <goal>appengine:backends_rollback</goal>
-                        <goal>appengine:backends_delete</goal>
                         <goal>appengine:endpoints_get_client_lib</goal>
                         <goal>appengine:endpoints_get_discovery_doc</goal>
                     </goals>
