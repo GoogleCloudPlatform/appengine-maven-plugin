@@ -71,7 +71,9 @@ public abstract class EndpointsMojo extends AbstractMojo {
 
     String cp = Joiner.on(System.getProperty("path.separator")).join(jars);
     arguments.add("-cp");
-    arguments.add(classes + System.getProperty("path.separator") + cp);
+    arguments.add(project.getBuild().getOutputDirectory() +
+      System.getProperty("path.separator") + classes +
+      System.getProperty("path.separator") + cp);
   }
   
   abstract protected ArrayList<String> collectParameters(String command);
