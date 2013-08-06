@@ -61,7 +61,6 @@ public class EndpointsGetDiscoveryDoc extends EndpointsMojo {
         genDiscoveryDoc("rpc", f.getAbsolutePath());
       }
     }
-    getLog().info("Endpoint client lib generation done.");
   }
 
   private void genDiscoveryDoc(String format, String apiConfigFile)
