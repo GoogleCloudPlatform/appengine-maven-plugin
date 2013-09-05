@@ -3,18 +3,15 @@
  */
 package com.google.appengine.endpoints;
 
-import com.google.api.server.spi.tools.EndpointsTool;
-
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * App Engine endpoints gen-api-config and gen-discovery-doc combined commands.
+ * App Engine endpoints get-discovery-doc command.
  *
  * @author Ludovic Champenois ludo at google dot com
  * @goal endpoints_get_discovery_doc
@@ -30,6 +27,8 @@ public class EndpointsGetDiscoveryDoc extends EndpointsMojo {
     if (outputDirectory != null && !outputDirectory.isEmpty()) {
       arguments.add("-o");
       arguments.add(outputDirectory + "/WEB-INF");
+      arguments.add("-O");
+      arguments.add(outputDirectory + "/WEB-INF");
       new File(outputDirectory).mkdirs();
     }
     arguments.add("-w");
@@ -40,52 +39,16 @@ public class EndpointsGetDiscoveryDoc extends EndpointsMojo {
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
-    getLog().info("Google App Engine Java SDK - Generate endpoints api config...");
+    getLog().info("Google App Engine Java SDK - get endpoints discovery doc...");
     List<String> classNames = getAPIServicesClasses();
     if (classNames.isEmpty()) {
       getLog().info("No Endpoints classes detected.");
       return;
     }
-    executeEndpointsCommand("gen-api-config",
+    executeEndpointsCommand("get-discovery-doc",
             classNames.toArray(new String[classNames.size()]));
-    File webInf = new File(outputDirectory + "/WEB-INF");
-    if (webInf.exists() && webInf.isDirectory()) {
-      File[] files = webInf.listFiles(new FilenameFilter() {
-        @Override
-        public boolean accept(File dir, String name) {
-          return name.endsWith("api");
-        }
-      });
-      for (File f : files) {
-        genDiscoveryDoc("rest", f.getAbsolutePath());
-        genDiscoveryDoc("rpc", f.getAbsolutePath());
-      }
-    }
-  }
 
-  private void genDiscoveryDoc(String format, String apiConfigFile)
-          throws MojoExecutionException, MojoFailureException {
-    getLog().info("Google App Engine Java SDK - Generate endpoints " + format
-            + " discovery doc for apiConfigFile=" + apiConfigFile);
-    try {
-
-      ArrayList<String> arguments = new ArrayList<String>();
-      arguments.add("gen-discovery-doc");
-      arguments.add("-f");
-      arguments.add(format);
-
-      if (outputDirectory != null && !outputDirectory.isEmpty()) {
-        arguments.add("-o");
-        arguments.add(outputDirectory + "/WEB-INF");
-      }
-      arguments.add(apiConfigFile);
-      EndpointsTool.main(arguments.toArray(new String[arguments.size()]));
-    } catch (Exception e) {
-      getLog().error(e);
-      throw new MojoExecutionException(
-              "Error while generating Google App Engine endpoint discovery doc", e);
-    }
-    getLog().info("Endpoint discovery doc generation done.");
+    getLog().info("Endpoints discovery doc generation done.");
 
   }
 }
