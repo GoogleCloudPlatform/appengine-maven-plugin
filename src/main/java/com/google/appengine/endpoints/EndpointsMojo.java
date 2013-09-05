@@ -16,6 +16,7 @@ import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,11 +50,20 @@ public abstract class EndpointsMojo extends AbstractMojo {
   protected String outputDirectory;
 
   /**
-   * The source directory containing the web.xml file.
+   * The source location of the web.xml file.
    *
    * @parameter expression="${warSourceDirectory}" default-value="${basedir}/src/main/webapp/WEB-INF/web.xml"
    */
   private String webXmlSourcePath;
+  
+  /**
+   * The full qualified names of the service endpoints classes(comma separated).
+   * If not specified, the maven plugin will calculate the list based on
+   * Annotation scanning of @Api classes.
+   *
+   * @parameter expression="${serviceClassNames}"
+   */
+  protected String serviceClassNames;
 
   protected void handleClassPath(ArrayList<String> arguments) {
     Iterable<File> jars = Iterables.transform(
@@ -97,7 +107,10 @@ public abstract class EndpointsMojo extends AbstractMojo {
   }
   
   protected List<String> getAPIServicesClasses() {
-    return new WebXmlProcessing(getLog(), webXmlSourcePath,
-            outputDirectory, project).getAPIServicesClasses();
+    if (serviceClassNames == null) {
+      return new WebXmlProcessing(getLog(), webXmlSourcePath,
+              outputDirectory, project).getAPIServicesClasses();
+    }
+    return Arrays.asList(serviceClassNames.split(","));
   }
 }
