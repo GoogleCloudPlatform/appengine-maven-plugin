@@ -55,6 +55,7 @@ public class SdkResolver {
     });
 
     String version = artifact.getVersion();
+    version = version.replace("-maven3.0",""); //Only for the maven3.0 branch, so we ignore this when resolving other artifacts.
 
     if(version.endsWith("-SNAPSHOT")) {
       String newestVersion = determineNewestVersion(repoSystem, repoSession, repos);
