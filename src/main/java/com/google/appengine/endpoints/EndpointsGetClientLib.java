@@ -43,8 +43,6 @@ public class EndpointsGetClientLib extends EndpointsMojo {
     if (outputDirectory != null && !outputDirectory.isEmpty()) {
       arguments.add("-o");
       arguments.add(outputDirectory + "/WEB-INF");
-      arguments.add("-O");
-      arguments.add(outputDirectory + "/WEB-INF");
       new File(outputDirectory).mkdirs();
     }
     arguments.add("-w");
@@ -68,7 +66,7 @@ public class EndpointsGetClientLib extends EndpointsMojo {
     }
 
     try {
-      executeEndpointsCommand("get-client-lib",
+      executeEndpointsCommand("get-client-lib", new String[0],
               classNames.toArray(new String[classNames.size()]));
       File webInf = new File(outputDirectory + "/WEB-INF");
       if (webInf.exists() && webInf.isDirectory()) {

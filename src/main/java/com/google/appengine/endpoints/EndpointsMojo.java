@@ -88,10 +88,14 @@ public abstract class EndpointsMojo extends AbstractMojo {
   
   abstract protected ArrayList<String> collectParameters(String command);
  
-  protected void executeEndpointsCommand(String action, String[] lastParam)
+  protected void executeEndpointsCommand(String action, String extraParams [],
+          String[] lastParam)
       throws MojoExecutionException {
     ArrayList<String> arguments = collectParameters(action);
 
+    for (String param : extraParams) {
+      arguments.add(param);
+    }
     for (String param : lastParam) {
       arguments.add(param);
       getLog().info("Using Class Name:" + param);

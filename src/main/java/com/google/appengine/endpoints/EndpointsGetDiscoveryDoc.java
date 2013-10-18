@@ -27,8 +27,6 @@ public class EndpointsGetDiscoveryDoc extends EndpointsMojo {
     if (outputDirectory != null && !outputDirectory.isEmpty()) {
       arguments.add("-o");
       arguments.add(outputDirectory + "/WEB-INF");
-      arguments.add("-O");
-      arguments.add(outputDirectory + "/WEB-INF");
       new File(outputDirectory).mkdirs();
     }
     arguments.add("-w");
@@ -45,9 +43,12 @@ public class EndpointsGetDiscoveryDoc extends EndpointsMojo {
       getLog().info("No Endpoints classes detected.");
       return;
     }
-    executeEndpointsCommand("get-discovery-doc",
-            classNames.toArray(new String[classNames.size()]));
-
+    String rest[] = {"-f", "rest"};
+    executeEndpointsCommand("get-discovery-doc", rest,
+                    classNames.toArray(new String[classNames.size()]));
+    String rpc[] = {"-f", "rpc"};
+    executeEndpointsCommand("get-discovery-doc", rpc,
+                    classNames.toArray(new String[classNames.size()]));
     getLog().info("Endpoints discovery doc generation done.");
 
   }
