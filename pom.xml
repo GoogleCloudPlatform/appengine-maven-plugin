@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <appengine.target.version>1.8.4</appengine.target.version>
+        <appengine.target.version>1.8.6</appengine.target.version>
         <datanucleus.version>3.2.0-m1</datanucleus.version>
     </properties>
 
@@ -158,8 +158,6 @@
                         <goal>appengine:vacuum_indexes</goal>
                         <goal>appengine:set_default_version</goal>
                         <goal>appengine:rollback</goal>
-                        <goal>appengine:endpoints_get_client_lib</goal>
-                        <goal>appengine:endpoints_get_discovery_doc</goal>
                     </goals>
                     <settingsFile>src/it/settings.xml</settingsFile>
                     <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
