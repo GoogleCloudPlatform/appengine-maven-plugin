@@ -135,12 +135,6 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    */
   protected boolean oauth2;
 
-  /**
-   * Use the App Engine Java 6 runtime for this app.
-   *
-   * @parameter expression="${appengine.useJava6}"
-   */
-  protected boolean useJava6;
 
   /**
    * Split large jar files (> 10M) into smaller fragments.
@@ -319,10 +313,6 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
 
     if (oauth2) {
       arguments.add("--oauth2");
-    }
-
-    if (useJava6) {
-      arguments.add("--use_java6");
     }
 
     if (enableJarSplitting) {
