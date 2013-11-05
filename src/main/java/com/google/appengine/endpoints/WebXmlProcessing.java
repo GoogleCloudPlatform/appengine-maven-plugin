@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -40,13 +41,17 @@ public class WebXmlProcessing {
   String webXmlSourcePath;
   String outputDirectory;
   MavenProject project;
+  String userSpecifiedServiceClassNames;
+
 
   public WebXmlProcessing(Log log, String webXmlSourcePath,
-          String outputDirectory, MavenProject project) {
+          String outputDirectory, MavenProject project,
+          String userSpecifiedServiceClassNames) {
     this.log = log;
     this.webXmlSourcePath = webXmlSourcePath;
     this.outputDirectory = outputDirectory;
     this.project = project;
+    this.userSpecifiedServiceClassNames = userSpecifiedServiceClassNames;
 
   }
 
@@ -55,16 +60,21 @@ public class WebXmlProcessing {
   }
 
   public List<String> getAPIServicesClasses() {
-    ApiReporter reporter = new ApiReporter();
-    String targetDir = project.getBuild().getOutputDirectory();
+    List<String> classes;
+    if (userSpecifiedServiceClassNames != null) {
+          classes = Arrays.asList(userSpecifiedServiceClassNames.split(","));
+    } else {
+          ApiReporter reporter = new ApiReporter();
+          String targetDir = project.getBuild().getOutputDirectory();
 
-    final AnnotationDetector cf = new AnnotationDetector(reporter);
-    try {
-      cf.detect(new File(targetDir));
-    } catch (IOException ex) {
-      getLog().info(ex);
+          final AnnotationDetector cf = new AnnotationDetector(reporter);
+          try {
+            cf.detect(new File(targetDir));
+          } catch (IOException ex) {
+            getLog().info(ex);
+          }
+          classes = reporter.getClasses();
     }
-    List<String> classes = reporter.getClasses();
     XmlUtil util = new XmlUtil();
     try {
       util.updateWebXml(classes, webXmlSourcePath);
@@ -359,7 +369,7 @@ public class WebXmlProcessing {
 
       saveRequired = updateSystemServiceServletParam(document,
               systemServiceServletNode, services);
-      String generatedWebInf = outputDirectory + "/WEB-INF";
+      String generatedWebInf = outputDirectory + "/WEB-INF";      
       new File(generatedWebInf).mkdirs();
       saveFile(document, generatedWebInf + "/web.xml");
       Files.copy(

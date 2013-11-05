@@ -43,7 +43,7 @@ public abstract class EndpointsMojo extends AbstractMojo {
   protected String classes;
 
   /**
-   * The directory for the generated api-file.
+   * The directory for the generated discovery file.
    *
    * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/generated-sources/appengine-endpoints"
    */
@@ -64,6 +64,13 @@ public abstract class EndpointsMojo extends AbstractMojo {
    * @parameter expression="${serviceClassNames}"
    */
   protected String serviceClassNames;
+  
+    /**
+   * The build system used for building the generated client project: maven or gradle.
+   *
+   * @parameter expression="${buildSystem}"  default-value="maven"
+   */
+  protected String buildSystem;
 
   protected void handleClassPath(ArrayList<String> arguments) {
     Iterable<File> jars = Iterables.transform(
@@ -111,10 +118,8 @@ public abstract class EndpointsMojo extends AbstractMojo {
   }
   
   protected List<String> getAPIServicesClasses() {
-    if (serviceClassNames == null) {
-      return new WebXmlProcessing(getLog(), webXmlSourcePath,
-              outputDirectory, project).getAPIServicesClasses();
-    }
-    return Arrays.asList(serviceClassNames.split(","));
+    return new WebXmlProcessing(getLog(), webXmlSourcePath,
+              outputDirectory, project,
+              serviceClassNames).getAPIServicesClasses();
   }
 }

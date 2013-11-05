@@ -52,6 +52,7 @@
                     </jvmFlags>
                     <port>8008</port>
                     <disableUpdateCheck>true</disableUpdateCheck>
+                    <buildSystem>maven</buildSystem>
                     <deleteJsps>true</deleteJsps>
                     <enableJarClasses>false</enableJarClasses> <!-- You don't need to do this along with archiveClasses below -->
                     <serviceClassNames>
@@ -62,6 +63,7 @@
                     <execution>
                         <goals>
                             <goal>endpoints_get_discovery_doc</goal>
+                            <goal>endpoints_get_client_lib</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -79,7 +81,6 @@
                       <!-- the list has a default value of ** -->
                       <includes>
                         <include>WEB-INF/*.discovery</include>
-                        <include>WEB-INF/*.api</include>
                       </includes>
                     </resource>
                   </webResources>

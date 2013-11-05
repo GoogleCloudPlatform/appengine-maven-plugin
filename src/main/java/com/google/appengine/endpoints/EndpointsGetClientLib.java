@@ -49,8 +49,10 @@ public class EndpointsGetClientLib extends EndpointsMojo {
     arguments.add(outputDirectory);
     arguments.add("-l");
     arguments.add("java");
-    arguments.add("-bs");
-    arguments.add("maven");
+    if (buildSystem != null && !buildSystem.isEmpty()) {
+      arguments.add("-bs");
+      arguments.add(buildSystem);
+    }
     return arguments;
   }
 
