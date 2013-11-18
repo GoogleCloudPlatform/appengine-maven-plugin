@@ -12,12 +12,19 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.maven.shared.invoker.DefaultInvocationRequest;
+import org.apache.maven.shared.invoker.DefaultInvoker;
+import org.apache.maven.shared.invoker.InvocationRequest;
+import org.apache.maven.shared.invoker.InvocationResult;
+import org.apache.maven.shared.invoker.Invoker;
+import org.apache.maven.shared.invoker.MavenInvocationException;
 
 /**
  * App Engine endpoints get-client-lib ... command.
@@ -81,24 +88,43 @@ public class EndpointsGetClientLib extends EndpointsMojo {
         File mavenProjectsDir = new File(clientLibsDirectory);
         mavenProjectsDir.mkdirs();
         for (File source : files) {
-          unjar(source, mavenProjectsDir);
+          File pomFile = unjarMavenProject(source, mavenProjectsDir);
+          if (pomFile != null) {
+            getLog().info("BUILDING Endpoints Client Library from: " + pomFile);
+            InvocationRequest request = new DefaultInvocationRequest();
+            request.setPomFile(pomFile);
+            request.setGoals(Collections.singletonList("install"));
+            Invoker invoker = new DefaultInvoker();
+            InvocationResult result = invoker.execute(request);
+            if (result.getExitCode() != 0) {
+              throw new IllegalStateException("Build failed.");
+            }
+            getLog().info("Endpoint get client lib generation and compilation done.");
+
+          }
         }
       }
     } catch (MojoExecutionException e) {
       getLog().error(e);
       throw new MojoExecutionException(
               "Error while generating Google App Engine endpoint get client lib", e);
+    } catch (MavenInvocationException ex) {
+      Logger.getLogger(EndpointsGetClientLib.class.getName()).log(Level.SEVERE, null, ex);
     }
-    getLog().info("Endpoint get client lib generation done. See the maven projects under:"+clientLibsDirectory);
   }
   
-  private void unjar(File jar, File destdir) {
+  /*
+  * Un-jar the jar file, and potentially, returns the pom.xml file if it exists 
+  * in the jar file.
+  */
+  private File unjarMavenProject(File jar, File destdir) {
+    File pomFile = null;
     JarFile jarfile;
     try {
       jarfile = new JarFile(jar);
     } catch (IOException ex) {
       Logger.getLogger(EndpointsGetClientLib.class.getName()).log(Level.SEVERE, null, ex);
-      return;
+      return pomFile;
     }
 
     Enumeration<JarEntry> enu = jarfile.entries();
@@ -107,6 +133,9 @@ public class EndpointsGetClientLib extends EndpointsMojo {
       try {
         JarEntry je = enu.nextElement();
         File fl = new File(destdir, je.getName());
+        if (fl.getName().equals("pom.xml")) {
+          pomFile = fl;
+        }
         if (!fl.exists()) {
           fl.getParentFile().mkdirs();
           fl = new java.io.File(destdir , je.getName());
@@ -129,5 +158,6 @@ public class EndpointsGetClientLib extends EndpointsMojo {
         }
       }
     }
+    return pomFile;
   }
 }
