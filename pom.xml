@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <appengine.target.version>1.8.7</appengine.target.version>
+        <appengine.target.version>1.8.8</appengine.target.version>
         <datanucleus.version>3.2.0-m1</datanucleus.version>
     </properties>
 
@@ -51,7 +51,7 @@
         </license>
     </licenses>
 
-    <repositories>              
+    <repositories>
         <repository>
             <id>sonatype-google-releases</id>
             <name>Sonatype Google Releases</name>
