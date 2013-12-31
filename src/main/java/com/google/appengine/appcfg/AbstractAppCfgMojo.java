@@ -229,6 +229,13 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * @readonly
    */
   protected MavenProject project;
+  
+  /**
+   * Instance id to for vm debug.
+   *
+   * @parameter expression="${appengine.instance}"
+   */
+  protected String instance;
 
   protected void executeAppCfgCommand(String action, String appDir)
       throws MojoExecutionException {
@@ -309,6 +316,11 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     if (version != null && !version.isEmpty()) {
       arguments.add("-V");
       arguments.add(version);
+    }
+    
+    if (instance != null && !instance.isEmpty()) {
+      arguments.add("-I");
+      arguments.add(instance);
     }
 
     if (oauth2) {
