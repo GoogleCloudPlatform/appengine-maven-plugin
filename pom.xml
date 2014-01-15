@@ -36,6 +36,12 @@
             <email>mattstep@google.com</email>
         </developer>
         <developer>
+            <id>rrch</id>
+            <name>Roberto Chinnici</name>
+            <organization>Google</organization>
+            <email>rrch at google dot com</email>
+        </developer>
+        <developer>
             <id>ludo</id>
             <name>Ludovic Champenois</name>
             <organization>Google</organization>
