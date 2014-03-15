@@ -309,7 +309,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
     File f = new File(appDir, "WEB-INF/appengine-web.xml");
     if (!f.exists()) { // EAR project possibly.
-      return false;
+      return true;
     }
 
     AppEngineWebXmlReader aewebReader = new AppEngineWebXmlReader(appDir);
