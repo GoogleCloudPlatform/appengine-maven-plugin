@@ -18,7 +18,7 @@ public class UpdateDispatch extends AbstractAppCfgMojo {
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
-    getLog().info("Google App Engine Java SDK - Updating Application Dipatch");
+    getLog().info("Google App Engine Java SDK - Updating Application Dispatch");
     getLog().info("");
 
     getLog().info("Retrieving Google App Engine Java SDK from Maven");
@@ -27,7 +27,7 @@ public class UpdateDispatch extends AbstractAppCfgMojo {
 
     String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
 
-    getLog().info("Updating Dispathc for Google App Engine Application");
+    getLog().info("Updating Dispatch for Google App Engine Application");
 
     executeAppCfgCommand("update_dispatch", appDir);
   }
