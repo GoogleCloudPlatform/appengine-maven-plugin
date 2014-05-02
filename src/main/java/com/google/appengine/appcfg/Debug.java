@@ -31,15 +31,4 @@ public class Debug extends AbstractAppCfgMojo {
 
     executeAppCfgCommand("debug", appDir);
   }
-
-  @Override
-  protected ArrayList<String> collectParameters() {
-    ArrayList<String> arguments = super.collectParameters();
-
-    if (instance != null && !instance.isEmpty()) {
-      arguments.add("-I");
-      arguments.add(instance);
-    }
-    return arguments;
-  }
 }
