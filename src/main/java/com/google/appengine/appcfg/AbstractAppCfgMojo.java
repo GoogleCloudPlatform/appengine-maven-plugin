@@ -268,7 +268,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     }
   }
 
-  private ArrayList<String> collectParameters() {
+  protected ArrayList<String> collectParameters() {
     ArrayList<String> arguments = new ArrayList<String>();
 
     if (server != null && !server.isEmpty()) {
@@ -318,11 +318,6 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
       arguments.add(version);
     }
     
-    if (instance != null && !instance.isEmpty()) {
-      arguments.add("-I");
-      arguments.add(instance);
-    }
-
     if (oauth2) {
       arguments.add("--oauth2");
     }

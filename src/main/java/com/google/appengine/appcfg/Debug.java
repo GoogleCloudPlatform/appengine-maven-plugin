@@ -3,6 +3,7 @@
  */
 package com.google.appengine.appcfg;
 
+import java.util.ArrayList;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
@@ -31,5 +32,14 @@ public class Debug extends AbstractAppCfgMojo {
     executeAppCfgCommand("debug", appDir);
   }
 
-}
+  @Override
+  protected ArrayList<String> collectParameters() {
+    ArrayList<String> arguments = super.collectParameters();
 
+    if (instance != null && !instance.isEmpty()) {
+      arguments.add("-I");
+      arguments.add(instance);
+    }
+    return arguments;
+  }
+}
