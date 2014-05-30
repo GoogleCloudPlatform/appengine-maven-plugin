@@ -58,7 +58,7 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
   protected List<RemoteRepository> pluginRepos;
 
   /**
-   * The server to use to determine the latest SDK version.
+   * server The App Engine server to connect to.
    *
    * @parameter expression="${appengine.server}"
    */
@@ -98,7 +98,7 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
    * @parameter expression="${appengine.gcloud_app_server}"
    */
   protected String gcloud_app_server;
- 
+  
    /**
    * force Force deploying, overriding any previous in-progress deployments to this version.
    *
@@ -197,7 +197,9 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
     }
     if (gcloud_app_server != null) {
       devAppServerCommand.add("--server=" + gcloud_app_server);
-    }    
+    } else if (server != null) {
+      devAppServerCommand.add("--server=" + server);
+    }  
     if (gcloud_app_force) {
       devAppServerCommand.add("--force" );
     } 
