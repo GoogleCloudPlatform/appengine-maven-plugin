@@ -102,6 +102,8 @@ public class GCloudAppRun extends AbstractGcloudMojo {
   protected String gcloud_directory;
 
   /**
+   * Additional directories containing App Engine modules to be run.
+   * 
    * @parameter expression="${appengine.gcloud_modules}"
    */
   private List<String> gcloud_modules;
@@ -313,11 +315,11 @@ public class GCloudAppRun extends AbstractGcloudMojo {
 //   */
 //  protected String gcloud_app_default_gcs_bucket_name;
   /**
-   * docker_daemon_url
+   * docker_host
    *
-   * @parameter expression="${appengine.gcloud_app_docker_daemon_url}"
+   * @parameter expression="${appengine.gcloud_app_docker_host}"
    */
-  protected String gcloud_app_docker_daemon_url;
+  protected String gcloud_app_docker_host;
 
   /**
    * enable_cloud_datastore
@@ -604,8 +606,8 @@ public class GCloudAppRun extends AbstractGcloudMojo {
 
     }
     // Add in additional options for starting the DevAppServer
-    if (gcloud_app_docker_daemon_url != null) {
-      devAppServerCommand.add("--docker-daemon-url=" + gcloud_app_docker_daemon_url);
+    if (gcloud_app_docker_host != null) {
+      devAppServerCommand.add("--docker-host=" + gcloud_app_docker_host);
     }
 
     if (gcloud_app_api_host != null) {

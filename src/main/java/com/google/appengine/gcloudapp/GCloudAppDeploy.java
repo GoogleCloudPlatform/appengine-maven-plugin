@@ -72,19 +72,39 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
   protected String gcloud_directory;
 
   /**
-   * docker_daemon_url
+   * docker_host
    *
-   * @parameter expression="${appengine.gcloud_app_docker_daemon_url}"
+   * @parameter expression="${appengine.gcloud_app_docker_host}"
    */
-  protected String gcloud_app_docker_daemon_url;
+  protected String gcloud_app_docker_host;
 
   /**
-   * enable_cloud_datastore
+   * version The version of the app that will be created or replaced by this deployment.
    *
-   * @parameter expression="${appengine.gcloud_app_enable_cloud_datastore}"
+   * @parameter expression="${appengine.gcloud_app_version}"
    */
-  protected boolean gcloud_app_enable_cloud_datastore;
+  protected String gcloud_app_version;
 
+    /**
+   * env-vars ENV_VARS Environment variable overrides for your app.
+   *
+   * @parameter expression="${appengine.gcloud_app_env_vars}"
+   */
+  protected String gcloud_app_env_vars;
+  
+   /**
+   * server The App Engine server to connect to.
+   *
+   * @parameter expression="${appengine.gcloud_app_server}"
+   */
+  protected String gcloud_app_server;
+ 
+   /**
+   * force Force deploying, overriding any previous in-progress deployments to this version.
+   *
+   * @parameter expression="${appengine.gcloud_app_force}"
+   */
+  protected boolean gcloud_app_force;  
   /**
    * @parameter expression="${project}"
    * @required
@@ -144,9 +164,21 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
     }
 
     // Add in additional options for starting the DevAppServer
-//    if (gcloud_app_docker_daemon_url != null) {
-//      devAppServerCommand.add("--docker-daemon-url=" + gcloud_app_docker_daemon_url);
-//    }
+    if (gcloud_app_docker_host != null) {
+      devAppServerCommand.add("--docker-host=" + gcloud_app_docker_host);
+    }  
+    if (gcloud_app_version != null) {
+      devAppServerCommand.add("--version=" + gcloud_app_version);
+    }
+    if (gcloud_app_env_vars != null) {
+      devAppServerCommand.add("--env-vars=" + gcloud_app_env_vars);
+    }
+    if (gcloud_app_server != null) {
+      devAppServerCommand.add("--server=" + gcloud_app_server);
+    }    
+    if (gcloud_app_force) {
+      devAppServerCommand.add("--force" );
+    } 
     return devAppServerCommand;
   }
 
