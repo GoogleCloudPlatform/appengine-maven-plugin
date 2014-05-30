@@ -104,7 +104,24 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
    *
    * @parameter expression="${appengine.gcloud_app_force}"
    */
-  protected boolean gcloud_app_force;  
+  protected boolean gcloud_app_force;
+  
+  /**
+   * Google Cloud Platform project to use for this invocation.
+   *
+   * @parameter expression="${appengine.gcloud_project}"
+   */
+  
+  protected String gcloud_project;
+  /**
+   * Override the default verbosity for this command. 
+   * This must be a standard logging verbosity level: [debug, info,
+   *  warning, error, critical, none] (Default: [warning]).
+   *
+   * @parameter expression="${appengine.gcloud_verbosity}"
+   */
+  protected String gcloud_verbosity;
+  
   /**
    * @parameter expression="${project}"
    * @required
@@ -115,8 +132,6 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
-    getLog().info("Cloud SDK - Running Development Server");
-    getLog().info("project=" + project);
     String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
     File appDirFile = new File(appDir);
     if (!appDirFile.exists()) {
@@ -143,7 +158,14 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
       getLog().info("Warning, gcloud_directory was not set, so taking: " + gcloud);
       devAppServerCommand.add(gcloud);
     }
-
+    
+    if (gcloud_project != null) {
+      devAppServerCommand.add("--project=" + gcloud_project);
+    }
+    if (gcloud_verbosity != null) {
+      devAppServerCommand.add("--verbosity=" + gcloud_verbosity);
+    }
+    
     devAppServerCommand.add("preview");
     devAppServerCommand.add("app");
     devAppServerCommand.add("deploy");

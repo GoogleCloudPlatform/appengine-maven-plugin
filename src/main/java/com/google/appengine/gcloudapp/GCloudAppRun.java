@@ -151,7 +151,22 @@ public class GCloudAppRun extends AbstractGcloudMojo {
    */
   protected String gcloud_app_log_level;
 
-   
+  /**
+   * Google Cloud Platform project to use for this invocation.
+   *
+   * @parameter expression="${appengine.gcloud_project}"
+   */
+  
+  protected String gcloud_project;
+  /**
+   * Override the default verbosity for this command. 
+   * This must be a standard logging verbosity level: [debug, info,
+   *  warning, error, critical, none] (Default: [warning]).
+   *
+   * @parameter expression="${appengine.gcloud_verbosity}"
+   */
+  protected String gcloud_verbosity;
+  
   /**
    * name of the authorization domain to use (default: gmail.com)
    *
@@ -568,8 +583,6 @@ public class GCloudAppRun extends AbstractGcloudMojo {
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
-    getLog().info("Cloud SDK - Running Development Server");
-    getLog().info("project=" + project);
     String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
     File appDirFile = new File(appDir);
     if (!appDirFile.exists()) {
@@ -594,6 +607,12 @@ public class GCloudAppRun extends AbstractGcloudMojo {
       String gcloud = System.getProperty("user.home") + "/google-cloud-sdk/bin/gcloud";
       getLog().info("Warning, gcloud_directory was not set, so taking: " + gcloud);
       devAppServerCommand.add(gcloud);
+    }
+    if (gcloud_project != null) {
+      devAppServerCommand.add("--project=" + gcloud_project);
+    }
+    if (gcloud_verbosity != null) {
+      devAppServerCommand.add("--verbosity=" + gcloud_verbosity);
     }
 
     devAppServerCommand.add("preview");
@@ -646,7 +665,7 @@ public class GCloudAppRun extends AbstractGcloudMojo {
       devAppServerCommand.add("--log-level=" + gcloud_app_log_level);
     }
     if (gcloud_app_storage_path != null) {
-      devAppServerCommand.add("--sotrage_path=" + gcloud_app_storage_path);
+      devAppServerCommand.add("--storage_path=" + gcloud_app_storage_path);
     }
 
     return devAppServerCommand;
