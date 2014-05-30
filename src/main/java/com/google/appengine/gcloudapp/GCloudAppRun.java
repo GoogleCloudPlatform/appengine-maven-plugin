@@ -134,6 +134,24 @@ public class GCloudAppRun extends AbstractGcloudMojo {
    * @parameter expression="${appengine.gcloud_app_admin_port}"
    */
   protected Integer gcloud_app_admin_port;
+
+  /**
+   * The path to the datastore, or blobstore to use for this application.
+   *
+   * @parameter expression="${appengine.gcloud_app_storage_path}"
+   */
+  protected String gcloud_app_storage_path;
+
+  /**
+   * The minimum verbosity of logs from your app that will be displayed in the
+   * terminal. (debug, info, warning, critical, error) Defaults to current
+   * verbosity setting.
+   *
+   * @parameter expression="${appengine.gcloud_app_log_level}"
+   */
+  protected String gcloud_app_log_level;
+
+   
   /**
    * name of the authorization domain to use (default: gmail.com)
    *
@@ -616,6 +634,19 @@ public class GCloudAppRun extends AbstractGcloudMojo {
 
     if (gcloud_app_enable_cloud_datastore) {
       devAppServerCommand.add("--enable-cloud-datastore");
+    }
+
+    if (gcloud_app_admin_host != null) {
+      devAppServerCommand.add("--admin-host=" + gcloud_app_admin_host);
+    }
+    if (gcloud_app_host != null) {
+      devAppServerCommand.add("--host=" + gcloud_app_host);
+    }
+    if (gcloud_app_log_level != null) {
+      devAppServerCommand.add("--log-level=" + gcloud_app_log_level);
+    }
+    if (gcloud_app_storage_path != null) {
+      devAppServerCommand.add("--sotrage_path=" + gcloud_app_storage_path);
     }
 
     return devAppServerCommand;
