@@ -3,6 +3,12 @@
  */
 package com.google.appengine.appcfg;
 
+import com.google.appengine.tools.admin.Application;
+import com.google.apphosting.utils.config.AppEngineApplicationXml;
+import com.google.apphosting.utils.config.AppEngineApplicationXmlReader;
+import com.google.apphosting.utils.config.EarHelper;
+import com.google.apphosting.utils.config.EarInfo;
+import java.io.File;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
@@ -29,7 +35,24 @@ public class Rollback extends AbstractAppCfgMojo {
 
     getLog().info("Rolling Back Google App Engine Application");
 
-    executeAppCfgCommand("rollback", appDir);
+    if (EarHelper.isEar(appDir, false)) {
+      EarInfo earInfo = EarHelper.readEarInfo(appDir,
+              new File(Application.getSdkDocsDir(), "appengine-application.xsd"));
+      if (appId == null) {
+        appId = earInfo.getAppengineApplicationXml().getApplicationId();
+      }
+      File ear = new File(appDir);
+      for (File w : ear.listFiles()) {
+        if (new File(w, "WEB-INF/appengine-web.xml").exists()) {
+          getLog().info("Rolling Back Google App Engine module: " + w.getAbsolutePath());
+          executeAppCfgCommand("rollback", w.getAbsolutePath());
+        }
+      }
+    } else {
+      // rollback the application
+      getLog().info("Rolling Back Google App Engine Application");
+      executeAppCfgCommand("rollback", appDir);
+    }
   }
 
 }
