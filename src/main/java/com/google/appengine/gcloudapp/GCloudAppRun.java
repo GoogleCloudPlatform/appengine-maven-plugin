@@ -600,13 +600,13 @@ public class GCloudAppRun extends AbstractGcloudMojo {
     getLog().info("Running gcloud app run...");
 
     ArrayList<String> devAppServerCommand = new ArrayList<String>();
-
+    devAppServerCommand.add("python");
+    devAppServerCommand.add("-S");
     if (gcloud_directory != null) {
-      devAppServerCommand.add(gcloud_directory + "/bin/gcloud");
+      devAppServerCommand.add(gcloud_directory + "/lib/googlecloudsdk/gcloud/gcloud.py");
     } else {
-      String gcloud = System.getProperty("user.home") + "/google-cloud-sdk/bin/gcloud";
+      String gcloud = System.getProperty("user.home") + "/google-cloud-sdk/lib/googlecloudsdk/gcloud/gcloud.py";
       getLog().info("Warning, gcloud_directory was not set, so taking: " + gcloud);
-      devAppServerCommand.add(gcloud);
     }
     if (gcloud_project != null) {
       devAppServerCommand.add("--project=" + gcloud_project);
