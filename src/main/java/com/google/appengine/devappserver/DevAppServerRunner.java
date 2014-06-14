@@ -18,15 +18,23 @@ import java.util.ArrayList;
  * @threadSafe false
  */
 public class DevAppServerRunner extends AbstractDevAppServerMojo {
-
+  /**
+   * The location of the appengine application to run.
+   *
+   * @parameter expression="${appengine.appDir}"
+   */
+  protected String appDir;
+    
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
     getLog().info("Google App Engine Java SDK - Running Development Server");
     getLog().info("");
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
+    if(appDir == null) {
+      appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
+    }
+    
     File appDirFile = new File(appDir);
 
     if(!appDirFile.exists()) {
