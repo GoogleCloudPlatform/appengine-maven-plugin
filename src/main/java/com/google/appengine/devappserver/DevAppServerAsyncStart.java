@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author Matt Stephenson <mattstep@google.com>
  * @goal devserver_start
- * @execute phase="package"
+ * @execute phase="validate"
  * @threadSafe false
  */
 public class DevAppServerAsyncStart extends AbstractDevAppServerMojo {

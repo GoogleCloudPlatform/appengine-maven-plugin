@@ -11,7 +11,6 @@ import org.apache.maven.plugin.MojoFailureException;
  *
  * @author Matt Stephenson <mattstep@google.com>
  * @goal devserver_stop
- * @execute phase="package"
  * @threadSafe false
  */
 public class DevAppServerStop extends AbstractDevAppServerMojo {
