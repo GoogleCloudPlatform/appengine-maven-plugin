@@ -580,10 +580,19 @@ public class GCloudAppRun extends AbstractGcloudMojo {
    */
   protected MavenProject project;
 
+  /**
+   * The location of the appengine application to run.
+   *
+   * @parameter expression="${appengine.appDir}"
+   */
+  protected String appDir;
+  
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
+    if(appDir == null) {
+      appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
+    }
     File appDirFile = new File(appDir);
     if (!appDirFile.exists()) {
       throw new MojoExecutionException("The application directory does not exist : " + appDir);
@@ -674,17 +683,19 @@ public class GCloudAppRun extends AbstractGcloudMojo {
   protected void stopDevAppServer() throws MojoExecutionException {
     HttpURLConnection connection = null;
     try {
-      Integer port = firstNonNull(this.port, 8080);
-      URL url = new URL("http", firstNonNull(address, "localhost"), port, "/_ah/admin/quit");
+      URL url = new URL("http", firstNonNull(address, "localhost"), 8000, "/quit");
       connection = (HttpURLConnection) url.openConnection();
       connection.setDoOutput(true);
       connection.setDoInput(true);
-      connection.setRequestMethod("POST");
-      connection.getOutputStream().write(0);
+      connection.setRequestMethod("GET");
+ //     connection.getOutputStream().write(110);
       ByteStreams.toByteArray(connection.getInputStream());
+      connection.getOutputStream().flush();
+      connection.getOutputStream().close();
+      connection.getInputStream().close();
       connection.disconnect();
-      getLog().warn("Shutting down devappserver on port " + port);
-      Thread.sleep(2000);
+      getLog().warn("Shutting down gcloud devappserver on port " + 8000);
+      Thread.sleep(4000);
     } catch (MalformedURLException e) {
       throw new MojoExecutionException("URL malformed attempting to stop the devserver : " + e.getMessage());
     } catch (IOException e) {

@@ -33,14 +33,24 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
 
   protected void startCommand(File appDirFile, ArrayList<String> devAppServerCommand, WaitDirective waitDirective) throws MojoExecutionException {
     getLog().info("Running " + Joiner.on(" ").join(devAppServerCommand));
+
     Thread stdOutThread = null;
     Thread stdErrThread = null;
     try {
+
       ProcessBuilder processBuilder = new ProcessBuilder(devAppServerCommand);
+
       processBuilder.directory(appDirFile);
+
       processBuilder.redirectErrorStream(true);
+
+      //Just before starting, just to make sure, shut down any running devserver on this port.
+    /////////LDUODODODODO  stop();
+
       final Process devServerProcess = processBuilder.start();
+
       final CountDownLatch waitStartedLatch = new CountDownLatch(1);
+
       final Scanner stdOut = new Scanner(devServerProcess.getInputStream());
       stdOutThread = new Thread("standard-out-redirection-devappserver") {
         public void run() {
@@ -48,7 +58,7 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
             while (stdOut.hasNextLine() && !Thread.interrupted()) {
               String line = stdOut.nextLine();
               getLog().info(line);
-              if (line.contains("Dev App Server is now running")) {
+              if (line.contains("Starting new HTTP connection")) {
                 waitStartedLatch.countDown();
               }
             }
@@ -59,6 +69,7 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
       };
       stdOutThread.setDaemon(true);
       stdOutThread.start();
+      
       final Scanner stdErr = new Scanner(devServerProcess.getErrorStream());
       stdErrThread = new Thread("standard-err-redirection-devappserver") {
         public void run() {
@@ -78,14 +89,15 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
             }
           }
         });
+        
         devServerProcess.waitFor();
+        int status = devServerProcess.exitValue();
+        if (status != 0) {
+          getLog().error("Error: gcloud app run exit code= " + status);
+          throw new MojoExecutionException("Error: gcloud app run exit code= " + status);
+        }
       } else if (waitDirective == WaitDirective.WAIT_SERVER_STARTED) {
         waitStartedLatch.await();
-      }
-      int status = devServerProcess.exitValue();
-      if (status != 0) {
-        getLog().error("Error: gcloud app run exit code= " + status);
-        throw new MojoExecutionException("Error: gcloud app run exit code= " + status);
       }
     } catch (IOException e) {
       throw new MojoExecutionException("Could not start the dev app server", e);
