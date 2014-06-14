@@ -216,8 +216,11 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
       connection.setDoOutput(true);
       connection.setDoInput(true);
       connection.setRequestMethod("POST");
-      connection.getOutputStream().write(0);
+      connection.getOutputStream().write(10);
       ByteStreams.toByteArray(connection.getInputStream());
+      connection.getOutputStream().flush();
+      connection.getOutputStream().close();
+      connection.getInputStream().close();
       connection.disconnect();
       getLog().warn("Shutting down devappserver on port " + port);
       Thread.sleep(2000);
