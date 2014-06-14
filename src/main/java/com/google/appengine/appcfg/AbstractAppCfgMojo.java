@@ -5,6 +5,7 @@ package com.google.appengine.appcfg;
 
 import com.google.appengine.SdkResolver;
 import com.google.appengine.tools.admin.AppCfg;
+import com.google.common.base.Joiner;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -243,6 +244,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
 
     arguments.add(action);
     arguments.add(appDir);
+    getLog().info("Running " + Joiner.on(" ").join(arguments));
 
     try {
       AppCfg.main(arguments.toArray(new String[arguments.size()]));
@@ -287,13 +289,11 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     }
 
     if (proxyHost != null && !proxyHost.isEmpty()) {
-      arguments.add("--proxy");
-      arguments.add(proxyHost);
+      arguments.add("--proxy=" + proxyHost);
     }
 
     if (proxyHttps != null && !proxyHttps.isEmpty()) {
-      arguments.add("--proxy_https");
-      arguments.add(proxyHttps);
+      arguments.add("--proxy_https=" + proxyHttps);
     }
 
     if (noCookies) {
@@ -327,8 +327,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     }
 
     if (jarSplittingExcludes != null && !jarSplittingExcludes.isEmpty()) {
-      arguments.add("--jar_splitting_excludes");
-      arguments.add(jarSplittingExcludes);
+      arguments.add("--jar_splitting_excludes=" + jarSplittingExcludes);
     }
 
     if (retainUploadDir) {
@@ -340,13 +339,11 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     }
 
     if (numDays != null) {
-      arguments.add("--num_days");
-      arguments.add(numDays.toString());
+      arguments.add("--num_days=" + numDays.toString());
     }
 
     if (severity != null && !severity.isEmpty()) {
-      arguments.add("--severity");
-      arguments.add(severity);
+      arguments.add("--severity=" + severity);
     }
 
     if (append) {
@@ -354,8 +351,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     }
 
     if (numRuns != null) {
-      arguments.add("--num_runs");
-      arguments.add(numRuns.toString());
+      arguments.add("--num_runs=" + numRuns.toString());
     }
 
     if (force) {
