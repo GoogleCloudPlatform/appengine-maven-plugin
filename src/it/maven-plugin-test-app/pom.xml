@@ -23,17 +23,17 @@
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>1.9.6</version>
+            <version>1.9.7</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-endpoints</artifactId>
-            <version>1.9.6</version>
+            <version>1.9.7</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-endpoints-deps</artifactId>
-            <version>1.9.6</version>
+            <version>1.9.7</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
