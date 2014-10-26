@@ -7,10 +7,12 @@ import com.google.common.base.Joiner;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
 
 /**
  *
@@ -19,11 +21,95 @@ import org.apache.maven.plugin.MojoExecutionException;
 public abstract class AbstractGcloudMojo extends AbstractMojo {
 
   /**
+   * @parameter expression="${project}"
+   * @required
+   * @readonly
+   */
+  protected MavenProject project;
+
+  /**
+   * gcloud installation directory
+   *
+   * @parameter expression="${appengine.gcloud_directory}"
+   */
+  protected String gcloud_directory;
+
+  /**
+   * docker_host
+   *
+   * @parameter expression="${appengine.gcloud_app_docker_host}"
+   * default-value="ENV_or_default"
+   */
+  protected String gcloud_app_docker_host;
+  /**
+   * docker_host
+   *
+   * @parameter expression="${appengine.gcloud_app_docker_tls_verify}"
+   * default-value="ENV_or_default"
+   */
+  protected String gcloud_app_docker_tls_verify;
+
+  /**
+   * docker_host
+   *
+   * @parameter expression="${appengine.gcloud_app_docker_cert_path}"
+   * default-value="ENV_or_default"
+   */
+  protected String gcloud_app_docker_cert_path;
+
+  //DOCKER_TLS_VERIFY=1
+//DOCKER_CERT_PATH=/Users/ludo/.boot2docker/certs/boot2docker-vm
+  /**
+   * Override the default verbosity for this command. This must be a standard
+   * logging verbosity level: [debug, info, warning, error, critical, none]
+   * (Default: [warning]).
+   *
+   * @parameter expression="${appengine.gcloud_verbosity}"
+   * default-value="warning"
+   */
+  protected String gcloud_verbosity;
+
+  /**
+   * Google Cloud Platform project to use for this invocation.
+   *
+   * @parameter expression="${appengine.gcloud_project}"
+   */
+  protected String gcloud_project;
+
+  /**
    *
    * @param appDir
    * @return
    */
   protected abstract ArrayList<String> getCommand(String appDir) throws MojoExecutionException;
+
+  protected ArrayList<String> setupInitialCommands(ArrayList<String> commands) throws MojoExecutionException {
+    commands.add("python");
+    commands.add("-S");
+    if (gcloud_directory == null) {
+      gcloud_directory = System.getProperty("user.home") + "/google-cloud-sdk";
+      getLog().info("gcloud_directory was not set, so taking: " + gcloud_directory);
+    }
+    commands.add(gcloud_directory + "/lib/googlecloudsdk/gcloud/gcloud.py");
+
+    if (gcloud_project != null) {
+      commands.add("--project=" + gcloud_project);
+    }
+    if (gcloud_verbosity != null) {
+      commands.add("--verbosity=" + gcloud_verbosity);
+    }
+
+    commands.add("preview");
+    commands.add("app");
+    return commands;
+  }
+
+  protected ArrayList<String> setupExtraCommands(ArrayList<String> commands) throws MojoExecutionException {
+//    if (gcloud_app_docker_host != null) {
+//      commands.add("--docker-host=" + gcloud_app_docker_host);
+//    }
+    return commands;
+  }
 
   protected static enum WaitDirective {
 
@@ -43,9 +129,48 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
       processBuilder.directory(appDirFile);
 
       processBuilder.redirectErrorStream(true);
+      Map<String, String> env = processBuilder.environment();
+      if ("ENV_or_default".equals(gcloud_app_docker_host)) {
+        if (env.get("DOCKER_HOST") == null) {
+          env.put("DOCKER_HOST", "tcp://192.168.59.103:2376");
+        }
+      } else {
+        env.put("DOCKER_HOST", gcloud_app_docker_host);
+      }
+      if ("ENV_or_default".equals(gcloud_app_docker_host)) {
+        if (env.get("DOCKER_HOST") == null) {
+          env.put("DOCKER_HOST", "tcp://192.168.59.103:2376");
+        }
+      } else {
+        env.put("DOCKER_HOST", gcloud_app_docker_host);
+      }
 
-      //Just before starting, just to make sure, shut down any running devserver on this port.
-    /////////LDUODODODODO  stop();
+      if ("ENV_or_default".equals(gcloud_app_docker_tls_verify)) {
+        if (env.get("DOCKER_TLS_VERIFY") == null) {
+          env.put("DOCKER_TLS_VERIFY", "1");
+        }
+      } else {
+        env.put("DOCKER_TLS_VERIFY", gcloud_app_docker_tls_verify);
+      }
+
+      if ("ENV_or_default".equals(gcloud_app_docker_cert_path)) {
+        if (env.get("DOCKER_CERT_PATH") == null) {
+          env.put("DOCKER_CERT_PATH",
+                  System.getProperty("user.home")
+                  + File.separator
+                  + ".boot2docker"
+                  + File.separator
+                  + "certs"
+                  + File.separator
+                  + "boot2docker-vm"
+          );
+        }
+      } else {
+        env.put("DOCKER_CERT_PATH", gcloud_app_docker_cert_path);
+      }
+      //export DOCKER_CERT_PATH=/Users/ludo/.boot2docker/certs/boot2docker-vm
+      //export DOCKER_TLS_VERIFY=1
+      //export DOCKER_HOST=tcp://192.168.59.103:2376
 
       final Process devServerProcess = processBuilder.start();
 
@@ -69,7 +194,7 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
       };
       stdOutThread.setDaemon(true);
       stdOutThread.start();
-      
+
       final Scanner stdErr = new Scanner(devServerProcess.getErrorStream());
       stdErrThread = new Thread("standard-err-redirection-devappserver") {
         public void run() {
@@ -89,7 +214,7 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
             }
           }
         });
-        
+
         devServerProcess.waitFor();
         int status = devServerProcess.exitValue();
         if (status != 0) {

@@ -18,12 +18,6 @@ import java.util.ArrayList;
  * @threadSafe false
  */
 public class GcloudAppAsyncStart extends GCloudAppRun {
-  /**
-   * The location of the appengine application to run.
-   *
-   * @parameter expression="${appengine.appDir}"
-   */
-  protected String appDir;
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {

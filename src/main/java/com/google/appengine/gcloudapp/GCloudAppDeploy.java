@@ -4,13 +4,9 @@
 package com.google.appengine.gcloudapp;
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.RepositorySystemSession;
-import org.eclipse.aether.repository.RemoteRepository;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
@@ -25,58 +21,11 @@ import org.apache.maven.project.MavenProject;
 public class GCloudAppDeploy extends AbstractGcloudMojo {
 
   /**
-   * The entry point to Aether, i.e. the component doing all the work.
-   *
-   * @component
-   */
-  protected RepositorySystem repoSystem;
-
-  /**
-   * The current repository/network configuration of Maven.
-   *
-   * @parameter default-value="${repositorySystemSession}"
-   * @readonly
-   */
-  protected RepositorySystemSession repoSession;
-
-  /**
-   * The project's remote repositories to use for the resolution of project
-   * dependencies.
-   *
-   * @parameter default-value="${project.remoteProjectRepositories}"
-   * @readonly
-   */
-  protected List<RemoteRepository> projectRepos;
-
-  /**
-   * The project's remote repositories to use for the resolution of plugins and
-   * their dependencies.
-   *
-   * @parameter default-value="${project.remotePluginRepositories}"
-   * @readonly
-   */
-  protected List<RemoteRepository> pluginRepos;
-
-  /**
    * server The App Engine server to connect to.
    *
    * @parameter expression="${appengine.server}"
    */
   protected String server;
-
-  /**
-   * gcloud installation directory
-   *
-   * @parameter expression="${appengine.gcloud_directory}"
-   */
-  protected String gcloud_directory;
-
-  /**
-   * docker_host
-   *
-   * @parameter expression="${appengine.gcloud_app_docker_host}"
-   */
-  protected String gcloud_app_docker_host;
 
   /**
    * version The version of the app that will be created or replaced by this deployment.
@@ -106,13 +55,7 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
    */
   protected boolean gcloud_app_force;
   
-  /**
-   * Google Cloud Platform project to use for this invocation.
-   *
-   * @parameter expression="${appengine.gcloud_project}"
-   */
-  
-  protected String gcloud_project;
+
   /**
    * Override the default verbosity for this command. 
    * This must be a standard logging verbosity level: [debug, info,
@@ -149,25 +92,10 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
 
     getLog().info("Running gcloud app deploy...");
 
-    ArrayList<String> devAppServerCommand = new ArrayList<String>();
-
-    devAppServerCommand.add("python");
-    devAppServerCommand.add("-S");
-    if (gcloud_directory == null) {
-      gcloud_directory = System.getProperty("user.home") + "/google-cloud-sdk";
-      getLog().info("gcloud_directory was not set, so taking: " + gcloud_directory);
-    }
-    devAppServerCommand.add(gcloud_directory + "/lib/googlecloudsdk/gcloud/gcloud.py");
- 
-    if (gcloud_project != null) {
-      devAppServerCommand.add("--project=" + gcloud_project);
-    }
-    if (gcloud_verbosity != null) {
-      devAppServerCommand.add("--verbosity=" + gcloud_verbosity);
-    }
+    ArrayList<String> devAppServerCommand = new ArrayList<>();
+    setupInitialCommands(devAppServerCommand);
     
-    devAppServerCommand.add("preview");
-    devAppServerCommand.add("app");
+
     devAppServerCommand.add("deploy");
 
     File f = new File(appDir, "WEB-INF/appengine-web.xml");
@@ -182,11 +110,10 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
       // Point to our application
       devAppServerCommand.add(appDir);
     }
+    setupExtraCommands(devAppServerCommand);
 
     // Add in additional options for starting the DevAppServer
-    if (gcloud_app_docker_host != null) {
-      devAppServerCommand.add("--docker-host=" + gcloud_app_docker_host);
-    }  
+
     if (gcloud_app_version != null) {
       devAppServerCommand.add("--version=" + gcloud_app_version);
     }
