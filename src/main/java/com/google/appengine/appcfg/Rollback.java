@@ -4,8 +4,6 @@
 package com.google.appengine.appcfg;
 
 import com.google.appengine.tools.admin.Application;
-import com.google.apphosting.utils.config.AppEngineApplicationXml;
-import com.google.apphosting.utils.config.AppEngineApplicationXmlReader;
 import com.google.apphosting.utils.config.EarHelper;
 import com.google.apphosting.utils.config.EarInfo;
 import java.io.File;
