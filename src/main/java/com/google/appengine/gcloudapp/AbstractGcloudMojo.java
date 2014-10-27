@@ -105,9 +105,6 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
   }
 
   protected ArrayList<String> setupExtraCommands(ArrayList<String> commands) throws MojoExecutionException {
-//    if (gcloud_app_docker_host != null) {
-//      commands.add("--docker-host=" + gcloud_app_docker_host);
-//    }
     return commands;
   }
 

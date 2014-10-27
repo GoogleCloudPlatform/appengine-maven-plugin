@@ -8,7 +8,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import java.io.File;
 import java.util.ArrayList;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.MavenProject;
 
 /**
  * Deploy an application via gcloud deploy.
@@ -109,13 +108,6 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
    * @parameter expression="${appengine.gcloud_app_jar_splitting_excludes}"
    */
   private String gcloud_app_jar_splitting_excludes;
-
-  /**
-   * @parameter expression="${project}"
-   * @required
-   * @readonly
-   */
-  protected MavenProject project;
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
