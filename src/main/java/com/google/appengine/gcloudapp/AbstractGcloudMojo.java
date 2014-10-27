@@ -21,7 +21,7 @@ import org.apache.maven.project.MavenProject;
 public abstract class AbstractGcloudMojo extends AbstractMojo {
 
   /**
-   * @parameter expression="${project}"
+   * @parameter property="project"
    * @required
    * @readonly
    */
@@ -30,30 +30,27 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
   /**
    * gcloud installation directory
    *
-   * @parameter expression="${appengine.gcloud_directory}"
+   * @parameter
    */
   protected String gcloud_directory;
 
   /**
    * docker_host
    *
-   * @parameter expression="${appengine.gcloud_app_docker_host}"
-   * default-value="ENV_or_default"
+   * @parameter default-value="ENV_or_default"
    */
   protected String gcloud_app_docker_host;
   /**
    * docker_host
    *
-   * @parameter expression="${appengine.gcloud_app_docker_tls_verify}"
-   * default-value="ENV_or_default"
+   * @parameter default-value="ENV_or_default"
    */
   protected String gcloud_app_docker_tls_verify;
 
   /**
    * docker_host
    *
-   * @parameter expression="${appengine.gcloud_app_docker_cert_path}"
-   * default-value="ENV_or_default"
+   * @parameter default-value="ENV_or_default"
    */
   protected String gcloud_app_docker_cert_path;
 
@@ -64,15 +61,14 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
    * logging verbosity level: [debug, info, warning, error, critical, none]
    * (Default: [warning]).
    *
-   * @parameter expression="${appengine.gcloud_verbosity}"
-   * default-value="warning"
+   * @parameter default-value="warning"
    */
   protected String gcloud_verbosity;
 
   /**
    * Google Cloud Platform project to use for this invocation.
    *
-   * @parameter expression="${appengine.gcloud_project}"
+   * @parameter
    */
   protected String gcloud_project;
 

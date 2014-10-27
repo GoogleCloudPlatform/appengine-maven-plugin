@@ -8,8 +8,8 @@ import org.apache.maven.project.MavenProject;
 
 
 /**
- * Maven project version is dot based, e.g "1.9.7" ,
- * whereas appengine-web.xml is dash baseb, e.g. "1-9-7"
+ * Maven project version is dot based, e.g "1.9.15" ,
+ * whereas appengine-web.xml is dash based, e.g. "1-9-15"
  * This goal creates a Maven property with a correct app engine version.
  * @goal create-property
  */

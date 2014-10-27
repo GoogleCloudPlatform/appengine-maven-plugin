@@ -3,11 +3,12 @@
  */
 package com.google.appengine.gcloudapp;
 
-import org.apache.maven.plugin.MojoExecutionException;
-
 import java.io.File;
 import java.util.ArrayList;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+
+
 
 /**
  * Deploy an application via gcloud deploy.
@@ -22,7 +23,7 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
   /**
    * server The App Engine server to connect to.
    *
-   * @parameter expression="${appengine.server}"
+   * @parameter
    */
   private String server;
 
@@ -30,21 +31,21 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
    * version The version of the app that will be created or replaced by this
    * deployment.
    *
-   * @parameter expression="${appengine.gcloud_app_version}"
+   * @parameter
    */
   private String gcloud_app_version;
 
   /**
    * env-vars ENV_VARS Environment variable overrides for your app.
    *
-   * @parameter expression="${appengine.gcloud_app_env_vars}"
+   * @parameter
    */
   private String gcloud_app_env_vars;
 
   /**
    * server The App Engine server to connect to.
    *
-   * @parameter expression="${appengine.gcloud_app_server}"
+   * @parameter
    */
   private String gcloud_app_server;
 
@@ -52,51 +53,51 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
    * force Force deploying, overriding any previous in-progress deployments to
    * this version.
    *
-   * @parameter expression="${appengine.gcloud_app_force}"
+   * @parameter
    */
   private boolean gcloud_app_force;
   /**
    * Set the encoding to be used when compiling Java source files (default
    * "UTF-8")
    *
-   * @parameter expression="${appengine.gcloud_app_compile_encoding}"
+   * @parameter
    */
   private String gcloud_app_compile_encoding;
   /**
    * Delete the JSP source files after compilation
    *
-   * @parameter expression="${appengine.gcloud_app_delete_jsps}"
+   * @parameter
    */
   private boolean gcloud_app_delete_jsps;
   /**
    * Do not jar the classes generated from JSPs
    *
-   * @parameter expression="${appengine.gcloud_app_disable_jar_jsps}"
+   * @parameter
    */
   private boolean gcloud_app_disable_jar_jsps;
   /**
    * Jar the WEB-INF/classes content
    *
-   * @parameter expression="${appengine.gcloud_app_enable_jar_classes}"
+   * @parameter
    */
   private boolean gcloud_app_enable_jar_classes;
   /**
    * Split large jar files (> 32M) into smaller fragments
    *
-   * @parameter expression="${appengine.gcloud_app_enable_jar_splitting}"
+   * @parameter
    */
   private boolean gcloud_app_enable_jar_splitting;
   /**
    * Do not use symbolic links when making the temporary (staging) directory
    * used in uploading Java apps
    *
-   * @parameter expression="${appengine.gcloud_app_no_symlinks}"
+   * @parameter
    */
   private boolean gcloud_app_no_symlinks;
   /**
    * Do not delete temporary (staging) directory used in uploading Java apps
    *
-   * @parameter expression="${appengine.gcloud_app_retain_upload_dir}"
+   * @parameter
    */
   private boolean gcloud_app_retain_upload_dir;
   /**
@@ -105,9 +106,16 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
    * ends with one of the suffixes will not be included in the split jar
    * fragments
    *
-   * @parameter expression="${appengine.gcloud_app_jar_splitting_excludes}"
+   * @parameter
    */
   private String gcloud_app_jar_splitting_excludes;
+
+  /**
+   * Set the deployed version to be the default serving version.
+   *
+   * @parameter
+   */
+  private boolean gcloud_app_set_default;
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
@@ -186,6 +194,9 @@ public class GCloudAppDeploy extends AbstractGcloudMojo {
     }
     if (gcloud_app_jar_splitting_excludes != null) {
       devAppServerCommand.add("--jar-splitting-excludes=" + gcloud_app_jar_splitting_excludes);
+    }
+    if (gcloud_app_set_default) {
+      devAppServerCommand.add("--set-default");
     }
     return devAppServerCommand;
   }
