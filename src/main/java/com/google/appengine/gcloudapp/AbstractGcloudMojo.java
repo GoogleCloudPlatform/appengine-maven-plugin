@@ -3,8 +3,8 @@
  */
 package com.google.appengine.gcloudapp;
 
-import com.google.apphosting.utils.config.AppEngineWebXml;
-import com.google.apphosting.utils.config.AppEngineWebXmlReader;
+import com.google.appengine.gcloudapp.temp.AppEngineWebXml;
+import com.google.appengine.gcloudapp.temp.AppEngineWebXmlReader;
 import com.google.common.base.Joiner;
 import java.io.File;
 import java.io.IOException;
