@@ -4,7 +4,6 @@
 package com.google.appengine.gcloudapp;
 
 import com.google.apphosting.utils.config.AppEngineWebXml;
-import com.google.apphosting.utils.config.AppEngineWebXmlReader;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;
@@ -45,16 +44,10 @@ public abstract class GCloudAppModules extends AbstractGcloudMojo {
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-    File appDirFile = new File(appDir);
-    if (!appDirFile.exists()) {
-      throw new MojoExecutionException("The application directory does not exist : " + appDir);
-    }
-    if (!appDirFile.isDirectory()) {
-      throw new MojoExecutionException("The application directory is not a directory : " + appDir);
-    }
-    ArrayList<String> devAppServerCommand = createCommand(appDir, getSubCommand());
-    startCommand(appDirFile, devAppServerCommand, WaitDirective.WAIT_SERVER_STOPPED);
+
+    ArrayList<String> devAppServerCommand = createCommand(
+            getApplicationDirectory(), getSubCommand());
+    startCommand(new File(getApplicationDirectory()), devAppServerCommand, WaitDirective.WAIT_SERVER_STOPPED);
   }
 
   protected ArrayList<String> createCommand(String appDir, String subCommand) throws MojoExecutionException {
@@ -76,8 +69,7 @@ public abstract class GCloudAppModules extends AbstractGcloudMojo {
       }
     } else {
       // get module name and module version
-      AppEngineWebXmlReader reader = new AppEngineWebXmlReader(appDir);
-      AppEngineWebXml xmlContent = reader.readAppEngineWebXml();
+      AppEngineWebXml xmlContent = getAppEngineWebXml();
       String module = xmlContent.getModule();
       String version = xmlContent.getMajorVersionId();
       devAppServerCommand.add(subCommand);

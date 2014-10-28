@@ -3,6 +3,8 @@
  */
 package com.google.appengine.gcloudapp;
 
+import com.google.apphosting.utils.config.AppEngineWebXml;
+import com.google.apphosting.utils.config.AppEngineWebXmlReader;
 import com.google.common.base.Joiner;
 import java.io.File;
 import java.io.IOException;
@@ -72,6 +74,10 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
    */
   protected String gcloud_project;
 
+  protected AppEngineWebXml appengineWebXml = null;
+
+  protected String applicationDirectory = null;
+
   /**
    *
    * @param appDir
@@ -90,6 +96,8 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
 
     if (gcloud_project != null) {
       commands.add("--project=" + gcloud_project);
+    } else {
+       commands.add("--project=" + getAppEngineWebXml().getAppId());  
     }
     if (gcloud_verbosity != null) {
       commands.add("--verbosity=" + gcloud_verbosity);
@@ -221,6 +229,30 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
       throw new MojoExecutionException("Could not start the dev app server", e);
     } catch (InterruptedException e) {
     }
+  }
+
+  protected String getApplicationDirectory() throws MojoExecutionException {
+    if (applicationDirectory != null) {
+      return applicationDirectory;
+    }
+    applicationDirectory = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
+    File appDirFile = new File(applicationDirectory);
+    if (!appDirFile.exists()) {
+      throw new MojoExecutionException("The application directory does not exist : " + applicationDirectory);
+    }
+    if (!appDirFile.isDirectory()) {
+      throw new MojoExecutionException("The application directory is not a directory : " + applicationDirectory);
+    }
+    return applicationDirectory;
+  }
+
+  protected AppEngineWebXml getAppEngineWebXml() throws MojoExecutionException {
+
+    if (appengineWebXml == null) {
+      AppEngineWebXmlReader reader = new AppEngineWebXmlReader(getApplicationDirectory());
+      appengineWebXml = reader.readAppEngineWebXml();
+    }
+    return appengineWebXml;
   }
 
 }
