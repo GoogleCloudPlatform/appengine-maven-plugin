@@ -81,8 +81,10 @@ public abstract class GCloudAppModules extends AbstractGcloudMojo {
       // Add in additional options for starting the DevAppServer
       if (gcloud_app_version != null) {
         devAppServerCommand.add("--version=" + gcloud_app_version);
-      } else {
+      } else if (version != null) {
         devAppServerCommand.add("--version=" + version);
+      } else {
+        getLog().error("Warning: the <gcloud-app-version> Maven configuration is not defined, or <version> is not defined in appengine-web.xml");
 
       }
     }
@@ -143,7 +145,7 @@ public abstract class GCloudAppModules extends AbstractGcloudMojo {
 
     @Override
     protected String getSubCommand() {
-      return "set_default";
+      return "set-default";
     }
   }
 
@@ -158,7 +160,7 @@ public abstract class GCloudAppModules extends AbstractGcloudMojo {
 
     @Override
     protected String getSubCommand() {
-      return "set_managed";
+      return "set-managed";
     }
   }
 
