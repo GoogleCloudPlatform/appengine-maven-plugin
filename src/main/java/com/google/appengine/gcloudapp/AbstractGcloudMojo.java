@@ -56,14 +56,12 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
    */
   protected String gcloud_app_docker_cert_path;
 
-  //DOCKER_TLS_VERIFY=1
-//DOCKER_CERT_PATH=/Users/ludo/.boot2docker/certs/boot2docker-vm
   /**
    * Override the default verbosity for this command. This must be a standard
    * logging verbosity level: [debug, info, warning, error, critical, none]
-   * (Default: [warning]).
+   * (Default: [info]).
    *
-   * @parameter default-value="warning"
+   * @parameter
    */
   protected String gcloud_verbosity;
 
