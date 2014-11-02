@@ -172,11 +172,10 @@ public class GCloudAppRun extends AbstractGcloudMojo {
   /**
    * JVM_FLAG Additional arguments to pass to the java command when launching an
    * instance of the app. May be specified more than once. Example:
-   *      &lt;gcloud_app_jvm_flag&gt;
-   *         &lt;param&gt;-Xmx1024m&lt;/param&gt;
-   *         &lt;param&gt;-Xms256m&lt;/param&gt;
-   *      &lt;/gcloud_app_jvm_flag&gt;
-   * Note: This is not for Java Managed VMs applications. Please use a Dockerfile for that.
+   * &lt;gcloud_app_jvm_flag&gt; &lt;param&gt;-Xmx1024m&lt;/param&gt;
+   * &lt;param&gt;-Xms256m&lt;/param&gt; &lt;/gcloud_app_jvm_flag&gt; Note: This
+   * is not for Java Managed VMs applications. Please use a Dockerfile for that.
+   *
    * @parameter
    */
   private List<String> gcloud_app_jvm_flag;
@@ -435,11 +434,13 @@ public class GCloudAppRun extends AbstractGcloudMojo {
       connection.setRequestMethod("GET");
       //     connection.getOutputStream().write(110);
       ByteStreams.toByteArray(connection.getInputStream());
-      connection.getOutputStream().flush();
-      connection.getOutputStream().close();
-      connection.getInputStream().close();
+//      connection.getOutputStream().flush();
+//      connection.getOutputStream().close();
+//      connection.getInputStream().close();
       connection.disconnect();
-      getLog().warn("Shutting down gcloud devappserver on port " + 8000);
+
+      getLog().info("Shutting down Cloud SDK Server on port " + 8000 +
+              " and waiting 4 seconds...");
       Thread.sleep(4000);
     } catch (MalformedURLException e) {
       throw new MojoExecutionException("URL malformed attempting to stop the devserver : " + e.getMessage());
