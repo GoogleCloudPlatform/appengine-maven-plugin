@@ -11,6 +11,7 @@ import org.apache.maven.plugin.MojoFailureException;
  *
  * @author Ludo
  * @goal gcloud_app_run_stop
+ * @execute phase="validate"
  * @threadSafe false
  */
 public class GcloudAppStop extends GCloudAppRun {

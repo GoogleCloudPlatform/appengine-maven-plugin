@@ -229,6 +229,9 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
         }
       } else if (waitDirective == WaitDirective.WAIT_SERVER_STARTED) {
         waitStartedLatch.await();
+        getLog().info("");
+        getLog().info("App Engine Dev Server started in Async mode and running.");
+        getLog().info("you can stop it with this command: mvn appengine:gcloud_app_run_stop");
       }
     } catch (IOException e) {
       throw new MojoExecutionException("Could not start the dev app server", e);
