@@ -17,7 +17,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Runs the App Engine development server.
  *
@@ -27,14 +26,6 @@ import java.util.List;
  * @threadSafe false
  */
 public class GCloudAppRun extends AbstractGcloudMojo {
-
-  /**
-   * The address of the interface on the local machine to bind to (or 0.0.0.0
-   * for all interfaces).
-   *
-   * @parameter
-   */
-  private String address;
 
   /**
    * The host and port on which to start the API server (in the format
@@ -180,12 +171,15 @@ public class GCloudAppRun extends AbstractGcloudMojo {
   private boolean gcloud_app_use_mtime_file_watcher;
   /**
    * JVM_FLAG Additional arguments to pass to the java command when launching an
-   * instance of the app. May be specified more than once. Example: "-Xmx1024m
-   * --jvm-flag=-Xms256m"
-   *
+   * instance of the app. May be specified more than once. Example:
+   *      &lt;gcloud_app_jvm_flag&gt;
+   *         &lt;param&gt;-Xmx1024m&lt;/param&gt;
+   *         &lt;param&gt;-Xms256m&lt;/param&gt;
+   *      &lt;/gcloud_app_jvm_flag&gt;
+   * Note: This is not for Java Managed VMs applications. Please use a Dockerfile for that.
    * @parameter
    */
-  private String gcloud_app_jvm_flag;
+  private List<String> gcloud_app_jvm_flag;
 
   /**
    * default Google Cloud Storage bucket name (default: None)
@@ -283,6 +277,9 @@ public class GCloudAppRun extends AbstractGcloudMojo {
     if (!appDirFile.isDirectory()) {
       throw new MojoExecutionException("The application directory is not a directory : " + appDir);
     }
+    //Just before starting, just to make sure, shut down any running devserver on this port.
+    stopDevAppServer();
+
     ArrayList<String> devAppServerCommand = getCommand(appDir);
     startCommand(appDirFile, devAppServerCommand, WaitDirective.WAIT_SERVER_STOPPED);
   }
@@ -382,8 +379,10 @@ public class GCloudAppRun extends AbstractGcloudMojo {
     if (gcloud_app_use_mtime_file_watcher) {
       devAppServerCommand.add("--use-mtime-file-watcher");
     }
-    if (gcloud_app_jvm_flag != null) {
-      devAppServerCommand.add("--host=" + gcloud_app_host);
+    if ((gcloud_app_jvm_flag != null) && !gcloud_app_jvm_flag.isEmpty()) {
+      for (String opt : gcloud_app_jvm_flag) {
+        devAppServerCommand.add("--jvm-flag=" + opt);
+      }
     }
     if (gcloud_app_default_gcs_bucket_name != null) {
       devAppServerCommand.add("--default-gcs-bucket-name=" + gcloud_app_default_gcs_bucket_name);
@@ -424,7 +423,12 @@ public class GCloudAppRun extends AbstractGcloudMojo {
   protected void stopDevAppServer() throws MojoExecutionException {
     HttpURLConnection connection = null;
     try {
-      URL url = new URL("http", firstNonNull(address, "localhost"), 8000, "/quit");
+      String ad = "localhost";
+      if (gcloud_app_host != null) {
+        String[] parts = gcloud_app_host.split(":");
+        ad = parts[0];
+      }
+      URL url = new URL("http", ad, 8000, "/quit");
       connection = (HttpURLConnection) url.openConnection();
       connection.setDoOutput(true);
       connection.setDoInput(true);

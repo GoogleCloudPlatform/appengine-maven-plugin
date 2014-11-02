@@ -107,7 +107,7 @@ public abstract class GCloudAppModules extends AbstractGcloudMojo {
   /**
    * Delete the module of this app.
    *
-   * @goal gcloud_app_delete_module
+   * @goal gcloud_app_module_delete
    * @execute phase="package"
    * @threadSafe false
    */
@@ -152,7 +152,7 @@ public abstract class GCloudAppModules extends AbstractGcloudMojo {
   /**
    * set Managed (google or self).
    *
-   * @goal gcloud_app_module_set_managed
+   * @goal gcloud_app_module_set_managed_by
    * @execute phase="package"
    * @threadSafe false
    */
@@ -160,7 +160,7 @@ public abstract class GCloudAppModules extends AbstractGcloudMojo {
 
     @Override
     protected String getSubCommand() {
-      return "set-managed";
+      return "set-managed-by";
     }
   }
 

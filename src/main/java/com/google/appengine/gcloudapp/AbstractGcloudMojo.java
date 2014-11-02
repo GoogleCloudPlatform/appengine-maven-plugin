@@ -95,7 +95,7 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
     if (gcloud_project != null) {
       commands.add("--project=" + gcloud_project);
     } else {
-       commands.add("--project=" + getAppEngineWebXml().getAppId());  
+      commands.add("--project=" + getAppEngineWebXml().getAppId());
     }
     if (gcloud_verbosity != null) {
       commands.add("--verbosity=" + gcloud_verbosity);
@@ -179,11 +179,18 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
       stdOutThread = new Thread("standard-out-redirection-devappserver") {
         public void run() {
           try {
+            long healthCount = 0;
             while (stdOut.hasNextLine() && !Thread.interrupted()) {
               String line = stdOut.nextLine();
-              getLog().info(line);
-              if (line.contains("Starting new HTTP connection")) {
+              // emit this every 30 times, no need for more...
+              if (line.contains("GET /_ah/health?IsLastSuccessful=yes HTTP/1.1\" 200 2")) {
                 waitStartedLatch.countDown();
+                if (healthCount % 20 == 0) {
+                  getLog().info(line);
+                }
+                healthCount++;
+              } else {
+                getLog().info(line);
               }
             }
           } finally {
