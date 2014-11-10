@@ -5,9 +5,17 @@ package com.google.appengine.gcloudapp;
 
 import com.google.appengine.gcloudapp.temp.AppEngineWebXml;
 import com.google.appengine.gcloudapp.temp.AppEngineWebXmlReader;
+import com.google.appengine.tools.admin.Application;
+import com.google.apphosting.utils.config.AppEngineApplicationXml;
+import com.google.apphosting.utils.config.AppEngineApplicationXmlReader;
+import com.google.apphosting.utils.config.EarHelper;
+import com.google.apphosting.utils.config.EarInfo;
 import com.google.common.base.Joiner;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
@@ -43,14 +51,14 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
    */
   protected String gcloud_app_docker_host;
   /**
-   * docker_host
+   * docker_tls_verify
    *
    * @parameter default-value="ENV_or_default"
    */
   protected String gcloud_app_docker_tls_verify;
 
   /**
-   * docker_host
+   * docker_host_cert_path
    *
    * @parameter default-value="ENV_or_default"
    */
@@ -95,7 +103,7 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
     if (gcloud_project != null) {
       commands.add("--project=" + gcloud_project);
     } else {
-      commands.add("--project=" + getAppEngineWebXml().getAppId());
+      commands.add("--project=" + getAppId());
     }
     if (gcloud_verbosity != null) {
       commands.add("--verbosity=" + gcloud_verbosity);
@@ -129,43 +137,49 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
 
       processBuilder.redirectErrorStream(true);
       Map<String, String> env = processBuilder.environment();
-      if ("ENV_or_default".equals(gcloud_app_docker_host)) {
-        if (env.get("DOCKER_HOST") == null) {
-          env.put("DOCKER_HOST", "tcp://192.168.59.103:2376");
-        }
-      } else {
-        env.put("DOCKER_HOST", gcloud_app_docker_host);
-      }
-      if ("ENV_or_default".equals(gcloud_app_docker_host)) {
-        if (env.get("DOCKER_HOST") == null) {
-          env.put("DOCKER_HOST", "tcp://192.168.59.103:2376");
-        }
-      } else {
-        env.put("DOCKER_HOST", gcloud_app_docker_host);
-      }
+      String docker_host = env.get("DOCKER_HOST");
+      String docker_host_tls_verify = env.get("DOCKER_TLS_VERIFY");
+      String docker_host_cert_path = env.get("DOCKER_CERT_PATH");
+      boolean userDefined = (docker_host != null)
+              || (docker_host_tls_verify != null)
+              || (docker_host_cert_path != null);
 
-      if ("ENV_or_default".equals(gcloud_app_docker_tls_verify)) {
-        if (env.get("DOCKER_TLS_VERIFY") == null) {
-          env.put("DOCKER_TLS_VERIFY", "1");
+      if (!userDefined) {
+        if ("ENV_or_default".equals(gcloud_app_docker_host)) {
+          if (docker_host == null) {
+            docker_host = "tcp://192.168.59.103:2376";
+          }
+        } else {
+          docker_host = gcloud_app_docker_host;
         }
-      } else {
-        env.put("DOCKER_TLS_VERIFY", gcloud_app_docker_tls_verify);
-      }
+        env.put("DOCKER_HOST", docker_host);
 
-      if ("ENV_or_default".equals(gcloud_app_docker_cert_path)) {
-        if (env.get("DOCKER_CERT_PATH") == null) {
-          env.put("DOCKER_CERT_PATH",
-                  System.getProperty("user.home")
-                  + File.separator
-                  + ".boot2docker"
-                  + File.separator
-                  + "certs"
-                  + File.separator
-                  + "boot2docker-vm"
-          );
+        // we handle TLS extra variables only when we are tcp:
+        if (docker_host.startsWith("tcp")) {
+          if ("ENV_or_default".equals(gcloud_app_docker_tls_verify)) {
+            if (env.get("DOCKER_TLS_VERIFY") == null) {
+              env.put("DOCKER_TLS_VERIFY", "1");
+            }
+          } else {
+            env.put("DOCKER_TLS_VERIFY", gcloud_app_docker_tls_verify);
+          }
+
+          if ("ENV_or_default".equals(gcloud_app_docker_cert_path)) {
+            if (env.get("DOCKER_CERT_PATH") == null) {
+              env.put("DOCKER_CERT_PATH",
+                      System.getProperty("user.home")
+                      + File.separator
+                      + ".boot2docker"
+                      + File.separator
+                      + "certs"
+                      + File.separator
+                      + "boot2docker-vm"
+              );
+            }
+          } else {
+            env.put("DOCKER_CERT_PATH", gcloud_app_docker_cert_path);
+          }
         }
-      } else {
-        env.put("DOCKER_CERT_PATH", gcloud_app_docker_cert_path);
       }
       //export DOCKER_CERT_PATH=/Users/ludo/.boot2docker/certs/boot2docker-vm
       //export DOCKER_TLS_VERIFY=1
@@ -254,13 +268,34 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
     return applicationDirectory;
   }
 
-  protected AppEngineWebXml getAppEngineWebXml() throws MojoExecutionException {
+  protected String getAppId() throws MojoExecutionException {
 
+    String appDir = getApplicationDirectory();
+    if (EarHelper.isEar(appDir)) { // EAR project
+      AppEngineApplicationXmlReader reader
+              = new AppEngineApplicationXmlReader();
+      AppEngineApplicationXml appEngineApplicationXml = reader.processXml(
+              getInputStream(new File(appDir, "META-INF/appengine-application.xml")));
+      return appEngineApplicationXml.getApplicationId();
+
+    }
+
+    return getAppEngineWebXml().getAppId();
+  }
+
+  private static InputStream getInputStream(File file) {
+    try {
+      return new FileInputStream(file);
+    } catch (FileNotFoundException fnfe) {
+      throw new IllegalStateException("File should exist - '" + file + "'");
+    }
+  }
+
+  protected AppEngineWebXml getAppEngineWebXml() throws MojoExecutionException {
     if (appengineWebXml == null) {
       AppEngineWebXmlReader reader = new AppEngineWebXmlReader(getApplicationDirectory());
       appengineWebXml = reader.readAppEngineWebXml();
     }
     return appengineWebXml;
   }
-
 }
