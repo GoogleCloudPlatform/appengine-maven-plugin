@@ -3,7 +3,7 @@
  */
 package com.google.appengine.gcloudapp;
 
-import com.google.appengine.gcloudapp.temp.AppEngineWebXml;
+import com.google.apphosting.utils.config.AppEngineWebXml;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.File;

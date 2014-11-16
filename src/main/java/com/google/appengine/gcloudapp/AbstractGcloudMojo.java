@@ -3,13 +3,12 @@
  */
 package com.google.appengine.gcloudapp;
 
-import com.google.appengine.gcloudapp.temp.AppEngineWebXml;
-import com.google.appengine.gcloudapp.temp.AppEngineWebXmlReader;
-import com.google.appengine.tools.admin.Application;
+
 import com.google.apphosting.utils.config.AppEngineApplicationXml;
 import com.google.apphosting.utils.config.AppEngineApplicationXmlReader;
+import com.google.apphosting.utils.config.AppEngineWebXml;
+import com.google.apphosting.utils.config.AppEngineWebXmlReader;
 import com.google.apphosting.utils.config.EarHelper;
-import com.google.apphosting.utils.config.EarInfo;
 import com.google.common.base.Joiner;
 import java.io.File;
 import java.io.FileInputStream;
