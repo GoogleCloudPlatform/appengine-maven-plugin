@@ -92,12 +92,49 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
   protected abstract ArrayList<String> getCommand(String appDir) throws MojoExecutionException;
 
   protected ArrayList<String> setupInitialCommands(ArrayList<String> commands) throws MojoExecutionException {
-    commands.add("python");
-    commands.add("-S");
-    if (gcloud_directory == null) {
-      gcloud_directory = System.getProperty("user.home") + "/google-cloud-sdk";
-      getLog().info("gcloud_directory was not set, so taking: " + gcloud_directory);
+    String pythonLocation = "python"; //default in the path for Linux
+    boolean isWindows = System.getProperty("os.name").contains("Windows");
+    if (isWindows) {
+      pythonLocation = System.getenv("CLOUDSDK_PYTHON");
+      if (pythonLocation == null) {
+        getLog().info("CLOUDSDK_PYTHON env variable is not defined. Choosing a default python.exe interpreter.");
+        getLog().info("If this does not work, please set CLOUDSDK_PYTHON to a correct Python interpreter location.");
+
+        pythonLocation = "python.exe";
+      }
     }
+    commands.add(pythonLocation);
+    commands.add("-S");
+
+    boolean error = false;
+    if (gcloud_directory == null) {
+      if (isWindows) {
+        String programFiles = System.getenv("ProgramFiles");
+        if (programFiles == null) {
+          programFiles = System.getenv("ProgramFiles(x86)");
+        }
+        if (programFiles == null) {
+          error = true;
+        } else {
+          gcloud_directory = programFiles + "\\Google\\Cloud SDK\\google-cloud-sdk";
+        }
+      } else {
+        gcloud_directory = System.getProperty("user.home") + "/google-cloud-sdk";
+      }
+    }
+    getLog().info("gcloud_directory=" + gcloud_directory);
+    File s = new File(gcloud_directory);
+    getLog().info("" + s.exists());
+    File script = new File(s, "/lib/googlecloudsdk/gcloud/gcloud.py");
+    getLog().info("" + script.exists());
+
+    if (error || !script.exists()) {
+      getLog().error("Cannot determine the location of the Google Cloud SDK.");
+      getLog().error("You can set it via <gcloud_directory> </gcloud_directory> in the pom.xml");
+      getLog().info("If you need to install the Google Cloud SDK, follow the instructions located at https://cloud.google.com/appengine/docs/java/managed-vms");
+      throw new MojoExecutionException("Unkown Google Cloud SDK location.");
+    }
+
     commands.add(gcloud_directory + "/lib/googlecloudsdk/gcloud/gcloud.py");
 
     if (gcloud_project != null) {
