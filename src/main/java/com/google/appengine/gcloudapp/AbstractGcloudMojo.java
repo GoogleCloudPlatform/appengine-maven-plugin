@@ -121,11 +121,8 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
         gcloud_directory = System.getProperty("user.home") + "/google-cloud-sdk";
       }
     }
-    getLog().info("gcloud_directory=" + gcloud_directory);
     File s = new File(gcloud_directory);
-    getLog().info("" + s.exists());
     File script = new File(s, "/lib/googlecloudsdk/gcloud/gcloud.py");
-    getLog().info("" + script.exists());
 
     if (error || !script.exists()) {
       getLog().error("Cannot determine the location of the Google Cloud SDK.");
