@@ -144,6 +144,20 @@ public abstract class AbstractGcloudMojo extends AbstractMojo {
 
     commands.add("preview");
     commands.add("app");
+    getLog().warn("");
+    getLog().warn("Starting with version 1.9.17, the Cloud SDK Maven commands are moving to a new Maven plugin.");
+    getLog().warn("Please, upgrade your pom.xml with this section:");
+    getLog().warn("  <plugin>");
+    getLog().warn("    <groupId>com.google.appengine</groupId>");
+    getLog().warn("    <artifactId>gcloud-maven-plugin</artifactId>");
+    getLog().warn("    <version>1.9.17</version>");
+    getLog().warn("  </plugin>");
+    getLog().warn("");
+    getLog().warn("All the Cloud SDK <gcloud_app_XXX> configurations have been renamed to <XXX>");
+    getLog().warn("Thank you for upgrading as soon as you can to the new <gcloud-maven-plugin>.");
+    getLog().warn("This will become a mandatory upgrade for the version 1.9.18.");
+    getLog().warn("");
+    
     return commands;
   }
 
