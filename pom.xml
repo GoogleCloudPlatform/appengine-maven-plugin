@@ -140,12 +140,6 @@
             <version>2.1.1</version>
             <type>jar</type>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-xml</artifactId>
-            <version>9.2.3.v20140905</version>
-            <type>jar</type>
-        </dependency>
     </dependencies>
 
     <build>
