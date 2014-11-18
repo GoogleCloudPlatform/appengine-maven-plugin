@@ -53,10 +53,6 @@
     </licenses>
 
     <repositories>
-          <repository>
-      <id>gae-staging</id>
-      <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1168/</url>
-    </repository>
     <repository>
             <id>sonatype-google-releases</id>
             <name>Sonatype Google Releases</name>
