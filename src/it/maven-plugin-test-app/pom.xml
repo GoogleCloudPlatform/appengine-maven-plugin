@@ -23,17 +23,17 @@
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>1.9.17</version>
+            <version>1.9.17a</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-endpoints</artifactId>
-            <version>1.9.17</version>
+            <version>1.9.17a</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-endpoints-deps</artifactId>
-            <version>1.9.17</version>
+            <version>1.9.17a</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -49,7 +49,7 @@
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.9.17-SNAPSHOT</version>
+                <version>1.9.17a-SNAPSHOT</version>
                 <configuration>
                     <version>1</version>
                     <backendName>test-back</backendName>
