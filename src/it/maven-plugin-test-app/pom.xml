@@ -49,7 +49,7 @@
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.9.21</version>
+                <version>1.9.21-SNAPSHOT</version>
                 <configuration>
                     <version>1</version>
                     <backendName>test-back</backendName>
