@@ -26,6 +26,8 @@ import java.util.List;
  */
 public abstract class AbstractAppCfgMojo extends AbstractMojo {
 
+  private static final String USER_AGENT_KEY = "appengine.useragent";
+  
   /**
    * The entry point to Aether, i.e. the component doing all the work.
    *
@@ -271,7 +273,9 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   }
 
   protected ArrayList<String> collectParameters() {
-    ArrayList<String> arguments = new ArrayList<String>();
+    // For appcfg user agent metric.
+    System.setProperty(USER_AGENT_KEY, "appengine-maven-plugin");
+    ArrayList<String> arguments = new ArrayList<>();
 
     if (server != null && !server.isEmpty()) {
       arguments.add("-s");
