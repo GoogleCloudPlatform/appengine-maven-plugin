@@ -27,7 +27,7 @@ import java.util.List;
 public abstract class AbstractAppCfgMojo extends AbstractMojo {
 
   private static final String USER_AGENT_KEY = "appengine.useragent";
-  
+
   /**
    * The entry point to Aether, i.e. the component doing all the work.
    *
@@ -232,13 +232,20 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * @readonly
    */
   protected MavenProject project;
-  
+
   /**
    * Instance id to for vm debug.
    *
    * @parameter expression="${appengine.instance}"
    */
   protected String instance;
+
+  /**
+   * Additional parameters to pass through to AppCfg.
+   *
+   * @parameter expression="${appengine.additionalParams}"
+   */
+  protected String[] additionalParams;
 
   protected void executeAppCfgCommand(String action, String appDir)
       throws MojoExecutionException {
@@ -321,7 +328,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
       arguments.add("-V");
       arguments.add(version);
     }
-    
+
     if (oauth2) {
       arguments.add("--oauth2");
     }
@@ -368,6 +375,14 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
 
     if (enableJarClasses) {
       arguments.add("--enable_jar_classes");
+    }
+
+    if (additionalParams != null) {
+      for (String param : additionalParams) {
+        if (param != null && !param.isEmpty()) {
+          arguments.add(param);
+        }
+      }
     }
 
     return arguments;
