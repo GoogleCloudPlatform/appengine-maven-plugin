@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <appengine.target.version>1.9.37</appengine.target.version>
+        <appengine.target.version>1.9.38</appengine.target.version>
         <datanucleus.version>3.2.0-m1</datanucleus.version>
     </properties>
 
@@ -58,6 +58,11 @@
             <name>Sonatype Google Releases</name>
             <url>https://oss.sonatype.org/service/local/repositories/google-releases/content</url>
         </repository>
+    <repository>
+      <id>gae-staging</id>
+      <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1292/</url>
+    </repository>
+
     </repositories>
 
     <distributionManagement>
