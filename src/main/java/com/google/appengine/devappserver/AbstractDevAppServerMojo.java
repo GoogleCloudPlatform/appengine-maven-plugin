@@ -130,6 +130,11 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
    * @parameter expression="${appengine.fullScanSeconds}" default-value="5"
    */
   protected Integer fullScanSeconds;
+  
+  private boolean isVM;
+
+  private boolean needsJetty9;
+
 
   protected ArrayList<String> getDevAppServerCommand(String appDir) throws MojoExecutionException {
 
@@ -145,9 +150,8 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     if (System.getProperty("os.name").equalsIgnoreCase("Mac OS X")) {
       devAppServerCommand.add("-XstartOnFirstThread");
     }
-
-    boolean isVM = isVMRuntime();
-    if (!isVM) {
+    getInfoFromAppEngineWebXml();
+    if (!isVM && !needsJetty9) {
       // Add in the appengine agent
       String appengineAgentJar = new File(sdkBaseDir, joinOnFileSeparator("lib", "agent", "appengine-agent.jar")).getAbsolutePath();
       devAppServerCommand.add("-javaagent:" + appengineAgentJar);
@@ -160,6 +164,10 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
 
     if (fullScanSeconds != null) {
       devAppServerCommand.add("-Dappengine.fullscan.seconds="+fullScanSeconds);
+    }
+    if (needsJetty9) {
+       devAppServerCommand.add("-Duse_jetty9_runtime=true");
+     
     }
         
     // Setup the classpath to point to the tools jar
@@ -178,7 +186,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     // Enable the shutdown hook
     devAppServerCommand.add("--allow_remote_shutdown");
     
-    if (isVM) {
+    if (isVM || needsJetty9) {
        devAppServerCommand.add("--no_java_agent");
     }
 
@@ -308,15 +316,19 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     return Joiner.on(separator).join(ImmutableList.copyOf(pathComponents));
   }
   
-  private boolean isVMRuntime() {
+  private void getInfoFromAppEngineWebXml() {
     String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
     File f = new File(appDir, "WEB-INF/appengine-web.xml");
     if (!f.exists()) { // EAR project possibly.
-      return true;
+      return ;
     }
 
     AppEngineWebXmlReader aewebReader = new AppEngineWebXmlReader(appDir);
     AppEngineWebXml appEngineWebXml = aewebReader.readAppEngineWebXml();
-    return appEngineWebXml.getUseVm();
+    isVM = appEngineWebXml.getUseVm();
+    String runtime = appEngineWebXml.getRuntime();
+    if (runtime!=null) {
+       needsJetty9 = runtime.startsWith("java8");
+    }
   }
 }
