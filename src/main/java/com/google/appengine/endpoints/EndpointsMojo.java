@@ -105,15 +105,13 @@ public abstract class EndpointsMojo extends AbstractMojo {
     }
     for (String param : lastParam) {
       arguments.add(param);
-      getLog().info("Using Class Name:" + param);
+      getLog().info("Using Class Name: " + param);
     }
     try {
       getLog().info("Executing endpoints Command=" + arguments);
-      EndpointsTool.main(arguments.toArray(new String[arguments.size()]));
+      new EndpointsTool().execute(arguments.toArray(new String[arguments.size()]));
     } catch (Exception ex) {
-      getLog().error(ex);
-      throw new MojoExecutionException("Error executing endpoints command="
-          + arguments, ex);
+      throw new MojoExecutionException(ex.getMessage());
     }
   }
   
