@@ -4,7 +4,7 @@
     <groupId>com.google.appengine</groupId>
     <artifactId>appengine-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>1.9.45-SNAPSHOT</version>
+    <version>1.9.46-SNAPSHOT</version>
     <name>A Maven Plugin for running and deploying appengine applications</name>
     <description>
         The App Engine maven plugin which can be used to interact with
@@ -16,7 +16,7 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <appengine.target.version>1.9.44</appengine.target.version>
+        <appengine.target.version>1.9.46</appengine.target.version>
         <datanucleus.version>3.2.0-m1</datanucleus.version>
     </properties>
 
@@ -111,7 +111,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>18.0</version>
+            <version>19.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
