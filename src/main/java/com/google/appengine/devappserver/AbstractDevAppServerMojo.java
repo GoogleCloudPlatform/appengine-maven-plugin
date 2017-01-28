@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
 
-import static com.google.appengine.repackaged.com.google.common.base.Objects.firstNonNull;
+import static com.google.common.base.Objects.firstNonNull;
 import com.google.apphosting.utils.config.AppEngineWebXml;
 import com.google.apphosting.utils.config.AppEngineWebXmlReader;
 import static java.io.File.separator;
