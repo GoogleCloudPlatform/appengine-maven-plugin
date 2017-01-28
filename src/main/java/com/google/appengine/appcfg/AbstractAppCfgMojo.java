@@ -5,6 +5,8 @@ package com.google.appengine.appcfg;
 
 import com.google.appengine.SdkResolver;
 import com.google.appengine.tools.admin.AppCfg;
+import com.google.apphosting.utils.config.AppEngineWebXml;
+import com.google.apphosting.utils.config.AppEngineWebXmlReader;
 import com.google.common.base.Joiner;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -279,7 +281,19 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     }
   }
 
-  protected ArrayList<String> collectParameters() {
+  protected ArrayList<String> collectParameters() throws MojoExecutionException {
+    String userDefinedAppId = null;
+    String userDefinedVersion = null;
+    String appDir = project.getBuild().getDirectory()
+            + "/"
+            + project.getBuild().getFinalName();
+    File f = new File(appDir, "WEB-INF/appengine-web.xml");
+    if (f.exists()) {
+      AppEngineWebXmlReader aewebReader = new AppEngineWebXmlReader(appDir);
+      AppEngineWebXml appEngineWebXml = aewebReader.readAppEngineWebXml();
+      userDefinedAppId = appEngineWebXml.getAppId();
+      userDefinedVersion = appEngineWebXml.getMajorVersionId();
+    }
     // For appcfg user agent metric.
     System.setProperty(USER_AGENT_KEY, "appengine-maven-plugin");
     ArrayList<String> arguments = new ArrayList<>();
@@ -320,13 +334,29 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     }
 
     if (appId != null && !appId.isEmpty()) {
+      userDefinedAppId = appId;
+    }
+    if (userDefinedAppId != null) {
+      validateAppIdOrVersion(userDefinedAppId);
       arguments.add("-A");
-      arguments.add(appId);
+      arguments.add(userDefinedAppId);
+    } else {
+      throw new MojoExecutionException(
+              "No <application> defined in appengine-web.xml, nor <appId>"
+              + " <configuration> defined in the pom.xml.");
     }
 
     if (version != null && !version.isEmpty()) {
+      userDefinedVersion = version;
+    }
+    if (userDefinedVersion != null) {
+      validateAppIdOrVersion(userDefinedVersion);
       arguments.add("-V");
-      arguments.add(version);
+      arguments.add(userDefinedVersion);
+    } else {
+      throw new MojoExecutionException(
+              "No <version> defined in appengine-web.xml, nor <version>"
+              + " <configuration> defined in the pom.xml.");
     }
 
     if (oauth2) {
@@ -386,6 +416,19 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     }
 
     return arguments;
+  }
+  
+  private void validateAppIdOrVersion(String value)
+          throws MojoExecutionException {
+    boolean hasUppercase = !value.equals(value.toLowerCase());
+    if (hasUppercase) {
+      throw new MojoExecutionException(
+              "\nError: App Engine Application Id or version cannot contain uppercase: " + value);
+    }
+    if (value.contains(".")) {
+      throw new MojoExecutionException(
+              "\nError: App Engine Application Id or version cannot contain dot: " + value);
+    }
   }
 
   protected void resolveAndSetSdkRoot() throws MojoExecutionException {
