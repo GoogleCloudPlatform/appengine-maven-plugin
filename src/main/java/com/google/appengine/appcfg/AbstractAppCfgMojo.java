@@ -5,8 +5,11 @@ package com.google.appengine.appcfg;
 
 import com.google.appengine.SdkResolver;
 import com.google.appengine.tools.admin.AppCfg;
+import com.google.appengine.tools.admin.Application;
 import com.google.apphosting.utils.config.AppEngineWebXml;
 import com.google.apphosting.utils.config.AppEngineWebXmlReader;
+import com.google.apphosting.utils.config.EarHelper;
+import com.google.apphosting.utils.config.EarInfo;
 import com.google.common.base.Joiner;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -284,6 +287,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected ArrayList<String> collectParameters() throws MojoExecutionException {
     String userDefinedAppId = null;
     String userDefinedVersion = null;
+    boolean isEAR = false;
     String appDir = project.getBuild().getDirectory()
             + "/"
             + project.getBuild().getFinalName();
@@ -293,7 +297,13 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
       AppEngineWebXml appEngineWebXml = aewebReader.readAppEngineWebXml();
       userDefinedAppId = appEngineWebXml.getAppId();
       userDefinedVersion = appEngineWebXml.getMajorVersionId();
+    } else if (EarHelper.isEar(appDir, false)) {
+      EarInfo earInfo = EarHelper.readEarInfo(appDir,
+              new File(Application.getSdkDocsDir(), "appengine-application.xsd"));
+      userDefinedAppId = earInfo.getAppengineApplicationXml().getApplicationId();
+      isEAR = true;
     }
+    
     // For appcfg user agent metric.
     System.setProperty(USER_AGENT_KEY, "appengine-maven-plugin");
     ArrayList<String> arguments = new ArrayList<>();
@@ -354,9 +364,12 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
       arguments.add("-V");
       arguments.add(userDefinedVersion);
     } else {
-      throw new MojoExecutionException(
-              "No <version> defined in appengine-web.xml, nor <version>"
-              + " <configuration> defined in the pom.xml.");
+      if (!isEAR) {
+        // EAR structure would need to define versions per service/module...
+        throw new MojoExecutionException(
+                "No <version> defined in appengine-web.xml, nor <version>"
+                + " <configuration> defined in the pom.xml.");
+      }
     }
 
     if (oauth2) {
