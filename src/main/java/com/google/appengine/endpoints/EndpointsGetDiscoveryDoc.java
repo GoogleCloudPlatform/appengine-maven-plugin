@@ -43,13 +43,10 @@ public class EndpointsGetDiscoveryDoc extends EndpointsMojo {
       getLog().info("No Endpoints classes detected.");
       return;
     }
-    String rest[] = {"-f", "rest"};
+    String rest[] = {};
     executeEndpointsCommand("get-discovery-doc", rest,
                     classNames.toArray(new String[classNames.size()]));
-    String rpc[] = {"-f", "rpc"};
-    executeEndpointsCommand("get-discovery-doc", rpc,
-                    classNames.toArray(new String[classNames.size()]));
-    getLog().info("Endpoints discovery doc generation done.");
+    getLog().info("Endpoints discovery doc (Rest style) generation done.");
 
   }
 }
