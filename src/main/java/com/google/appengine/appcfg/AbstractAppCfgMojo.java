@@ -438,7 +438,8 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
       throw new MojoExecutionException(
               "\nError: App Engine Application Id or version cannot contain uppercase: " + value);
     }
-    if (value.contains(".")) {
+    // Support cases like google.com:foo, ie accept . only when there is a :
+    if (!value.contains(":") && value.contains(".")) {
       throw new MojoExecutionException(
               "\nError: App Engine Application Id or version cannot contain dot: " + value);
     }
