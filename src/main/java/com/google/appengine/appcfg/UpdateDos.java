@@ -25,11 +25,9 @@ public class UpdateDos extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Updating DoS configuration for Google App Engine Application");
 
-    executeAppCfgCommand("update_dos", appDir);
+    executeAppCfgCommand("update_dos");
   }
 
 }

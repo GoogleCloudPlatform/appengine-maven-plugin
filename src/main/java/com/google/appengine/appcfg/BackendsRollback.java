@@ -25,11 +25,9 @@ public class BackendsRollback extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Rolling Back Google App Engine Application Backend " + backendName);
 
-    executeAppCfgBackendsCommand("rollback", appDir);
+    executeAppCfgBackendsCommand("rollback");
   }
 
 }

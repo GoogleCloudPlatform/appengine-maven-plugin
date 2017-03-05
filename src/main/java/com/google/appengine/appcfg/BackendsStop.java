@@ -25,11 +25,9 @@ public class BackendsStop extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Stop Google App Engine Application Backend " + backendName);
 
-    executeAppCfgBackendsCommand("stop", appDir);
+    executeAppCfgBackendsCommand("stop");
   }
 
 }

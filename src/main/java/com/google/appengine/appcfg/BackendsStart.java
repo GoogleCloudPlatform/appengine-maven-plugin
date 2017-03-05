@@ -25,11 +25,9 @@ public class BackendsStart extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Start Google App Engine Application Backend " + backendName);
 
-    executeAppCfgBackendsCommand("start", appDir);
+    executeAppCfgBackendsCommand("start");
   }
 
 }

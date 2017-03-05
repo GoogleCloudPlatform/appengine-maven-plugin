@@ -25,10 +25,8 @@ public class Update extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Updating Google App Engine Application");
 
-    executeAppCfgCommand("update", appDir);
+    executeAppCfgCommand("update");
   }
 }

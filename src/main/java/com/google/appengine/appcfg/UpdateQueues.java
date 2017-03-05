@@ -25,11 +25,9 @@ public class UpdateQueues extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Updating task queue definitions for Google App Engine Application");
 
-    executeAppCfgCommand("update_queues", appDir);
+    executeAppCfgCommand("update_queues");
   }
 
 }

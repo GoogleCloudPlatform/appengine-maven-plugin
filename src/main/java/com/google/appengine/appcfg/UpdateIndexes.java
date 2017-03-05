@@ -25,11 +25,9 @@ public class UpdateIndexes extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Updating indexes for Google App Engine Application");
 
-    executeAppCfgCommand("update_indexes", appDir);
+    executeAppCfgCommand("update_indexes");
   }
 
 }
