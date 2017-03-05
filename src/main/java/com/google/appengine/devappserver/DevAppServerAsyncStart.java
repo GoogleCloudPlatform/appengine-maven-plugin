@@ -6,7 +6,6 @@ package com.google.appengine.devappserver;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -18,36 +17,15 @@ import java.util.ArrayList;
  * @threadSafe false
  */
 public class DevAppServerAsyncStart extends AbstractDevAppServerMojo {
-  /**
-   * The location of the appengine application to run.
-   *
-   * @parameter expression="${appengine.appDir}"
-   */
-  protected String appDir;
-
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
     getLog().info("Google App Engine Java SDK - Starting the Development Server");
     getLog().info("");
 
-    if(appDir == null) {
-      appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-    }
-    
-    File appDirFile = new File(appDir);
+    ArrayList<String> devAppServerCommand = getDevAppServerCommand();
 
-    if(!appDirFile.exists()) {
-      throw new MojoExecutionException("The application directory does not exist : " + appDir);
-    }
-
-    if(!appDirFile.isDirectory()) {
-      throw new MojoExecutionException("The application directory is not a directory : " + appDir);
-    }
-
-    ArrayList<String> devAppServerCommand = getDevAppServerCommand(appDir);
-
-    startDevAppServer(appDirFile, devAppServerCommand, WaitDirective.WAIT_SERVER_STARTED);
+    startDevAppServer(devAppServerCommand, WaitDirective.WAIT_SERVER_STARTED);
   }
 
 }
