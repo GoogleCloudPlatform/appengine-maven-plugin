@@ -6,17 +6,28 @@ package com.google.appengine.appcfg;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-/**
- * Configure the specified backend.
- *
- * @author Matt Stephenson <mattstep@google.com>
- * @goal backends_configure
- * @execute phase="package"
- */
 public class BackendsConfigure extends AbstractAppCfgMojo {
 
+  /**
+   * Configure the specified backend.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal backends_configure
+   * @execute phase="package"
+   */
+  public static class BackendsConfigureFork extends BackendsConfigure {}
+
+  /**
+   * Configure the specified backend.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal backends_configure_no_fork
+   */
+  public static class BackendsConfigureNoFork extends BackendsConfigure {}
+
+
   @Override
-  public void execute() throws MojoExecutionException, MojoFailureException {
+  public final void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
     getLog().info("Google App Engine Java SDK - Configure Application Backends");
     getLog().info("");

@@ -10,17 +10,28 @@ import java.io.File;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-/**
- * Rollback an in-progress update.
- *
- * @author Matt Stephenson <mattstep@google.com>
- * @goal rollback
- * @execute phase="package"
- */
 public class Rollback extends AbstractAppCfgMojo {
 
+  /**
+   * Rollback an in-progress update.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal rollback
+   * @execute phase="package"
+   */
+  public static class RollbackFork extends Rollback {}
+
+  /**
+   * Rollback an in-progress update.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal rollback_no_fork
+   */
+  public static class RollbackNoFork extends Rollback {}
+
+
   @Override
-  public void execute() throws MojoExecutionException, MojoFailureException {
+  public final void execute() throws MojoExecutionException, MojoFailureException {
 
     getLog().info("");
     getLog().info("Google App Engine Java SDK - Rolling Back Application");

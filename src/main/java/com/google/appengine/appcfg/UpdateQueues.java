@@ -6,17 +6,28 @@ package com.google.appengine.appcfg;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-/**
- * Update application task queue definitions.
- *
- * @author Matt Stephenson <mattstep@google.com>
- * @goal update_queues
- * @execute phase="package"
- */
 public class UpdateQueues extends AbstractAppCfgMojo {
 
+  /**
+   * Update application task queue definitions.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal update_queues
+   * @execute phase="package"
+   */
+  public static class UpdateQueuesFork extends UpdateQueues {}
+
+  /**
+   * Update application task queue definitions.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal update_queues_no_fork
+   */
+  public static class UpdateQueuesNoFork extends UpdateQueues {}
+
+
   @Override
-  public void execute() throws MojoExecutionException, MojoFailureException {
+  public final void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
     getLog().info("Google App Engine Java SDK - Updating Application Task Queue definitions");
     getLog().info("");

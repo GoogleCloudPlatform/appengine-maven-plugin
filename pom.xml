@@ -160,6 +160,15 @@
                         <goal>appengine:vacuum_indexes</goal>
                         <goal>appengine:set_default_version</goal>
                         <goal>appengine:rollback</goal>
+
+                        <goal>appengine:update_no_fork</goal>
+                        <goal>appengine:update_cron_no_fork</goal>
+                        <goal>appengine:update_dos_no_fork</goal>
+                        <goal>appengine:update_indexes_no_fork</goal>
+                        <goal>appengine:update_queues_no_fork</goal>
+                        <goal>appengine:vacuum_indexes_no_fork</goal>
+                        <goal>appengine:set_default_version_no_fork</goal>
+                        <goal>appengine:rollback_no_fork</goal>
                     </goals>
                     <settingsFile>src/it/settings.xml</settingsFile>
                     <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>

@@ -6,16 +6,28 @@ package com.google.appengine.appcfg;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-/**
- * Change the default version, but more gently than set_default_version.
- * @author ludo
- * @goal migrate_traffic
- * @execute phase="package"
- */
-public class TrafficMigration  extends AbstractAppCfgMojo {
+public class TrafficMigration extends AbstractAppCfgMojo {
+
+  /**
+   * Change the default version, but more gently than set_default_version.
+   *
+   * @author ludo
+   * @goal migrate_traffic
+   * @execute phase="package"
+   */
+  public static class TrafficMigrationFork extends TrafficMigration {}
+
+  /**
+   * Change the default version, but more gently than set_default_version.
+   *
+   * @author ludo
+   * @goal migrate_traffic_no_fork
+   */
+  public static class TrafficMigrationNoFork extends TrafficMigration {}
+
 
   @Override
-  public void execute() throws MojoExecutionException, MojoFailureException {
+  public final void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
     getLog().info("Google App Engine Java SDK - Traffic Migration for Application");
     getLog().info("");

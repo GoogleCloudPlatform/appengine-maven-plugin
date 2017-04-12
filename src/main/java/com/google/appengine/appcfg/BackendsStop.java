@@ -6,17 +6,28 @@ package com.google.appengine.appcfg;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-/**
- * Stop the specified backend.
- *
- * @author Matt Stephenson <mattstep@google.com>
- * @goal backends_stop
- * @execute phase="package"
- */
 public class BackendsStop extends AbstractAppCfgMojo {
 
+  /**
+   * Stop the specified backend.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal backends_stop
+   * @execute phase="package"
+   */
+  public static class BackendsStopFork extends BackendsStop {}
+
+  /**
+   * Stop the specified backend.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal backends_stop_no_fork
+   */
+  public static class BackendsStopNoFork extends BackendsStop {}
+
+
   @Override
-  public void execute() throws MojoExecutionException, MojoFailureException {
+  public final void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
     getLog().info("Google App Engine Java SDK - Stop Application Backends");
     getLog().info("");
