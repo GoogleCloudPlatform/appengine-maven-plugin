@@ -29,7 +29,7 @@ import java.util.List;
 public abstract class EndpointsMojo extends AbstractMojo {
 
   /**
-   * @parameter expression="${project}"
+   * @parameter property="project"
    * @required
    * @readonly
    */
@@ -38,21 +38,21 @@ public abstract class EndpointsMojo extends AbstractMojo {
   /**
    * The classpath of the service-classes.
    *
-   * @parameter expression="${classes}" default-value="${project.build.directory}/classes"
+   * @parameter property="classes" default-value="${project.build.directory}/classes"
    */
   protected String classes;
 
   /**
    * The directory for the generated discovery file.
    *
-   * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/generated-sources/appengine-endpoints"
+   * @parameter property="outputDirectory" default-value="${project.build.directory}/generated-sources/appengine-endpoints"
    */
   protected String outputDirectory;
 
   /**
    * The source location of the web.xml file.
    *
-   * @parameter expression="${warSourceDirectory}" default-value="${basedir}/src/main/webapp/WEB-INF/web.xml"
+   * @parameter property="warSourceDirectory" default-value="${basedir}/src/main/webapp/WEB-INF/web.xml"
    */
   private String webXmlSourcePath;
   
@@ -61,14 +61,14 @@ public abstract class EndpointsMojo extends AbstractMojo {
    * If not specified, the maven plugin will calculate the list based on
    * Annotation scanning of @Api classes.
    *
-   * @parameter expression="${serviceClassNames}"
+   * @parameter property="serviceClassNames"
    */
   protected String serviceClassNames;
   
     /**
    * The build system used for building the generated client project: maven or gradle.
    *
-   * @parameter expression="${buildSystem}"  default-value="maven"
+   * @parameter property="buildSystem"  default-value="maven"
    */
   protected String buildSystem;
 

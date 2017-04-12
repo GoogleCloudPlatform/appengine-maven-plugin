@@ -16,12 +16,12 @@ import org.apache.maven.project.MavenProject;
 public class CreateGoodVersionFromPomVersionMojo extends AbstractMojo {
 
   /**
-   * @parameter expression="${project}" required="true"
+   * @parameter property="project" required="true"
    */
   private MavenProject mavenProject;
 
   /**
-   * @parameter expression="${$appengine.create-property-version}"
+   * @parameter property="$appengine.create-property-version"
    * default-value="AppEngineFriendlyVersion"
    */
   private String propertyName;

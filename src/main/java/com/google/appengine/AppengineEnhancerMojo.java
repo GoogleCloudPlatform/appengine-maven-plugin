@@ -24,7 +24,7 @@ import org.codehaus.plexus.util.xml.Xpp3DomUtils;
 public class AppengineEnhancerMojo extends AbstractMojo {
 
   /**
-   * @parameter expression="${project}"
+   * @parameter property="project"
    * @required
    * @readonly
    */
@@ -33,7 +33,7 @@ public class AppengineEnhancerMojo extends AbstractMojo {
   /**
    * The Maven Session Object
    *
-   * @parameter expression="${session}"
+   * @parameter property="session"
    * @required
    * @readonly
    */
@@ -50,7 +50,7 @@ public class AppengineEnhancerMojo extends AbstractMojo {
   /**
    * The api to use ( JDO or JPA ) for enhancement
    *
-   * @parameter expression="${appengine.enhancerApi}" default-value="JDO"
+   * @parameter property="appengine.enhancerApi" default-value="JDO"
    */
   private String enhancerApi;
 

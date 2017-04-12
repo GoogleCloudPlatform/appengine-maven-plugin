@@ -38,7 +38,7 @@ public class EndpointsGetClientLib extends EndpointsMojo {
   /**
    * The directory for the generated Maven client lib projects.
    *
-   * @parameter expression="${outputDirectory}" default-value="${project.build.directory}/endpoints-client-libs"
+   * @parameter property="outputDirectory" default-value="${project.build.directory}/endpoints-client-libs"
    */
   protected String clientLibsDirectory;  
   @Override

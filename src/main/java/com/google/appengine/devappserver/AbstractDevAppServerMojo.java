@@ -75,7 +75,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
   protected List<RemoteRepository> pluginRepos;
 
   /**
-   * @parameter expression="${project}"
+   * @parameter property="project"
    * @required
    * @readonly
    */
@@ -84,42 +84,42 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
   /**
    * The server to use to determine the latest SDK version.
    *
-   * @parameter expression="${appengine.server}"
+   * @parameter property="appengine.server"
    */
   protected String server;
 
   /**
    * The address of the interface on the local machine to bind to (or 0.0.0.0 for all interfaces).
    *
-   * @parameter expression="${appengine.address}"
+   * @parameter property="appengine.address"
    */
   protected String address;
 
   /**
    * The port number to bind to on the local machine.
    *
-   * @parameter expression="${appengine.port}"
+   * @parameter property="appengine.port"
    */
   protected Integer port;
 
   /**
    * Disable the check for newer SDK version.
    *
-   * @parameter expression="${appengine.disableUpdateCheck}"
+   * @parameter property="appengine.disableUpdateCheck"
    */
   protected boolean disableUpdateCheck;
 
   /**
    * Additional flags to the JVM used to run the dev server.
    *
-   * @parameter expression="${appengine.jvmFlags}"
+   * @parameter property="appengine.jvmFlags"
    */
   protected List<String> jvmFlags;
 
   /**
    * Whether the system is currently offline.
    *
-   * @parameter expression="${settings.offline}"
+   * @parameter property="settings.offline"
    */
   private boolean offline;
   
@@ -127,7 +127,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
    * The web app scan delay in seconds to check for app changes for app reload.
    * A negative value will cancel the scan thread.
    *
-   * @parameter expression="${appengine.fullScanSeconds}" default-value="5"
+   * @parameter property="appengine.fullScanSeconds" default-value="5"
    */
   protected Integer fullScanSeconds;
   

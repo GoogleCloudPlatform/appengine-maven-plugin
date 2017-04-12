@@ -68,21 +68,21 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   /**
    * The server to connect to.
    *
-   * @parameter expression="${appengine.server}"
+   * @parameter property="appengine.server"
    */
   protected String server;
 
   /**
    * The username to use.
    *
-   * @parameter expression="${appengine.email}"
+   * @parameter property="appengine.email"
    */
   protected String email;
 
   /**
    * Override for the Host header setn with all RPCs.
    *
-   * @parameter expression="${appengine.host}"
+   * @parameter property="appengine.host"
    */
   protected String host;
 
@@ -90,56 +90,56 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * Proxies requests through the given proxy server. If --proxy_https is also set, only HTTP will
    * be proxied here, otherwise both HTTP and HTTPS will.
    *
-   * @parameter expression="${appengine.proxyHost}"
+   * @parameter property="appengine.proxyHost"
    */
   protected String proxyHost;
 
   /**
    * Proxies HTTPS requests through the given proxy server.
    *
-   * @parameter expression="${appengine.proxyHttps}"
+   * @parameter property="appengine.proxyHttps"
    */
   protected String proxyHttps;
 
   /**
    * Do not save/load access credentials to/from disk.
    *
-   * @parameter expression="${appengine.noCookies}"
+   * @parameter property="appengine.noCookies"
    */
   protected boolean noCookies;
 
   /**
    * Always read the login password from stdin.
    *
-   * @parameter expression="${appengine.passin}"
+   * @parameter property="appengine.passin"
    */
   protected boolean passin;
 
   /**
    * Do not use HTTPS to communicate with the Admin Console.
    *
-   * @parameter expression="${appengine.insecure}"
+   * @parameter property="appengine.insecure"
    */
   protected boolean insecure;
 
   /**
    * Override application id from appengine-web.xml or app.yaml.
    *
-   * @parameter expression="${appengine.appId}"
+   * @parameter property="appengine.appId"
    */
   protected String appId;
 
   /**
    * Override version from appengine-web.xml or app.yaml.
    *
-   * @parameter expression="${appengine.version}"
+   * @parameter property="appengine.version"
    */
   protected String version;
 
   /**
    * Use OAuth2 instead of password auth.  Defaults to true.
    *
-   * @parameter default-value=true expression="${appengine.oauth2}"
+   * @parameter default-value=true property="appengine.oauth2"
    */
   protected boolean oauth2;
 
@@ -147,7 +147,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   /**
    * Split large jar files (> 10M) into smaller fragments.
    *
-   * @parameter expression="${appengine.enableJarSplitting}"
+   * @parameter property="appengine.enableJarSplitting"
    */
   protected boolean enableJarSplitting;
 
@@ -155,21 +155,21 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * When --enable-jar-splitting is set, files that match the list of comma separated SUFFIXES will
    * be excluded from all jars.
    *
-   * @parameter expression="${appengine.jarSplittingExcludes}"
+   * @parameter property="appengine.jarSplittingExcludes"
    */
   protected String jarSplittingExcludes;
 
   /**
    * Do not delete temporary (staging) directory used in uploading.
    *
-   * @parameter expression="${appengine.retainUploadDir}"
+   * @parameter property="appengine.retainUploadDir"
    */
   protected boolean retainUploadDir;
 
   /**
    * The character encoding to use when compiling JSPs.
    *
-   * @parameter expression="${appengine.compileEncoding}"
+   * @parameter property="appengine.compileEncoding"
    */
   protected boolean compileEncoding;
 
@@ -177,7 +177,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * Number of days worth of log data to get. The cut-off point is midnight UTC. Use 0 to get all
    * available logs. Default is 1.
    *
-   * @parameter expression="${appengine.numDays}"
+   * @parameter property="appengine.numDays"
    */
   protected Integer numDays;
 
@@ -185,54 +185,54 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * Severity of app-level log messages to get. The range is 0 (DEBUG) through 4 (CRITICAL). If
    * omitted, only request logs are returned.
    *
-   * @parameter expression="${appengine.severity}"
+   * @parameter property="appengine.severity"
    */
   protected String severity;
 
   /**
    * Append to existing file.
    *
-   * @parameter expression="${appengine.append}"
+   * @parameter property="appengine.append"
    */
   protected boolean append;
 
   /**
    * Number of scheduled execution times to compute.
    *
-   * @parameter expression="${appengine.numRuns}"
+   * @parameter property="appengine.numRuns"
    */
   protected Integer numRuns;
 
   /**
    * Force deletion of indexes without being prompted.
    *
-   * @parameter expression="${appengine.force}"
+   * @parameter property="appengine.force"
    */
   protected boolean force;
 
   /**
    * The name of the backend to perform actions on.
    *
-   * @parameter expression="${appengine.backendName}"
+   * @parameter property="appengine.backendName"
    */
   protected String backendName;
 
   /**
    * Delete the JSP source files after compilation.
    *
-   * @parameter expression="${appengine.deleteJsps}"
+   * @parameter property="appengine.deleteJsps"
    */
   protected boolean deleteJsps;
 
   /**
    * Jar the WEB-INF/classes content.
    *
-   * @parameter expression="${appengine.enableJarClasses}"
+   * @parameter property="appengine.enableJarClasses"
    */
   protected boolean enableJarClasses;
 
   /**
-   * @parameter expression="${project}"
+   * @parameter property="project"
    * @required
    * @readonly
    */
@@ -241,14 +241,14 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   /**
    * Instance id to for vm debug.
    *
-   * @parameter expression="${appengine.instance}"
+   * @parameter property="appengine.instance"
    */
   protected String instance;
 
   /**
    * Additional parameters to pass through to AppCfg.
    *
-   * @parameter expression="${appengine.additionalParams}"
+   * @parameter property="appengine.additionalParams"
    */
   protected String[] additionalParams;
 
