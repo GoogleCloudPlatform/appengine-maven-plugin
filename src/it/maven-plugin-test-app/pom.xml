@@ -18,7 +18,7 @@
         </repository>
       <repository>
       <id>gae-staging</id>
-      <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1365/</url>
+      <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1367/</url>
     </repository>
     </repositories>
 
@@ -27,17 +27,17 @@
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>1.9.52</version>
+            <version>1.9.53</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-endpoints</artifactId>
-            <version>1.9.52</version>
+            <version>1.9.53</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-endpoints-deps</artifactId>
-            <version>1.9.52</version>
+            <version>1.9.53</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -53,7 +53,7 @@
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.9.52-SNAPSHOT</version>
+                <version>1.9.53-SNAPSHOT</version>
                 <configuration>
                     <version>1</version>
                     <backendName>test-back</backendName>
