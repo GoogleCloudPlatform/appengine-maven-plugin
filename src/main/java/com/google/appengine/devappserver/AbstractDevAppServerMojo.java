@@ -325,10 +325,8 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
 
     AppEngineWebXmlReader aewebReader = new AppEngineWebXmlReader(appDir);
     AppEngineWebXml appEngineWebXml = aewebReader.readAppEngineWebXml();
-    isVM = appEngineWebXml.getUseVm();
+    isVM = appEngineWebXml.getUseVm() || appEngineWebXml.isFlexible();
     String runtime = appEngineWebXml.getRuntime();
-    if (runtime!=null) {
-       needsJetty9 = runtime.startsWith("java8");
-    }
+    needsJetty9 = isVM || runtime.startsWith("java8");
   }
 }
