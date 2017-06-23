@@ -25,11 +25,9 @@ public class VacuumIndexes extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Vacuuming indexes for Google App Engine Application");
 
-    executeAppCfgCommand("vacuum_indexes", appDir);
+    executeAppCfgCommand("vacuum_indexes");
   }
 
 }

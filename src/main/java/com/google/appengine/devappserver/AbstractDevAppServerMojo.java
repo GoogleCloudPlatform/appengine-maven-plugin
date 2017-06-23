@@ -7,6 +7,8 @@ import com.google.appengine.SdkResolver;
 import com.google.appengine.repackaged.com.google.api.client.util.Throwables;
 import com.google.appengine.repackaged.com.google.common.io.ByteStreams;
 import com.google.appengine.tools.development.DevAppServerMain;
+import com.google.apphosting.utils.config.AppEngineWebXml;
+import com.google.apphosting.utils.config.AppEngineWebXmlReader;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import org.apache.maven.plugin.AbstractMojo;
@@ -27,8 +29,6 @@ import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
 
 import static com.google.common.base.Objects.firstNonNull;
-import com.google.apphosting.utils.config.AppEngineWebXml;
-import com.google.apphosting.utils.config.AppEngineWebXmlReader;
 import static java.io.File.separator;
 
 /**
@@ -122,7 +122,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
    * @parameter expression="${settings.offline}"
    */
   private boolean offline;
-  
+
     /**
    * The web app scan delay in seconds to check for app changes for app reload.
    * A negative value will cancel the scan thread.
@@ -130,13 +130,22 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
    * @parameter expression="${appengine.fullScanSeconds}" default-value="5"
    */
   protected Integer fullScanSeconds;
-  
+
+  /**
+   * The location of the appengine application to run.
+   *
+   * @parameter expression="${appengine.appDir}"
+   */
+  private String appDir;
+
   private boolean isVM;
 
   private boolean needsJetty9;
 
 
-  protected ArrayList<String> getDevAppServerCommand(String appDir) throws MojoExecutionException {
+  protected ArrayList<String> getDevAppServerCommand() throws MojoExecutionException {
+
+    resolveAppDir();
 
     getLog().info("Retrieving Google App Engine Java SDK from Maven");
 
@@ -167,9 +176,9 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     }
     if (needsJetty9) {
        devAppServerCommand.add("-Duse_jetty9_runtime=true");
-     
+
     }
-        
+
     // Setup the classpath to point to the tools jar
     String appengineToolsApiJar = new File(sdkBaseDir, joinOnFileSeparator("lib", "appengine-tools-api.jar")).getAbsolutePath();
     devAppServerCommand.add("-classpath");
@@ -185,7 +194,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
 
     // Enable the shutdown hook
     devAppServerCommand.add("--allow_remote_shutdown");
-    
+
     if (isVM || needsJetty9) {
        devAppServerCommand.add("--no_java_agent");
     }
@@ -241,7 +250,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     }
   }
 
-  protected void startDevAppServer(File appDirFile, ArrayList<String> devAppServerCommand, WaitDirective waitDirective) throws MojoExecutionException {
+  protected void startDevAppServer(ArrayList<String> devAppServerCommand, WaitDirective waitDirective) throws MojoExecutionException {
     getLog().info("Running " + Joiner.on(" ").join(devAppServerCommand));
 
     Thread stdOutThread = null;
@@ -250,7 +259,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
 
       ProcessBuilder processBuilder = new ProcessBuilder(devAppServerCommand);
 
-      processBuilder.directory(appDirFile);
+      processBuilder.directory(new File(appDir));
 
       processBuilder.redirectErrorStream(true);
 
@@ -312,12 +321,27 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     }
   }
 
+  private void resolveAppDir() throws MojoExecutionException {
+    if(appDir == null) {
+      appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
+    }
+
+    File appDirFile = new File(appDir);
+
+    if(!appDirFile.exists()) {
+      throw new MojoExecutionException("The application directory does not exist : " + appDir);
+    }
+
+    if(!appDirFile.isDirectory()) {
+      throw new MojoExecutionException("The application directory is not a directory : " + appDir);
+    }
+  }
+
   private String joinOnFileSeparator(String... pathComponents) {
     return Joiner.on(separator).join(ImmutableList.copyOf(pathComponents));
   }
-  
+
   private void getInfoFromAppEngineWebXml() {
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
     File f = new File(appDir, "WEB-INF/appengine-web.xml");
     if (!f.exists()) { // EAR project possibly.
       return ;

@@ -3,7 +3,6 @@
  */
 package com.google.appengine.appcfg;
 
-import java.util.ArrayList;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
@@ -26,9 +25,6 @@ public class Debug extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
-
-    executeAppCfgCommand("debug", appDir);
+    executeAppCfgCommand("debug");
   }
 }

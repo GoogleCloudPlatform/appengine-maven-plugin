@@ -252,8 +252,17 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    */
   protected String[] additionalParams;
 
-  protected void executeAppCfgCommand(String action, String appDir)
+  /**
+   * The location of the appengine application to process.
+   *
+   * @parameter expression="${appengine.appDir}"
+   */
+  private String appDir;
+
+  protected void executeAppCfgCommand(String action)
       throws MojoExecutionException {
+    resolveAppDir();
+
     ArrayList<String> arguments = collectParameters();
 
     arguments.add(action);
@@ -268,8 +277,10 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     }
   }
 
-  protected void executeAppCfgBackendsCommand(String action, String appDir)
+  protected void executeAppCfgBackendsCommand(String action)
       throws MojoExecutionException {
+    resolveAppDir();
+
     ArrayList<String> arguments = collectParameters();
 
     arguments.add("backends");
@@ -284,13 +295,11 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     }
   }
 
-  protected ArrayList<String> collectParameters() throws MojoExecutionException {
+  private ArrayList<String> collectParameters() throws MojoExecutionException {
     String userDefinedAppId = null;
     String userDefinedVersion = null;
     boolean isEAR = false;
-    String appDir = project.getBuild().getDirectory()
-            + "/"
-            + project.getBuild().getFinalName();
+
     File f = new File(appDir, "WEB-INF/appengine-web.xml");
     if (f.exists()) {
       AppEngineWebXmlReader aewebReader = new AppEngineWebXmlReader(appDir);
@@ -430,7 +439,25 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
 
     return arguments;
   }
-  
+
+  String resolveAppDir() throws MojoExecutionException {
+    if(appDir == null) {
+      appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
+    }
+
+    File appDirFile = new File(appDir);
+
+    if(!appDirFile.exists()) {
+      throw new MojoExecutionException("The application directory does not exist : " + appDir);
+    }
+
+    if(!appDirFile.isDirectory()) {
+      throw new MojoExecutionException("The application directory is not a directory : " + appDir);
+    }
+
+    return appDir;
+  }
+
   private void validateAppIdOrVersion(String value)
           throws MojoExecutionException {
     boolean hasUppercase = !value.equals(value.toLowerCase());
