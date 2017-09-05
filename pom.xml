@@ -16,7 +16,7 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <appengine.target.version>1.9.54</appengine.target.version>
+        <appengine.target.version>1.9.55</appengine.target.version>
         <datanucleus.version>3.2.0-m1</datanucleus.version>
     </properties>
 
@@ -60,7 +60,7 @@
         </repository>
       <repository>
       <id>gae-staging</id>
-      <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1371/</url>
+      <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1390/</url>
     </repository>
     </repositories>
 
@@ -83,7 +83,7 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
-            <version>3.3.9</version>
+            <version>3.5.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -255,7 +255,7 @@
                 <plugin>
                   <groupId>org.apache.maven.plugins</groupId>
                   <artifactId>maven-compiler-plugin</artifactId>
-                  <version>3.6.1</version>
+                  <version>3.6.2</version>
                   <configuration>
                     <source>1.7</source>
                     <target>1.7</target>

@@ -22,6 +22,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
@@ -134,8 +136,11 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
   private boolean isVM;
 
   private boolean needsJetty9;
-
-
+  
+  private Map<String, String> processUserDefinedEnv = new HashMap<>();
+  
+  private String runtime = "java7";
+  
   protected ArrayList<String> getDevAppServerCommand(String appDir) throws MojoExecutionException {
 
     getLog().info("Retrieving Google App Engine Java SDK from Maven");
@@ -249,8 +254,14 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     try {
 
       ProcessBuilder processBuilder = new ProcessBuilder(devAppServerCommand);
-
-      processBuilder.directory(appDirFile);
+      
+      Map<String, String> env = processBuilder.environment();
+      env.put("GAE_ENV", "localdev");
+      env.put("GAE_RUNTIME", runtime);
+      if (processUserDefinedEnv != null) {
+        env.putAll(processUserDefinedEnv);
+      }
+       processBuilder.directory(appDirFile);
 
       processBuilder.redirectErrorStream(true);
 
@@ -326,7 +337,8 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     AppEngineWebXmlReader aewebReader = new AppEngineWebXmlReader(appDir);
     AppEngineWebXml appEngineWebXml = aewebReader.readAppEngineWebXml();
     isVM = appEngineWebXml.getUseVm() || appEngineWebXml.isFlexible();
-    String runtime = appEngineWebXml.getRuntime();
-    needsJetty9 = isVM || runtime.startsWith("java8");
+    runtime = appEngineWebXml.getRuntime();
+    needsJetty9 = isVM || runtime.startsWith("java8");  
+    processUserDefinedEnv = appEngineWebXml.getEnvironmentVariables();
   }
 }
