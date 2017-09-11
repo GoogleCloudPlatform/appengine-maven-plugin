@@ -50,7 +50,8 @@ public class SdkResolver {
     Artifact artifact = (Artifact) find(project.getPluginArtifacts(), new Predicate<Artifact>() {
       @Override
       public boolean apply(Artifact artifact1) {
-        return artifact1.getArtifactId().equals("appengine-maven-plugin");
+        return (artifact1.getArtifactId().equals("appengine-maven-plugin")
+                && artifact1.getGroupId().equals("com.google.appengine"));
       }
     });
 
