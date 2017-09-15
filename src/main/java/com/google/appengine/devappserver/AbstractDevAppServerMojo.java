@@ -163,10 +163,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     } else {
        devAppServerCommand.add("-D--enable_all_permissions=true");
     }
-    // Setup the overrides jar for jdk classes
-    String appengineDevJdkOverridesJar = new File(sdkBaseDir, joinOnFileSeparator("lib", "override", "appengine-dev-jdk-overrides.jar")).getAbsolutePath();
-    devAppServerCommand.add("-Xbootclasspath/p:" + appengineDevJdkOverridesJar);
-
+ 
     if (fullScanSeconds != null) {
       devAppServerCommand.add("-Dappengine.fullscan.seconds="+fullScanSeconds);
     }
