@@ -32,6 +32,7 @@ import static com.google.common.base.Objects.firstNonNull;
 import com.google.apphosting.utils.config.AppEngineWebXml;
 import com.google.apphosting.utils.config.AppEngineWebXmlReader;
 import static java.io.File.separator;
+import java.util.UUID;
 
 /**
  * Abstract class to support development server operations.
@@ -258,6 +259,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
       env.put("GAE_ENV", "localdev");
       env.put("GAE_RUNTIME", runtime);
       env.put("GAE_SERVICE", serviceName);
+      env.put("GAE_INSTANCE", UUID.randomUUID().toString());
       if (processUserDefinedEnv != null) {
         env.putAll(processUserDefinedEnv);
       }
