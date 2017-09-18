@@ -141,6 +141,8 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
   
   private String runtime = "java7";
   
+  private String serviceName = "default";
+  
   protected ArrayList<String> getDevAppServerCommand(String appDir) throws MojoExecutionException {
 
     getLog().info("Retrieving Google App Engine Java SDK from Maven");
@@ -255,6 +257,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
       Map<String, String> env = processBuilder.environment();
       env.put("GAE_ENV", "localdev");
       env.put("GAE_RUNTIME", runtime);
+      env.put("GAE_SERVICE", serviceName);
       if (processUserDefinedEnv != null) {
         env.putAll(processUserDefinedEnv);
       }
@@ -335,6 +338,11 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     AppEngineWebXml appEngineWebXml = aewebReader.readAppEngineWebXml();
     isVM = appEngineWebXml.getUseVm() || appEngineWebXml.isFlexible();
     runtime = appEngineWebXml.getRuntime();
+    if (appEngineWebXml.getService() != null) {
+      serviceName = appEngineWebXml.getService();
+    } else if (appEngineWebXml.getModule() != null) {
+      serviceName = appEngineWebXml.getModule();
+    }
     needsJetty9 = isVM || runtime.startsWith("java8");  
     processUserDefinedEnv = appEngineWebXml.getEnvironmentVariables();
   }
