@@ -16,7 +16,7 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <appengine.target.version>1.9.57</appengine.target.version>
+        <appengine.target.version>1.9.58</appengine.target.version>
         <datanucleus.version>3.2.0-m1</datanucleus.version>
     </properties>
 
@@ -60,7 +60,7 @@
         </repository>
       <repository>
       <id>gae-staging</id>
-      <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1402/</url>
+      <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1404/</url>
     </repository>
     </repositories>
 
