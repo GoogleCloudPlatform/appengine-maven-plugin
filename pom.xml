@@ -16,7 +16,7 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <appengine.target.version>1.9.58</appengine.target.version>
+        <appengine.target.version>1.9.59</appengine.target.version>
         <datanucleus.version>3.2.0-m1</datanucleus.version>
     </properties>
 
@@ -60,7 +60,7 @@
         </repository>
       <repository>
       <id>gae-staging</id>
-      <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1404/</url>
+      <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1406/</url>
     </repository>
     </repositories>
 
@@ -98,7 +98,7 @@
         <dependency>
           <groupId>com.google.endpoints</groupId>
           <artifactId>endpoints-framework-tools</artifactId>
-          <version>2.0.8</version>
+          <version>2.0.9</version>
           <exclusions>
             <exclusion>
               <groupId>com.google.appengine</groupId>
@@ -113,7 +113,7 @@
         <dependency>
           <groupId>com.google.endpoints</groupId>
           <artifactId>endpoints-framework</artifactId>
-          <version>2.0.8</version>
+          <version>2.0.9</version>
           <exclusions>
             <exclusion>
               <groupId>com.google.appengine</groupId>
