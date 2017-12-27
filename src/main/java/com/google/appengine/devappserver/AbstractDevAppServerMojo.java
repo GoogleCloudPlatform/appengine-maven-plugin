@@ -6,6 +6,7 @@ package com.google.appengine.devappserver;
 import com.google.appengine.SdkResolver;
 import com.google.appengine.repackaged.com.google.api.client.util.Throwables;
 import com.google.appengine.repackaged.com.google.common.io.ByteStreams;
+import com.google.appengine.tools.admin.Application;
 import com.google.appengine.tools.development.DevAppServerMain;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
@@ -31,6 +32,9 @@ import java.util.concurrent.CountDownLatch;
 import static com.google.common.base.Objects.firstNonNull;
 import com.google.apphosting.utils.config.AppEngineWebXml;
 import com.google.apphosting.utils.config.AppEngineWebXmlReader;
+import com.google.apphosting.utils.config.EarHelper;
+import com.google.apphosting.utils.config.EarInfo;
+import com.google.apphosting.utils.config.WebModule;
 import static java.io.File.separator;
 import java.util.UUID;
 
@@ -324,16 +328,48 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     } catch (InterruptedException e) {
     }
   }
+  
+  private void resolveAndSetSdkRoot() throws MojoExecutionException {
+    File sdkBaseDir = SdkResolver.getSdk(project, repoSystem, repoSession, pluginRepos, projectRepos);
+    try {
+      System.setProperty("appengine.sdk.root", sdkBaseDir.getCanonicalPath());
+    } catch (IOException e) {
+      throw new MojoExecutionException("Could not open SDK zip archive.", e);
+    }
+  }
 
   private String joinOnFileSeparator(String... pathComponents) {
     return Joiner.on(separator).join(ImmutableList.copyOf(pathComponents));
   }
-  
-  private void getInfoFromAppEngineWebXml() {
+
+  private void getInfoFromAppEngineWebXml() throws MojoExecutionException {
+    resolveAndSetSdkRoot();
     String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
     File f = new File(appDir, "WEB-INF/appengine-web.xml");
     if (!f.exists()) { // EAR project possibly.
-      return ;
+      if (EarHelper.isEar(appDir, false)) {
+        EarInfo earInfo = EarHelper.readEarInfo(appDir,
+                new File(Application.getSdkDocsDir(), "appengine-application.xsd"));
+        for (WebModule m : earInfo.getWebModules()) {
+          AppEngineWebXml appEngineWebXml = m.getAppEngineWebXml();
+          isVM = appEngineWebXml.getUseVm() || appEngineWebXml.isFlexible();
+          runtime = appEngineWebXml.getRuntime();
+          if (appEngineWebXml.getService() != null) {
+            serviceName = appEngineWebXml.getService();
+          } else if (appEngineWebXml.getModule() != null) {
+            serviceName = appEngineWebXml.getModule();
+          }
+          needsJetty9 = isVM || runtime.startsWith("java8");
+          processUserDefinedEnv.putAll(appEngineWebXml.getEnvironmentVariables());
+          // We stop for the first module using Java8, as they all run in the
+          // same JVM. Not perfect, but we want to advantage more java8 now.
+          if (runtime.startsWith("java8")) {
+            return;
+          }
+        }
+
+      }
+      return;
     }
 
     AppEngineWebXmlReader aewebReader = new AppEngineWebXmlReader(appDir);
@@ -345,7 +381,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     } else if (appEngineWebXml.getModule() != null) {
       serviceName = appEngineWebXml.getModule();
     }
-    needsJetty9 = isVM || runtime.startsWith("java8");  
+    needsJetty9 = isVM || runtime.startsWith("java8");
     processUserDefinedEnv = appEngineWebXml.getEnvironmentVariables();
   }
 }
