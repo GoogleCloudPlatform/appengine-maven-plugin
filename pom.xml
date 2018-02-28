@@ -16,7 +16,7 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <appengine.target.version>1.9.62</appengine.target.version>
+        <appengine.target.version>1.9.63</appengine.target.version>
         <datanucleus.version>3.2.0-m1</datanucleus.version>
     </properties>
 
@@ -26,7 +26,7 @@
 
     <scm>
         <connection>scm:git:https://code.google.com/p/appengine-maven-plugin/</connection>
-      <tag>appengine-maven-plugin-1.9.61</tag>
+      <tag>appengine-maven-plugin-1.9.63</tag>
   </scm>
 
     <developers>
