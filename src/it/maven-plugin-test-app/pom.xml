@@ -16,10 +16,10 @@
             <name>Sonatype Google Releases</name>
             <url>https://oss.sonatype.org/service/local/repositories/google-releases/content</url>
         </repository>
-      <repository>
-      <id>gae-staging</id>
-      <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1406/</url>
-    </repository>
+        <repository>
+            <id>gae-staging</id>
+            <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1406/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -50,6 +50,15 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
@@ -83,17 +92,17 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                  <webXml>${project.build.directory}/generated-sources/appengine-endpoints/WEB-INF/web.xml</webXml>
-                  <webResources>
-                    <resource>
-                      <!-- this is relative to the pom.xml directory -->
-                      <directory>${project.build.directory}/generated-sources/appengine-endpoints</directory>
-                      <!-- the list has a default value of ** -->
-                      <includes>
-                        <include>WEB-INF/*.discovery</include>
-                      </includes>
-                    </resource>
-                  </webResources>
+                    <webXml>${project.build.directory}/generated-sources/appengine-endpoints/WEB-INF/web.xml</webXml>
+                    <webResources>
+                        <resource>
+                            <!-- this is relative to the pom.xml directory -->
+                            <directory>${project.build.directory}/generated-sources/appengine-endpoints</directory>
+                            <!-- the list has a default value of ** -->
+                            <includes>
+                                <include>WEB-INF/*.discovery</include>
+                            </includes>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
         </plugins>
