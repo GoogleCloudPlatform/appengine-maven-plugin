@@ -6,17 +6,28 @@ package com.google.appengine.appcfg;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-/**
- * Delete unused indexes from application.
- *
- * @author Matt Stephenson <mattstep@google.com>
- * @goal vacuum_indexes
- * @execute phase="package"
- */
 public class VacuumIndexes extends AbstractAppCfgMojo {
 
+  /**
+   * Delete unused indexes from application.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal vacuum_indexes
+   * @execute phase="package"
+   */
+  public static class VacuumIndexesFork extends VacuumIndexes {}
+
+  /**
+   * Delete unused indexes from application.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal vacuum_indexes_no_fork
+   */
+  public static class VacuumIndexesNoFork extends VacuumIndexes {}
+
+
   @Override
-  public void execute() throws MojoExecutionException, MojoFailureException {
+  public final void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
     getLog().info("Google App Engine Java SDK - Vacuuming Application Indexes");
     getLog().info("");

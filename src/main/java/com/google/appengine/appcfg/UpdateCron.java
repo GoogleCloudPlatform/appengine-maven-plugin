@@ -6,17 +6,28 @@ package com.google.appengine.appcfg;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-/**
- * Update application cron jobs.
- *
- * @author Matt Stephenson <mattstep@google.com>
- * @goal update_cron
- * @execute phase="package"
- */
 public class UpdateCron extends AbstractAppCfgMojo {
 
+  /**
+   * Update application cron jobs.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal update_cron
+   * @execute phase="package"
+   */
+  public static class UpdateCronFork extends UpdateCron {}
+
+  /**
+   * Update application cron jobs.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal update_cron_no_fork
+   */
+  public static class UpdateCronNoFork extends UpdateCron {}
+
+
   @Override
-  public void execute() throws MojoExecutionException, MojoFailureException {
+  public final void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
     getLog().info("Google App Engine Java SDK - Updating Application Cron Jobs");
     getLog().info("");

@@ -21,7 +21,7 @@ public class DevAppServerRunner extends AbstractDevAppServerMojo {
   /**
    * The location of the appengine application to run.
    *
-   * @parameter expression="${appengine.appDir}"
+   * @parameter property="appengine.appDir"
    */
   protected String appDir;
     

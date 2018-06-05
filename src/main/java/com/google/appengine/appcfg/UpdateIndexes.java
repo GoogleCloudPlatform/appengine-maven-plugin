@@ -6,17 +6,28 @@ package com.google.appengine.appcfg;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-/**
- * Update application indexes.
- *
- * @author Matt Stephenson <mattstep@google.com>
- * @goal update_indexes
- * @execute phase="package"
- */
 public class UpdateIndexes extends AbstractAppCfgMojo {
 
+  /**
+   * Update application indexes.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal update_indexes
+   * @execute phase="package"
+   */
+  public static class UpdateIndexesFork extends UpdateIndexes {}
+
+  /**
+   * Update application indexes.
+   *
+   * @author Matt Stephenson <mattstep@google.com>
+   * @goal update_indexes_no_fork
+   */
+  public static class UpdateIndexesNoFork extends UpdateIndexes {}
+
+
   @Override
-  public void execute() throws MojoExecutionException, MojoFailureException {
+  public final void execute() throws MojoExecutionException, MojoFailureException {
     getLog().info("");
     getLog().info("Google App Engine Java SDK - Updating Application Indexes");
     getLog().info("");
