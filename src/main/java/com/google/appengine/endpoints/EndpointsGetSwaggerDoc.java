@@ -6,6 +6,7 @@ package com.google.appengine.endpoints;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +24,13 @@ public class EndpointsGetSwaggerDoc extends EndpointsMojo {
     ArrayList<String> arguments = new ArrayList<>();
     arguments.add(command);
     handleClassPath(arguments);
-    arguments.add("-o");
-    arguments.add(project.getBuild().getDirectory() + "/swagger.xml");
+    if (outputDirectory != null && !outputDirectory.isEmpty()) {
+      arguments.add("-o");
+      arguments.add(outputDirectory + "/WEB-INF/swagger.json");
+      new File(outputDirectory).mkdirs();
+    }
     arguments.add("-w");
-        String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
-    arguments.add(appDir);
+    arguments.add(outputDirectory);
     return arguments;
   }
 
