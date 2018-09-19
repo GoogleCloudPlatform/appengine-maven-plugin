@@ -18,7 +18,7 @@
         </repository>
         <repository>
             <id>gae-staging</id>
-            <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1406/</url>
+            <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1434/</url>
         </repository>
     </repositories>
 
@@ -27,17 +27,17 @@
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>1.9.64</version>
+            <version>1.9.65</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-endpoints</artifactId>
-            <version>1.9.64</version>
+            <version>1.9.65</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-endpoints-deps</artifactId>
-            <version>1.9.64</version>
+            <version>1.9.65</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -53,7 +53,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>3.8.0</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -62,7 +62,7 @@
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.9.64-SNAPSHOT</version>
+                <version>1.9.65-SNAPSHOT</version>
                 <configuration>
                     <version>1</version>
                     <backendName>test-back</backendName>
@@ -90,7 +90,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.2.2</version>
                 <configuration>
                     <webXml>${project.build.directory}/generated-sources/appengine-endpoints/WEB-INF/web.xml</webXml>
                     <webResources>
