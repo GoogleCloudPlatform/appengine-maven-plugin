@@ -29,17 +29,15 @@ public class Rollback extends AbstractAppCfgMojo {
     getLog().info("Retrieving Google App Engine Java SDK from Maven");
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Rolling Back Google App Engine Application");
 
-    if (EarHelper.isEar(appDir, false)) {
-      EarInfo earInfo = EarHelper.readEarInfo(appDir,
+    if (EarHelper.isEar(getAppDir(), false)) {
+      EarInfo earInfo = EarHelper.readEarInfo(getAppDir(),
               new File(Application.getSdkDocsDir(), "appengine-application.xsd"));
       if (appId == null) {
         appId = earInfo.getAppengineApplicationXml().getApplicationId();
       }
-      File ear = new File(appDir);
+      File ear = new File(getAppDir());
       for (File w : ear.listFiles()) {
         if (new File(w, "WEB-INF/appengine-web.xml").exists()) {
           getLog().info("Rolling Back Google App Engine module: " + w.getAbsolutePath());
@@ -49,7 +47,7 @@ public class Rollback extends AbstractAppCfgMojo {
     } else {
       // rollback the application
       getLog().info("Rolling Back Google App Engine Application");
-      executeAppCfgCommand("rollback", appDir);
+      executeAppCfgCommand("rollback", getAppDir());
     }
   }
 

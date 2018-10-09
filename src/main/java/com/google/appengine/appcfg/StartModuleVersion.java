@@ -25,11 +25,9 @@ public class StartModuleVersion extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Starting the specified module version.");
 
-    executeAppCfgCommand("start_module_version", appDir);
+    executeAppCfgCommand("start_module_version", getAppDir());
   }
 
 }

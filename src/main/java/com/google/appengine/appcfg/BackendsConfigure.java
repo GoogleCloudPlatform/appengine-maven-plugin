@@ -25,11 +25,9 @@ public class BackendsConfigure extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Configuring Google App Engine Application Backend " + backendName);
 
-    executeAppCfgBackendsCommand("configure", appDir);
+    executeAppCfgBackendsCommand("configure", getAppDir());
   }
 
 }

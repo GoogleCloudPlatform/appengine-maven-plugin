@@ -24,11 +24,9 @@ public class TrafficMigration  extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Migrating Traffic for Google App Engine Application");
 
-    executeAppCfgCommand("migrate_traffic", appDir);
+    executeAppCfgCommand("migrate_traffic", getAppDir());
   }
 
 }

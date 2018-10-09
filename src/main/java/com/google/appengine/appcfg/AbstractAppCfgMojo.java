@@ -38,7 +38,6 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    *
    * @component
    */
-
   protected RepositorySystem repoSystem;
 
   /**
@@ -50,7 +49,8 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected RepositorySystemSession repoSession;
 
   /**
-   * The project's remote repositories to use for the resolution of project dependencies.
+   * The project's remote repositories to use for the resolution of project
+   * dependencies.
    *
    * @parameter default-value="${project.remoteProjectRepositories}"
    * @readonly
@@ -58,7 +58,8 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected List<RemoteRepository> projectRepos;
 
   /**
-   * The project's remote repositories to use for the resolution of plugins and their dependencies.
+   * The project's remote repositories to use for the resolution of plugins and
+   * their dependencies.
    *
    * @parameter default-value="${project.remotePluginRepositories}"
    * @readonly
@@ -87,8 +88,8 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected String host;
 
   /**
-   * Proxies requests through the given proxy server. If --proxy_https is also set, only HTTP will
-   * be proxied here, otherwise both HTTP and HTTPS will.
+   * Proxies requests through the given proxy server. If --proxy_https is also
+   * set, only HTTP will be proxied here, otherwise both HTTP and HTTPS will.
    *
    * @parameter expression="${appengine.proxyHost}"
    */
@@ -137,12 +138,11 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected String version;
 
   /**
-   * Use OAuth2 instead of password auth.  Defaults to true.
+   * Use OAuth2 instead of password auth. Defaults to true.
    *
    * @parameter default-value=true expression="${appengine.oauth2}"
    */
   protected boolean oauth2;
-
 
   /**
    * Split large jar files (> 10M) into smaller fragments.
@@ -152,8 +152,8 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected boolean enableJarSplitting;
 
   /**
-   * When --enable-jar-splitting is set, files that match the list of comma separated SUFFIXES will
-   * be excluded from all jars.
+   * When --enable-jar-splitting is set, files that match the list of comma
+   * separated SUFFIXES will be excluded from all jars.
    *
    * @parameter expression="${appengine.jarSplittingExcludes}"
    */
@@ -174,16 +174,16 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected boolean compileEncoding;
 
   /**
-   * Number of days worth of log data to get. The cut-off point is midnight UTC. Use 0 to get all
-   * available logs. Default is 1.
+   * Number of days worth of log data to get. The cut-off point is midnight UTC.
+   * Use 0 to get all available logs. Default is 1.
    *
    * @parameter expression="${appengine.numDays}"
    */
   protected Integer numDays;
 
   /**
-   * Severity of app-level log messages to get. The range is 0 (DEBUG) through 4 (CRITICAL). If
-   * omitted, only request logs are returned.
+   * Severity of app-level log messages to get. The range is 0 (DEBUG) through 4
+   * (CRITICAL). If omitted, only request logs are returned.
    *
    * @parameter expression="${appengine.severity}"
    */
@@ -232,11 +232,21 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected boolean enableJarClasses;
 
   /**
+   * Maven project.
+   *
    * @parameter expression="${project}"
    * @required
    * @readonly
    */
-  protected MavenProject project;
+  protected MavenProject mavenProject;
+
+  /**
+   * The Google Cloud Platform project name (same as appId)
+   *
+   * @parameter expression="${project}"
+   * @required
+   */
+  protected String project;
 
   /**
    * Instance id to for vm debug.
@@ -253,7 +263,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
   protected String[] additionalParams;
 
   protected void executeAppCfgCommand(String action, String appDir)
-      throws MojoExecutionException {
+          throws MojoExecutionException {
     ArrayList<String> arguments = collectParameters();
 
     arguments.add(action);
@@ -264,12 +274,12 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
       AppCfg.main(arguments.toArray(new String[arguments.size()]));
     } catch (Exception ex) {
       throw new MojoExecutionException("Error executing appcfg command="
-          + arguments, ex);
+              + arguments, ex);
     }
   }
 
   protected void executeAppCfgBackendsCommand(String action, String appDir)
-      throws MojoExecutionException {
+          throws MojoExecutionException {
     ArrayList<String> arguments = collectParameters();
 
     arguments.add("backends");
@@ -280,7 +290,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
       AppCfg.main(arguments.toArray(new String[arguments.size()]));
     } catch (Exception ex) {
       throw new MojoExecutionException("Error executing appcfg command="
-          + arguments, ex);
+              + arguments, ex);
     }
   }
 
@@ -288,9 +298,9 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     String userDefinedAppId = null;
     String userDefinedVersion = null;
     boolean isEAR = false;
-    String appDir = project.getBuild().getDirectory()
+    String appDir = mavenProject.getBuild().getDirectory()
             + "/"
-            + project.getBuild().getFinalName();
+            + mavenProject.getBuild().getFinalName();
     File f = new File(appDir, "WEB-INF/appengine-web.xml");
     if (f.exists()) {
       AppEngineWebXmlReader aewebReader = new AppEngineWebXmlReader(appDir);
@@ -303,7 +313,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
       userDefinedAppId = earInfo.getAppengineApplicationXml().getApplicationId();
       isEAR = true;
     }
-    
+
     // For appcfg user agent metric.
     System.setProperty(USER_AGENT_KEY, "appengine-maven-plugin");
     ArrayList<String> arguments = new ArrayList<>();
@@ -345,6 +355,8 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
 
     if (appId != null && !appId.isEmpty()) {
       userDefinedAppId = appId;
+    } else if (project != null && !project.isEmpty()) {
+      userDefinedAppId = project;
     }
     if (userDefinedAppId != null) {
       validateAppIdOrVersion(userDefinedAppId);
@@ -430,7 +442,7 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
 
     return arguments;
   }
-  
+
   private void validateAppIdOrVersion(String value)
           throws MojoExecutionException {
     boolean hasUppercase = !value.equals(value.toLowerCase());
@@ -445,9 +457,35 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
     }
   }
 
+  String getAppDir() {
+    return mavenProject.getBuild().getDirectory() + "/" + mavenProject.getBuild().getFinalName();
+  }
+
+  String getProjectId() throws MojoExecutionException {
+    if (project != null) {
+      return project;
+    }
+    if (appId != null) {
+      return appId;
+    }
+    File f = new File(getAppDir(), "WEB-INF/appengine-web.xml");
+    if (f.exists()) {
+      AppEngineWebXmlReader aewebReader = new AppEngineWebXmlReader(getAppDir());
+      AppEngineWebXml appEngineWebXml = aewebReader.readAppEngineWebXml();
+      return appEngineWebXml.getAppId();
+    } else if (EarHelper.isEar(getAppDir(), false)) {
+      EarInfo earInfo = EarHelper.readEarInfo(getAppDir(),
+              new File(Application.getSdkDocsDir(), "appengine-application.xsd"));
+      return earInfo.getAppengineApplicationXml().getApplicationId();
+    }
+    throw new MojoExecutionException(
+            "No <application> defined in appengine-web.xml, nor <project>"
+            + " <configuration> defined in the pom.xml.");
+  }
+
   protected void resolveAndSetSdkRoot() throws MojoExecutionException {
 
-    File sdkBaseDir = SdkResolver.getSdk(project, repoSystem, repoSession, pluginRepos, projectRepos);
+    File sdkBaseDir = SdkResolver.getSdk(mavenProject, repoSystem, repoSession, pluginRepos, projectRepos);
 
     try {
       System.setProperty("appengine.sdk.root", sdkBaseDir.getCanonicalPath());

@@ -25,11 +25,9 @@ public class BackendsDelete extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Deleting Google App Engine Application Backend " + backendName);
 
-    executeAppCfgBackendsCommand("delete", appDir);
+    executeAppCfgBackendsCommand("delete", getAppDir());
   }
 
 }

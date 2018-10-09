@@ -25,11 +25,9 @@ public class UpdateCron extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Updating Cron Jobs for Google App Engine Application");
 
-    executeAppCfgCommand("update_cron", appDir);
+    executeAppCfgCommand("update_cron", getAppDir());
   }
 
 }

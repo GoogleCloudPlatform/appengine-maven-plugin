@@ -25,11 +25,9 @@ public class SetDefaultVersion extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Setting default version for Google App Engine Application");
 
-    executeAppCfgCommand("set_default_version", appDir);
+    executeAppCfgCommand("set_default_version", getAppDir());
   }
 
 }

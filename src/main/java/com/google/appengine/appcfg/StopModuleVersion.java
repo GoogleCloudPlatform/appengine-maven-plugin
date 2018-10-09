@@ -25,11 +25,9 @@ public class StopModuleVersion extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Stopping the specified module version.");
 
-    executeAppCfgCommand("stop_module_version", appDir);
+    executeAppCfgCommand("stop_module_version", getAppDir());
   }
 
 }

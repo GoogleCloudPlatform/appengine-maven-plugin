@@ -26,9 +26,7 @@ public class Debug extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
 
-
-    executeAppCfgCommand("debug", appDir);
+    executeAppCfgCommand("debug", getAppDir());
   }
 }

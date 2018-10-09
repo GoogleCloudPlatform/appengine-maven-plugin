@@ -25,11 +25,9 @@ public class UpdateDispatch extends AbstractAppCfgMojo {
 
     resolveAndSetSdkRoot();
 
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
-
     getLog().info("Updating Dispatch for Google App Engine Application");
 
-    executeAppCfgCommand("update_dispatch", appDir);
+    executeAppCfgCommand("update_dispatch", getAppDir());
   }
 
 }
