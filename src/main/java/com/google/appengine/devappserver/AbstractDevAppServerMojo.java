@@ -86,7 +86,15 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
    * @required
    * @readonly
    */
-  protected MavenProject project;
+  protected MavenProject mavenProject;
+
+  /**
+   * The Google Cloud Platform project name (same as appId)
+   *
+   * @parameter expression="${project}"
+   * @required
+   */
+  protected String project;
 
   /**
    * The server to use to determine the latest SDK version.
@@ -148,11 +156,15 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
   
   private String serviceName = "default";
   
-  protected ArrayList<String> getDevAppServerCommand(String appDir) throws MojoExecutionException {
+   String getAppDir() {
+    return mavenProject.getBuild().getDirectory() + "/" + mavenProject.getBuild().getFinalName();
+  }
+
+   protected ArrayList<String> getDevAppServerCommand(String appDir) throws MojoExecutionException {
 
     getLog().info("Retrieving Google App Engine Java SDK from Maven");
 
-    File sdkBaseDir = SdkResolver.getSdk(project, repoSystem, repoSession, pluginRepos, projectRepos);
+    File sdkBaseDir = SdkResolver.getSdk(mavenProject, repoSystem, repoSession, pluginRepos, projectRepos);
 
     String javaExecutable = joinOnFileSeparator(System.getProperty("java.home"), "bin", "java");
 
@@ -330,7 +342,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
   }
   
   private void resolveAndSetSdkRoot() throws MojoExecutionException {
-    File sdkBaseDir = SdkResolver.getSdk(project, repoSystem, repoSession, pluginRepos, projectRepos);
+    File sdkBaseDir = SdkResolver.getSdk(mavenProject, repoSystem, repoSession, pluginRepos, projectRepos);
     try {
       System.setProperty("appengine.sdk.root", sdkBaseDir.getCanonicalPath());
     } catch (IOException e) {
@@ -344,7 +356,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
 
   private void getInfoFromAppEngineWebXml() throws MojoExecutionException {
     resolveAndSetSdkRoot();
-    String appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
+    String appDir = mavenProject.getBuild().getDirectory() + "/" + mavenProject.getBuild().getFinalName();
     File f = new File(appDir, "WEB-INF/appengine-web.xml");
     if (!f.exists()) { // EAR project possibly.
       if (EarHelper.isEar(appDir, false)) {

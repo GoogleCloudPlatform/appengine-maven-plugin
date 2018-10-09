@@ -32,7 +32,7 @@ public class DevAppServerAsyncStart extends AbstractDevAppServerMojo {
     getLog().info("");
 
     if(appDir == null) {
-      appDir = project.getBuild().getDirectory() + "/" + project.getBuild().getFinalName();
+      appDir = getAppDir();
     }
     
     File appDirFile = new File(appDir);
