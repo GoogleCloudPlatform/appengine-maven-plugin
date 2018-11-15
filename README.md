@@ -14,7 +14,7 @@ Apache Maven is a software project management and comprehension tool. It is capa
       <plugin>
           <groupId>com.google.appengine</groupId>
           <artifactId>appengine-maven-plugin</artifactId>
-          <version>1.9.67</version>
+          <version>1.9.68</version>
       </plugin>
 
 Make sure you are using Maven 3.1 or above (the 3.0.x version will not work starting with GAE 1.8.3)
@@ -35,7 +35,7 @@ A complete sample pom is:
     <artifactId>guestbook</artifactId>
 
     <properties>
-        <appengine.target.version>1.9.67</appengine.target.version>
+        <appengine.target.version>1.9.68</appengine.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
