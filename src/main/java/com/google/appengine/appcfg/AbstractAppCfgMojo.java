@@ -244,7 +244,6 @@ public abstract class AbstractAppCfgMojo extends AbstractMojo {
    * The Google Cloud Platform project name (same as appId)
    *
    * @parameter expression="${project}"
-   * @required
    */
   protected String project;
 
