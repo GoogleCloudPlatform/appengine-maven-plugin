@@ -18,7 +18,7 @@
         </repository>
         <repository>
             <id>gae-staging</id>
-            <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1444/</url>
+            <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1449/</url>
         </repository>
     </repositories>
 
@@ -27,17 +27,17 @@
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>1.9.69</version>
+            <version>1.9.70</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-endpoints</artifactId>
-            <version>1.9.69</version>
+            <version>1.9.70</version>
         </dependency>
         <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-endpoints-deps</artifactId>
-            <version>1.9.69</version>
+            <version>1.9.70</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -62,7 +62,7 @@
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.9.69-SNAPSHOT</version>
+                <version>1.9.70-SNAPSHOT</version>
                 <configuration>
                     <version>1</version>
                     <backendName>test-back</backendName>
@@ -78,14 +78,14 @@
                         com.google.appengine.endpoints.SimpleEndpoint
                     </serviceClassNames>
                 </configuration>
-                <executions>
+                <!--executions>
                     <execution>
                         <goals>
                             <goal>endpoints_get_discovery_doc</goal>
                             <goal>endpoints_get_client_lib</goal>
                         </goals>
                     </execution>
-                </executions>
+                </executions-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
