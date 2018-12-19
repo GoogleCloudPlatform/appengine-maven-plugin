@@ -370,11 +370,11 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
           } else if (appEngineWebXml.getModule() != null) {
             serviceName = appEngineWebXml.getModule();
           }
-          needsJetty9 = isVM || runtime.startsWith("java8") ||runtime.startsWith("java11");
+          needsJetty9 = isVM || runtime.startsWith("java8");
           processUserDefinedEnv.putAll(appEngineWebXml.getEnvironmentVariables());
           // We stop for the first module using Java8/Java11, as they all run in the
           // same JVM. Not perfect, but we want to advantage more java8 now.
-          if (runtime.startsWith("java8") || runtime.startsWith("java11")) {
+          if (runtime.startsWith("java8")) {
             return;
           }
         }
@@ -392,7 +392,7 @@ public abstract class AbstractDevAppServerMojo extends AbstractMojo {
     } else if (appEngineWebXml.getModule() != null) {
       serviceName = appEngineWebXml.getModule();
     }
-    needsJetty9 = isVM || runtime.startsWith("java8") || runtime.startsWith("java11");
+    needsJetty9 = isVM || runtime.startsWith("java8");
     processUserDefinedEnv = appEngineWebXml.getEnvironmentVariables();
   }
 }
