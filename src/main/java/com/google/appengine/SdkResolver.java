@@ -56,6 +56,8 @@ public class SdkResolver {
     });
 
     String version = artifact.getVersion();
+    // Temporary: need to remove once 1.9.75 is pushed.
+    version  = "1.9.74.1";
 
     if(version.endsWith("-SNAPSHOT")) {
       String newestVersion = determineNewestVersion(repoSystem, repoSession, repos);
