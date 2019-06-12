@@ -46,7 +46,7 @@ public class SdkResolver {
   private static final String SDK_EXTENSION = "zip";
 
   public static File getSdk(MavenProject project, RepositorySystem repoSystem, RepositorySystemSession repoSession, List<RemoteRepository>... repos)
-      throws MojoExecutionException {
+          throws MojoExecutionException {
     Artifact artifact = (Artifact) find(project.getPluginArtifacts(), new Predicate<Artifact>() {
       @Override
       public boolean apply(Artifact artifact1) {
@@ -56,7 +56,9 @@ public class SdkResolver {
     });
 
     String version = artifact.getVersion();
-
+    // Temporary: need to remove once 1.9.76 is pushed.
+    version  = "1.9.75.1";
+    
     if(version.endsWith("-SNAPSHOT")) {
       String newestVersion = determineNewestVersion(repoSystem, repoSession, repos);
       return getSdk(newestVersion, repoSystem, repoSession, repos);
@@ -92,7 +94,7 @@ public class SdkResolver {
   }
 
   public static File getSdk(String version, RepositorySystem repoSystem, RepositorySystemSession repoSession, List<RemoteRepository>... repos)
-      throws MojoExecutionException {
+          throws MojoExecutionException {
 
     List<RemoteRepository> allRepos = ImmutableList.copyOf(Iterables.concat(repos));
 
@@ -111,7 +113,7 @@ public class SdkResolver {
 
     if (sdkBaseDir.exists() && !sdkBaseDir.isDirectory()) {
       throw new MojoExecutionException("Could not unpack the SDK because there is an unexpected file at "
-          + sdkBaseDir + " which conflicts with where we plan to unpack the SDK.");
+              + sdkBaseDir + " which conflicts with where we plan to unpack the SDK.");
     }
 
     if (!sdkBaseDir.exists()) {
