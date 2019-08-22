@@ -8,7 +8,9 @@
     <name>A Maven Plugin for running and deploying appengine applications</name>
     <description>
         The App Engine maven plugin which can be used to interact with
-        both the development server and the remote runtime.
+        both the development server and the remote runtime. 
+        This plugin is deprecated. Use com.google.cloud.tools.appengine-maven-plugin instead.
+        To migrate to new plugin, see https://cloud.google.com/appengine/docs/standard/java/tools/migrate-maven.
     </description>
     <url>https://developers.google.com/appengine/docs/java/tools/maven</url>
 
