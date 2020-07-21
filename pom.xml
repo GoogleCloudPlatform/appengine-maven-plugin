@@ -4,7 +4,7 @@
     <groupId>com.google.appengine</groupId>
     <artifactId>appengine-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>1.9.81-SNAPSHOT</version>
+    <version>1.9.81</version>
     <name>A Maven Plugin for running and deploying appengine applications</name>
     <description>
         The App Engine maven plugin which can be used to interact with
@@ -28,7 +28,7 @@
 
     <scm>
         <connection>scm:git:https://code.google.com/p/appengine-maven-plugin/</connection>
-      <tag>appengine-maven-plugin-1.9.68</tag>
+      <tag>appengine-maven-plugin-1.9.81</tag>
   </scm>
 
     <developers>
