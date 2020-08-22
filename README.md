@@ -3,7 +3,7 @@ appengine-maven-plugin
 
 A Maven plugin to support App Engine developers.
 
-A more comprehensive document for users is available at our official Using Apache Maven documentation site.
+A more comprehensive document for users is available at our [official Using Apache Maven documentation site](https://cloud.google.com/appengine/docs/java/tools/maven).
 
 Apache Maven is a software project management and comprehension tool. It is capable of building war files for deployment into App Engine. The App Engine Maven Plugin can further simplify development beyond what Maven provides. It does so by enabling the following features in Maven.
  - Running the App Engine development application server
