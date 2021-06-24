@@ -1,57 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  
-    <modelVersion>4.0.0</modelVersion>  
-    <groupId>com.google.appengine</groupId>  
-    <artifactId>appengine-maven-plugin</artifactId>  
-    <packaging>maven-plugin</packaging>  
-    <version>1.9.85-SNAPSHOT</version>  
-    <name>A Maven Plugin for running and deploying appengine applications</name>  
-    <description>The App Engine maven plugin which can be used to interact with both the development server and the remote runtime. This plugin is deprecated. Use com.google.cloud.tools.appengine-maven-plugin instead. To migrate to new plugin, see https://cloud.google.com/appengine/docs/standard/java/tools/migrate-maven.</description>  
-    <url>https://developers.google.com/appengine/docs/java/tools/maven</url>  
-    <inceptionYear>2012</inceptionYear>  
-    <properties> 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
-        <appengine.target.version>1.9.84</appengine.target.version>  
-        <datanucleus.version>3.2.0-m1</datanucleus.version> 
-    </properties>  
-    <prerequisites> 
-        <maven>3.1.0</maven> 
-    </prerequisites>  
-    <scm> 
-        <connection>scm:git:https://code.google.com/p/appengine-maven-plugin/</connection>  
-        <tag>appengine-maven-plugin-1.9.68</tag> 
-    </scm>  
-    <developers> 
-        <developer> 
-            <id>rrch</id>  
-            <name>Roberto Chinnici</name>  
-            <organization>Google</organization>  
-            <email>rrch at google dot com</email> 
-        </developer>  
-        <developer> 
-            <id>ludo</id>  
-            <name>Ludovic Champenois</name>  
-            <organization>Google</organization>  
-            <email>ludo at google dot com</email> 
-        </developer> 
-    </developers>  
-    <licenses> 
-        <license> 
-            <name>Apache License 2.0</name>  
-            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>  
-            <distribution>repo</distribution> 
-        </license> 
-    </licenses>  
-    <repositories> 
-        <repository> 
-            <id>sonatype-google-releases</id>  
-            <name>Sonatype Google Releases</name>  
-            <url>https://oss.sonatype.org/service/local/repositories/google-releases/content</url> 
-        </repository>  
-        <repository> 
-            <id>gae-staging</id>  
-            <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1451/</url> 
+<modelVersion>4.0.0</modelVersion>
+<groupId>com.google.appengine</groupId>
+<artifactId>appengine-maven-plugin</artifactId>
+<packaging>maven-plugin</packaging>
+<version>1.9.85-SNAPSHOT</version>
+<name>A Maven Plugin for running and deploying appengine applications</name>
+<description>The App Engine maven plugin which can be used to interact with both the development server and the remote runtime. This plugin is deprecated. Use com.google.cloud.tools.appengine-maven-plugin instead. To migrate to new plugin, see https://cloud.google.com/appengine/docs/standard/java/tools/migrate-maven.</description>  
+<url>https://developers.google.com/appengine/docs/java/tools/maven</url>
+<inceptionYear>2012</inceptionYear>
+<properties>
+<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<appengine.target.version>1.9.84</appengine.target.version>
+<datanucleus.version>3.2.0-m1</datanucleus.version>
+</properties>
+<prerequisites>
+<maven>3.1.0</maven>
+</prerequisites>
+<scm>
+<connection>scm:git:https://code.google.com/p/appengine-maven-plugin/</connection>
+<tag>appengine-maven-plugin-1.9.68</tag>
+</scm>
+<developers>
+<developer>
+<id>rrch</id>
+<name>Roberto Chinnici</name>
+<organization>Google</organization>
+<email>rrch at google dot com</email>
+</developer>
+<developer>
+<id>ludo</id>
+<name>Ludovic Champenois</name>
+<organization>Google</organization>
+<email>ludo at google dot com</email>
+</developer>
+</developers>
+<licenses>
+<license>
+<name>Apache License 2.0</name>
+<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+<distribution>repo</distribution>
+</license>
+</licenses>
+<repositories>
+<repository>
+<id>sonatype-google-releases</id>
+<name>Sonatype Google Releases</name>
+<url>https://oss.sonatype.org/service/local/repositories/google-releases/content</url>
+</repository>  
+<repository>
+<id>gae-staging</id>
+<url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1451/</url> 
         </repository> 
     </repositories>  
     <distributionManagement> 
@@ -79,11 +78,7 @@
                 <exclusion> 
                     <groupId>javax.enterprise</groupId>  
                     <artifactId>cdi-api</artifactId> 
-                </exclusion>  
-                <exclusion> 
-                    <groupId>org.codehaus.plexus</groupId>  
-                    <artifactId>plexus-component-annotations</artifactId> 
-                </exclusion>  
+                </exclusion>
                 <exclusion> 
                     <groupId>javax.inject</groupId>  
                     <artifactId>javax.inject</artifactId> 
@@ -127,15 +122,7 @@
                 <exclusion> 
                     <groupId>com.google.api-client</groupId>  
                     <artifactId>google-api-client-servlet</artifactId> 
-                </exclusion>  
-                <exclusion> 
-                    <groupId>com.google.code.findbugs</groupId>  
-                    <artifactId>jsr305</artifactId> 
-                </exclusion>  
-                <exclusion> 
-                    <groupId>io.swagger</groupId>  
-                    <artifactId>swagger-annotations</artifactId> 
-                </exclusion>  
+                </exclusion>           
                 <exclusion> 
                     <groupId>javax.validation</groupId>  
                     <artifactId>validation-api</artifactId> 
@@ -159,13 +146,7 @@
             <groupId>org.apache.maven.shared</groupId>  
             <artifactId>maven-invoker</artifactId>  
             <version>2.2</version>  
-            <type>jar</type>  
-            <exclusions> 
-                <exclusion> 
-                    <groupId>org.codehaus.plexus</groupId>  
-                    <artifactId>plexus-component-annotations</artifactId> 
-                </exclusion> 
-            </exclusions> 
+            <type>jar</type>
         </dependency> 
     </dependencies>  
     <build> 
